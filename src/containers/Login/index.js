@@ -28,10 +28,10 @@ class Login extends Component {
     this._onResetPassword = this._onResetPassword.bind(this)
     this.state = {
       resetEmail: '',
-      // email: 'texas697@gmail.com',
-      // password: 'P@ssword212!'
-      email: '',
-      password: ''
+      email: 'texas697@gmail.com',
+      password: 'P@ssword212!'
+      // email: '',
+      // password: ''
     }
   }
 
@@ -45,10 +45,7 @@ class Login extends Component {
     const _error = prevProps.login.get('error')
     if (error !== _error) this._onError(error)
     if (isAuthenticated !== _isAuthenticated && isAuthenticated) this._goToHome()
-    if (isReseting !== _isReseting && !isReseting) {
-      this.setState({resetEmail: '', password: ''})
-      this.props.toggleForgotPass()
-    }
+    if (isReseting !== _isReseting && !isReseting) this._onSuccessReset()
   }
 
   componentDidMount () {
@@ -58,12 +55,18 @@ class Login extends Component {
     this.props.setVisibleWidth(width)
   }
 
+  _onSuccessReset () {
+    this.setState({resetEmail: '', password: ''})
+    this.props.toggleForgotPass()
+  }
+
   _onError (error) {
     this.props.setSpinner()
     Toast.show({
       text: error.message,
       position: 'bottom',
-      buttonText: 'Okay'
+      duration: 3000,
+      type: 'danger'
     })
   }
 

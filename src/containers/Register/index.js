@@ -35,7 +35,8 @@ class Register extends Component {
     Toast.show({
       text: error.message,
       position: 'bottom',
-      buttonText: 'Okay'
+      duration: 3000,
+      type: 'danger'
     })
   }
 
@@ -73,8 +74,14 @@ class Register extends Component {
   }
 
   _success () {
+    Toast.show({
+      text: 'Success',
+      position: 'bottom',
+      duration: 3000,
+      type: 'success'
+    })
+    this.props.navigation.goBack()
     this.props.setSpinner()
-    this.props.setRegisterData(INPUT_FIELDS)
   }
 
   render () {

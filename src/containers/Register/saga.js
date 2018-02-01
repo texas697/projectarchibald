@@ -5,6 +5,7 @@ import * as actions from './action'
 import store, {firebaseApp} from '../../redux/store'
 
 function * _registerUserRequest (action) {
+  console.log(JSON.stringify(action.credentials))
   try {
     firebaseApp.auth().createUserWithEmailAndPassword(action.credentials.email, action.credentials.password)
       .catch(error => {
