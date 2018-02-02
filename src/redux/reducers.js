@@ -11,6 +11,7 @@ import login from '../containers/Login/reducer'
 import filters from '../containers/Filters/reducer'
 import dimensions from '../modules/Dimensions/reducer'
 import spinner from '../modules/Spinner/reducer'
+import roles from '../modules/Roles/reducer'
 
 import register from '../containers/Register/reducer'
 
@@ -26,5 +27,6 @@ export default combineReducers({
   adminCoach,
   adminStaff,
   adminHS,
-  adminRoster
+  adminRoster,
+  roles
 })

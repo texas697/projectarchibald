@@ -12,7 +12,7 @@ import {
   Right,
   Body
 } from 'native-base'
-import styles from './style'
+// import styles from './style'
 import {logoutRequest} from '../../containers/Login/action'
 
 class CustomHeader extends Component {
@@ -27,7 +27,7 @@ class CustomHeader extends Component {
   render () {
     return (
       <Header
-        searchBar
+        hasTabs={this.props.hasTabs}
         androidStatusBarColor='#e65d09'
         iosBarStyle='light-content'
       >
@@ -53,7 +53,8 @@ CustomHeader.propTypes = {
   login: PropTypes.instanceOf(Immutable.Map),
   navigation: PropTypes.object,
   logoutRequest: PropTypes.func,
-  title: PropTypes.string
+  title: PropTypes.string,
+  hasTabs: PropTypes.bool
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({

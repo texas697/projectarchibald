@@ -34,3 +34,9 @@ export const setRegisterData = model => {
     model
   }
 }
+
+export const setIsCoach = () => {
+  return {
+    type: types.SET_REGISTER_IS_COACH
+  }
+}

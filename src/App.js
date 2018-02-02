@@ -14,6 +14,7 @@ import SideBar from './containers/Sidebar/index'
 import store, {firebaseApp} from './redux/store'
 import {resetRegisterUserRequest} from './containers/Register/action'
 import {loginSuccess, logoutSuccess} from './containers/Login/action'
+import {addRolesRequest} from './modules/Roles/action'
 
 const Drawer = DrawerNavigator(
   {
@@ -60,11 +61,13 @@ export default () =>
 firebaseApp.auth().onAuthStateChanged(data => {
   if (data) {
     const _name = store.getState().register.get('name')
+    const _isCoach = store.getState().register.get('isCoach')
     const _user = firebaseApp.auth().currentUser
     if (_name) {
       _user.updateProfile({displayName: _name})
         .then(() => store.dispatch(resetRegisterUserRequest()))
         .catch(error => console.log(error))
+      store.dispatch(addRolesRequest({uid: _user.uid, isCoach: _isCoach}))
     }
     const user = {
       name: _user.displayName || _name,

@@ -1,4 +1,4 @@
-import { put, takeEvery, call, take } from 'redux-saga/effects'
+import { put, takeEvery, call, take, select } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as config from '../../../config/index'
 import * as utils from '../../../utils/index'
@@ -8,7 +8,16 @@ import {firebaseApp} from '../../../redux/store'
 
 const PATH = 'coach'
 
-const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.id}`).update(model)
+const _post = (uid, model) => {
+  const newKey = firebaseApp.database().ref().child(PATH).push().key
+
+  const updates = {}
+  updates[`/${PATH}/` + newKey] = model
+  updates[`/coach-${PATH}/${uid}/${newKey}`] = model
+
+  return firebaseApp.database().ref().update(updates)
+}
+
 const _delete = id => firebaseApp.database().ref().child(`${PATH}/${id}`).set(null)
 
 const createChannel = () => {
@@ -25,7 +34,9 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
-    const res = yield call(_post, action.model)
+    const state = yield select()
+    const uid = state.login.getIn(['data', 'uid'])
+    const res = yield call(_post, uid, action.model)
     yield put(actions.addCoachSuccess(res))
   } catch (error) {
     yield put(actions.addCoachFailure(error))

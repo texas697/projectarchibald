@@ -5,6 +5,7 @@ import {INPUT_FIELDS} from './config'
 const initialState = Immutable.Map({
   error: {},
   name: '',
+  isCoach: true,
   isRegistering: false,
   model: Immutable.fromJS(INPUT_FIELDS)
 })
@@ -33,6 +34,11 @@ export default (state = initialState, action) => {
     case types.SET_REGISTER_DATA:
       return state
         .set('model', action.model)
+        .set('name', '')
+
+    case types.SET_REGISTER_IS_COACH:
+      return state
+        .set('isCoach', !state.get('isCoach'))
 
     default:
       return state

@@ -33,12 +33,7 @@ class HighSchool extends Component {
 
   _onError (error) {
     // this.props.setSpinner()
-    Toast.show({
-      text: error.message,
-      position: 'bottom',
-      duration: 3000,
-      type: 'danger'
-    })
+    Toast.show({text: error.message, position: 'bottom', duration: 3000, type: 'danger'})
   }
 
   _onInputChange (val, i) {
@@ -51,7 +46,6 @@ class HighSchool extends Component {
   _onSubmit () {
     const {adminHS} = this.props
     const model = adminHS.get('model')
-    const image = adminHS.get('image')
     const _check = model.find(item => !item.get('value'))
     if (_check) {
       Alert.alert(
@@ -61,7 +55,7 @@ class HighSchool extends Component {
       )
     } else {
       // this.props.setSpinner()
-      const _model = utils.buildModel(model, image)
+      const _model = utils.buildModel(model)
       this.props.addHsRequest(_model)
     }
   }

@@ -4,14 +4,13 @@ import { bindActionCreators } from 'redux'
 import {Alert, Image, KeyboardAvoidingView} from 'react-native'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import {Container, Content, Input, Icon, Button, Item, Label, Toast, Header, Left, Title, Body, Right, Text, CardItem, Card} from 'native-base'
-import styles from '../Login/styles'
+import {Container, Content, Input, Icon, Button, Item, Label, Toast, Header, Left, Title, Body, Right, Text, CardItem, Card, CheckBox, Radio, List} from 'native-base'
+import styles from './styles'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
 import {setSpinner} from '../../modules/Spinner/action'
 import * as messages from '../../messages'
 import CustomSpinner from '../../components/Spinner'
-import {INPUT_FIELDS} from './config'
 const logo = require('../../../assets/basketball-logo.png')
 
 class Register extends Component {
@@ -86,7 +85,9 @@ class Register extends Component {
 
   render () {
     const {register} = this.props
+    const isCoach = register.get('isCoach')
     const model = register.get('model')
+
     return (
       <Container style={mainStyles.container}>
         <Header style={{marginBottom: -15}}>
@@ -113,11 +114,20 @@ class Register extends Component {
                       value={item.get('value')}
                       returnKeyType={item.get('returnKeyType')}
                       onSubmitEditing={() => this._focusNext(item.get('nextId'))}
-                      onChangeText={val => this._onInputChange(val, i)}
-                      style={styles.input} />
+                      onChangeText={val => this._onInputChange(val, i)} />
                   </Item>
                 </CardItem>
               ))}
+              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <CardItem>
+                <Left>
+                  <Text>Coach?</Text>
+                </Left>
+                <Right style={mainStyles.pr15}>
+                  <CheckBox onPress={() => this.props.setIsCoach()} checked={isCoach} />
+                </Right>
+              </CardItem>
+              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
               <CardItem style={mainStyles.submitBtnCard}>
                 <Button
                   onPress={this._onSubmit}
@@ -138,6 +148,7 @@ class Register extends Component {
 Register.propTypes = {
   setRegisterData: PropTypes.func,
   registerUserRequest: PropTypes.func,
+  setIsCoach: PropTypes.func,
   setSpinner: PropTypes.func,
   navigation: PropTypes.object,
   register: PropTypes.instanceOf(Immutable.Map)
@@ -150,7 +161,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   registerUserRequest: (credentials, name) => actions.registerUserRequest(credentials, name),
   setSpinner: () => setSpinner(),
-  setRegisterData: model => actions.setRegisterData(model)
+  setRegisterData: model => actions.setRegisterData(model),
+  setIsCoach: () => actions.setIsCoach()
 }, dispatch)
 
 export default connect(
