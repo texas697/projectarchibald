@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux'
 
+import adminStaff from '../containers/Admin/Team/staff/reducer'
+import adminCoach from '../containers/Admin/Team/coach/reducer'
+import adminTeam from '../containers/Admin/Team/team/reducer'
 import adminPlayer from '../containers/Admin/Player/reducer'
 import home from '../containers/Home/reducer'
 import login from '../containers/Login/reducer'
@@ -16,5 +19,8 @@ export default combineReducers({
   register,
   dimensions,
   spinner,
-  adminPlayer
+  adminPlayer,
+  adminTeam,
+  adminCoach,
+  adminStaff
 })

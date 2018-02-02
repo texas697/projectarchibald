@@ -11,6 +11,8 @@ export const COLORS = {
   orange: '#e65d09'
 }
 
+export const EMPTY_OPTION = { value: '', label: '' }
+
 export const FILTERS = {
   status: [
     {value: 'active', label: 'North'},
