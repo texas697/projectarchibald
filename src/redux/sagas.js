@@ -7,6 +7,7 @@ import adminStaff from '../containers/Admin/staff/saga'
 import adminTeam from '../containers/Admin/team/saga'
 import adminPlayer from '../containers/Admin/players/saga'
 import adminHS from '../containers/Admin/highSchool/saga'
+import adminRoster from '../containers/Admin/roster/saga'
 
 export default function * () {
   yield all([
@@ -16,6 +17,7 @@ export default function * () {
     adminStaff(),
     adminTeam(),
     adminPlayer(),
-    adminHS()
+    adminHS(),
+    adminRoster()
   ])
 }

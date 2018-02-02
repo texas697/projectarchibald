@@ -9,6 +9,7 @@ import Staff from './staff/index'
 import Team from './team/index'
 import Players from './players/index'
 import HighSchool from './highSchool/index'
+import Roster from './roster/index'
 
 export default class AdminTeam extends Component {
   constructor (props) {
@@ -33,6 +34,7 @@ export default class AdminTeam extends Component {
           {tab === 'players' && (<Players />)}
           {tab === 'team' && (<Team />)}
           {tab === 'hs' && (<HighSchool />)}
+          {tab === 'roster' && (<Roster />)}
         </Content>
         <CustomSpinner />
         <Footer>
@@ -51,6 +53,9 @@ export default class AdminTeam extends Component {
             </Button>
             <Button onPress={() => this.setState({tab: 'players'})} active={tab === 'players'}>
               <Text>Players</Text>
+            </Button>
+            <Button onPress={() => this.setState({tab: 'roster'})} active={tab === 'roster'}>
+              <Text>Roster</Text>
             </Button>
           </FooterTab>
         </Footer>
