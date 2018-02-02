@@ -6,34 +6,34 @@ import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import mainStyles from '../../../../styles/index'
-import styles from '../styles'
+import mainStyles from '../../../styles/index'
+import styles from './styles'
 import * as actions from './action'
-import * as messages from '../../../../messages/index'
+import * as messages from '../../../messages/index'
 import * as utils from './utils'
 
-class Team extends Component {
+class Player extends Component {
   async _onPickImage () {
     let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
-    if (!result.cancelled) this.props.setTeamImage(result.base64)
+    if (!result.cancelled) this.props.setPlayerImage(result.base64)
   }
 
   componentDidMount () {
-    this.props.resetTeamData()
+    this.props.resetPlayerData()
   }
 
   componentDidUpdate (prevProps) {
-    const {adminTeam} = this.props
-    const isAdding = adminTeam.get('isAdding')
-    const _isAdding = prevProps.adminTeam.get('isAdding')
-    const error = adminTeam.get('error')
-    const _error = prevProps.adminTeam.get('error')
+    const {adminPlayer} = this.props
+    const isAdding = adminPlayer.get('isAdding')
+    const _isAdding = prevProps.adminPlayer.get('isAdding')
+    const error = adminPlayer.get('error')
+    const _error = prevProps.adminPlayer.get('error')
     if (error !== _error) this._onError(error)
     if (isAdding !== _isAdding && !isAdding) this._onSuccess()
   }
 
   _onSuccess () {
-    this.props.resetTeamData()
+    this.props.resetPlayerData()
     this.props.setSpinner()
   }
 
@@ -48,16 +48,16 @@ class Team extends Component {
   }
 
   _onInputChange (val, i) {
-    const {adminTeam} = this.props
-    let model = adminTeam.get('model')
+    const {adminPlayer} = this.props
+    let model = adminPlayer.get('model')
     model = model.setIn([i, 'value'], val)
-    this.props.setTeamData(model)
+    this.props.setPlayerData(model)
   }
 
   _onSubmit () {
-    const {adminTeam} = this.props
-    const model = adminTeam.get('model')
-    const image = adminTeam.get('image')
+    const {adminPlayer} = this.props
+    const model = adminPlayer.get('model')
+    const image = adminPlayer.get('image')
     const _check = model.find(item => !item.get('value'))
     if (_check) {
       Alert.alert(
@@ -68,14 +68,14 @@ class Team extends Component {
     } else {
       this.props.setSpinner()
       const _model = utils.buildModel(model, image)
-      this.props.addTeamRequest(_model)
+      this.props.addPlayerRequest(_model)
     }
   }
 
   render () {
-    const {adminTeam} = this.props
-    const model = adminTeam.get('model')
-    const image = adminTeam.get('image')
+    const {adminPlayer} = this.props
+    const model = adminPlayer.get('model')
+    const image = adminPlayer.get('image')
     return (
       <Card>
         <CardItem>
@@ -83,7 +83,7 @@ class Team extends Component {
             onPress={this._onPickImage}
             block
             transparent>
-            <Text>Select Team Image</Text>
+            <Text>Select Player Image</Text>
           </Button>
         </CardItem>
         {image !== 'empty' && (
@@ -117,27 +117,27 @@ class Team extends Component {
   }
 }
 
-Team.propTypes = {
-  adminTeam: PropTypes.instanceOf(Immutable.Map),
-  setTeamData: PropTypes.func,
+Player.propTypes = {
+  adminPlayer: PropTypes.instanceOf(Immutable.Map),
+  setPlayerData: PropTypes.func,
   setSpinner: PropTypes.func,
-  setTeamImage: PropTypes.func,
-  resetTeamData: PropTypes.func,
-  addTeamRequest: PropTypes.func
+  setPlayerImage: PropTypes.func,
+  resetPlayerData: PropTypes.func,
+  addPlayerRequest: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  adminTeam: state.adminTeam
+  adminPlayer: state.adminPlayer
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  addTeamRequest: model => actions.addTeamRequest(model),
-  setTeamData: model => actions.setTeamData(model),
-  setTeamImage: image => actions.setTeamImage(image),
-  resetTeamData: () => actions.resetTeamData()
+  addPlayerRequest: model => actions.addPlayerRequest(model),
+  setPlayerData: model => actions.setPlayerData(model),
+  setPlayerImage: image => actions.setPlayerImage(image),
+  resetPlayerData: () => actions.resetPlayerData()
 }, dispatch)
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Team)
+)(Player)

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-import adminStaff from '../containers/Admin/Team/staff/reducer'
-import adminCoach from '../containers/Admin/Team/coach/reducer'
-import adminTeam from '../containers/Admin/Team/team/reducer'
-import adminPlayer from '../containers/Admin/Player/reducer'
+import adminStaff from '../containers/Admin/staff/reducer'
+import adminCoach from '../containers/Admin/coach/reducer'
+import adminTeam from '../containers/Admin/team/reducer'
+import adminPlayer from '../containers/Admin/players/reducer'
 import home from '../containers/Home/reducer'
 import login from '../containers/Login/reducer'
 import filters from '../containers/Filters/reducer'

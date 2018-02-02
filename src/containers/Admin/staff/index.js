@@ -6,34 +6,34 @@ import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import mainStyles from '../../../../styles/index'
-import styles from '../styles'
+import mainStyles from '../../../styles/index'
+import styles from './styles'
 import * as actions from './action'
-import * as messages from '../../../../messages/index'
+import * as messages from '../../../messages/index'
 import * as utils from './utils'
 
-class Coach extends Component {
+class Staff extends Component {
   async _onPickImage () {
     let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
-    if (!result.cancelled) this.props.setCoachImage(result.base64)
+    if (!result.cancelled) this.props.setStaffImage(result.base64)
   }
 
   componentDidMount () {
-    this.props.resetCoachData()
+    this.props.resetStaffData()
   }
 
   componentDidUpdate (prevProps) {
-    const {adminCoach} = this.props
-    const isAdding = adminCoach.get('isAdding')
-    const _isAdding = prevProps.adminCoach.get('isAdding')
-    const error = adminCoach.get('error')
-    const _error = prevProps.adminCoach.get('error')
+    const {adminStaff} = this.props
+    const isAdding = adminStaff.get('isAdding')
+    const _isAdding = prevProps.adminStaff.get('isAdding')
+    const error = adminStaff.get('error')
+    const _error = prevProps.adminStaff.get('error')
     if (error !== _error) this._onError(error)
     if (isAdding !== _isAdding && !isAdding) this._onSuccess()
   }
 
   _onSuccess () {
-    this.props.resetCoachData()
+    this.props.resetStaffData()
     this.props.setSpinner()
   }
 
@@ -48,16 +48,16 @@ class Coach extends Component {
   }
 
   _onInputChange (val, i) {
-    const {adminCoach} = this.props
-    let model = adminCoach.get('model')
+    const {adminStaff} = this.props
+    let model = adminStaff.get('model')
     model = model.setIn([i, 'value'], val)
-    this.props.setCoachData(model)
+    this.props.setStaffData(model)
   }
 
   _onSubmit () {
-    const {adminCoach} = this.props
-    const model = adminCoach.get('model')
-    const image = adminCoach.get('image')
+    const {adminStaff} = this.props
+    const model = adminStaff.get('model')
+    const image = adminStaff.get('image')
     const _check = model.find(item => !item.get('value'))
     if (_check) {
       Alert.alert(
@@ -68,14 +68,14 @@ class Coach extends Component {
     } else {
       this.props.setSpinner()
       const _model = utils.buildModel(model, image)
-      this.props.addCoachRequest(_model)
+      this.props.addStaffRequest(_model)
     }
   }
 
   render () {
-    const {adminCoach} = this.props
-    const model = adminCoach.get('model')
-    const image = adminCoach.get('image')
+    const {adminStaff} = this.props
+    const model = adminStaff.get('model')
+    const image = adminStaff.get('image')
     return (
       <Card>
         <CardItem>
@@ -83,7 +83,7 @@ class Coach extends Component {
             onPress={this._onPickImage}
             block
             transparent>
-            <Text>Select Coach Image</Text>
+            <Text>Select Staff Image</Text>
           </Button>
         </CardItem>
         {image !== 'empty' && (
@@ -117,27 +117,27 @@ class Coach extends Component {
   }
 }
 
-Coach.propTypes = {
-  adminCoach: PropTypes.instanceOf(Immutable.Map),
-  setCoachData: PropTypes.func,
+Staff.propTypes = {
+  adminStaff: PropTypes.instanceOf(Immutable.Map),
+  setStaffData: PropTypes.func,
   setSpinner: PropTypes.func,
-  setCoachImage: PropTypes.func,
-  resetCoachData: PropTypes.func,
-  addCoachRequest: PropTypes.func
+  setStaffImage: PropTypes.func,
+  resetStaffData: PropTypes.func,
+  addStaffRequest: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  adminCoach: state.adminCoach
+  adminStaff: state.adminStaff
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  addCoachRequest: model => actions.addCoachRequest(model),
-  setCoachData: model => actions.setCoachData(model),
-  setCoachImage: image => actions.setCoachImage(image),
-  resetCoachData: () => actions.resetCoachData()
+  addStaffRequest: model => actions.addStaffRequest(model),
+  setStaffData: model => actions.setStaffData(model),
+  setStaffImage: image => actions.setStaffImage(image),
+  resetStaffData: () => actions.resetStaffData()
 }, dispatch)
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Coach)
+)(Staff)

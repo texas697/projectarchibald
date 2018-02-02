@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import * as types from '../../../../types'
+import * as types from '../../../types/index'
 import {INPUT_FIELDS} from './config'
 
 export const INIT_STATE = {

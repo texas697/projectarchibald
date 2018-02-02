@@ -73,34 +73,6 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'email',
   keyboardType: 'email-address',
-  nextId: 'hs',
-  returnKeyType: 'next'
-}, {
-  label: 'High School',
-  value: '',
-  id: 'hs',
-  keyboardType: 'default',
-  nextId: 'hsCoach',
-  returnKeyType: 'next'
-}, {
-  label: 'High School Coach',
-  value: '',
-  id: 'hsCoach',
-  keyboardType: 'default',
-  nextId: 'hsCoachPhone',
-  returnKeyType: 'next'
-}, {
-  label: 'High School Coach Phone',
-  value: '',
-  id: 'hsCoachPhone',
-  keyboardType: 'phone-pad',
-  nextId: 'hsCoachEmail',
-  returnKeyType: 'next'
-}, {
-  label: 'High School Coach Email',
-  value: '',
-  id: 'hsCoachEmail',
-  keyboardType: 'email-address',
   nextId: '',
   returnKeyType: 'go'
 }]

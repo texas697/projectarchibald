@@ -6,34 +6,34 @@ import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import mainStyles from '../../../../styles/index'
-import styles from '../styles'
+import mainStyles from '../../../styles/index'
+import styles from './styles'
 import * as actions from './action'
-import * as messages from '../../../../messages/index'
+import * as messages from '../../../messages/index'
 import * as utils from './utils'
 
-class Staff extends Component {
+class Team extends Component {
   async _onPickImage () {
     let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
-    if (!result.cancelled) this.props.setStaffImage(result.base64)
+    if (!result.cancelled) this.props.setTeamImage(result.base64)
   }
 
   componentDidMount () {
-    this.props.resetStaffData()
+    this.props.resetTeamData()
   }
 
   componentDidUpdate (prevProps) {
-    const {adminStaff} = this.props
-    const isAdding = adminStaff.get('isAdding')
-    const _isAdding = prevProps.adminStaff.get('isAdding')
-    const error = adminStaff.get('error')
-    const _error = prevProps.adminStaff.get('error')
+    const {adminTeam} = this.props
+    const isAdding = adminTeam.get('isAdding')
+    const _isAdding = prevProps.adminTeam.get('isAdding')
+    const error = adminTeam.get('error')
+    const _error = prevProps.adminTeam.get('error')
     if (error !== _error) this._onError(error)
     if (isAdding !== _isAdding && !isAdding) this._onSuccess()
   }
 
   _onSuccess () {
-    this.props.resetStaffData()
+    this.props.resetTeamData()
     this.props.setSpinner()
   }
 
@@ -48,16 +48,16 @@ class Staff extends Component {
   }
 
   _onInputChange (val, i) {
-    const {adminStaff} = this.props
-    let model = adminStaff.get('model')
+    const {adminTeam} = this.props
+    let model = adminTeam.get('model')
     model = model.setIn([i, 'value'], val)
-    this.props.setStaffData(model)
+    this.props.setTeamData(model)
   }
 
   _onSubmit () {
-    const {adminStaff} = this.props
-    const model = adminStaff.get('model')
-    const image = adminStaff.get('image')
+    const {adminTeam} = this.props
+    const model = adminTeam.get('model')
+    const image = adminTeam.get('image')
     const _check = model.find(item => !item.get('value'))
     if (_check) {
       Alert.alert(
@@ -68,14 +68,14 @@ class Staff extends Component {
     } else {
       this.props.setSpinner()
       const _model = utils.buildModel(model, image)
-      this.props.addStaffRequest(_model)
+      this.props.addTeamRequest(_model)
     }
   }
 
   render () {
-    const {adminStaff} = this.props
-    const model = adminStaff.get('model')
-    const image = adminStaff.get('image')
+    const {adminTeam} = this.props
+    const model = adminTeam.get('model')
+    const image = adminTeam.get('image')
     return (
       <Card>
         <CardItem>
@@ -83,7 +83,7 @@ class Staff extends Component {
             onPress={this._onPickImage}
             block
             transparent>
-            <Text>Select Staff Image</Text>
+            <Text>Select Team Image</Text>
           </Button>
         </CardItem>
         {image !== 'empty' && (
@@ -117,27 +117,27 @@ class Staff extends Component {
   }
 }
 
-Staff.propTypes = {
-  adminStaff: PropTypes.instanceOf(Immutable.Map),
-  setStaffData: PropTypes.func,
+Team.propTypes = {
+  adminTeam: PropTypes.instanceOf(Immutable.Map),
+  setTeamData: PropTypes.func,
   setSpinner: PropTypes.func,
-  setStaffImage: PropTypes.func,
-  resetStaffData: PropTypes.func,
-  addStaffRequest: PropTypes.func
+  setTeamImage: PropTypes.func,
+  resetTeamData: PropTypes.func,
+  addTeamRequest: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  adminStaff: state.adminStaff
+  adminTeam: state.adminTeam
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  addStaffRequest: model => actions.addStaffRequest(model),
-  setStaffData: model => actions.setStaffData(model),
-  setStaffImage: image => actions.setStaffImage(image),
-  resetStaffData: () => actions.resetStaffData()
+  addTeamRequest: model => actions.addTeamRequest(model),
+  setTeamData: model => actions.setTeamData(model),
+  setTeamImage: image => actions.setTeamImage(image),
+  resetTeamData: () => actions.resetTeamData()
 }, dispatch)
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Staff)
+)(Team)

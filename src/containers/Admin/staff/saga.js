@@ -1,10 +1,10 @@
 import { put, takeEvery, call, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
-import * as config from '../../../../config'
-import * as utils from '../../../../utils'
-import * as types from '../../../../types'
+import * as config from '../../../config/index'
+import * as utils from '../../../utils/index'
+import * as types from '../../../types/index'
 import * as actions from './action'
-import {firebaseApp} from '../../../../redux/store'
+import {firebaseApp} from '../../../redux/store'
 
 const PATH = 'staff'
 
