@@ -3,7 +3,7 @@ import { Root } from 'native-base'
 import { StackNavigator, DrawerNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 
-import AdminPlayer from './containers/Admin/Player/index'
+import Admin from './containers/Admin/index'
 import Login from './containers/Login/index'
 import Register from './containers/Register/index'
 import Home from './containers/Home/index'
@@ -22,7 +22,7 @@ const Drawer = DrawerNavigator(
     Home: { screen: Home },
     Player: { screen: Player },
     Team: { screen: Team },
-    AdminPlayer: { screen: AdminPlayer }
+    Admin: { screen: Admin }
   },
   {
     initialRouteName: 'Login',
@@ -42,7 +42,7 @@ const AppNavigator = StackNavigator(
     Player: {screen: Player},
     Team: {screen: Team},
     Filters: {screen: Filters},
-    AdminPlayer: {screen: AdminPlayer}
+    Admin: {screen: Admin}
   },
   {
     initialRouteName: 'Drawer',

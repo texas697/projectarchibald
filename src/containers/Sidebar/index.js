@@ -21,7 +21,7 @@ const datas = [
   {
     name: 'Home',
     route: 'Home',
-    icon: 'phone-portrait',
+    icon: 'ios-home',
     bg: '#C5F442'
   },
   {
@@ -37,9 +37,9 @@ const datas = [
     bg: '#C5F442'
   },
   {
-    name: 'Admin Player',
-    route: 'AdminPlayer',
-    icon: 'phone-portrait',
+    name: 'Admin',
+    route: 'Admin',
+    icon: 'ios-hammer',
     bg: '#C5F442'
   }
 ]

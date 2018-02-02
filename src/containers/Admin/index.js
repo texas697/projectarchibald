@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Container, Content, Text, Footer, FooterTab, Button} from 'native-base'
-import styles from './styles'
+// import styles from './styles'
 import mainStyles from '../../styles/index'
 import CustomHeader from '../../components/Header/index'
 import CustomSpinner from '../../components/Spinner/index'
@@ -8,6 +8,7 @@ import Coach from './coach/index'
 import Staff from './staff/index'
 import Team from './team/index'
 import Players from './players/index'
+import HighSchool from './highSchool/index'
 
 export default class AdminTeam extends Component {
   constructor (props) {
@@ -31,12 +32,16 @@ export default class AdminTeam extends Component {
           {tab === 'staff' && (<Staff />)}
           {tab === 'players' && (<Players />)}
           {tab === 'team' && (<Team />)}
+          {tab === 'hs' && (<HighSchool />)}
         </Content>
         <CustomSpinner />
         <Footer>
           <FooterTab>
             <Button onPress={() => this.setState({tab: 'team'})} active={tab === 'team'}>
               <Text>Team</Text>
+            </Button>
+            <Button onPress={() => this.setState({tab: 'hs'})} active={tab === 'hs'}>
+              <Text>HighSchool</Text>
             </Button>
             <Button onPress={() => this.setState({tab: 'coach'})} active={tab === 'coach'}>
               <Text>Coach</Text>

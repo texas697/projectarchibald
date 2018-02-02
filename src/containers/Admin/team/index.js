@@ -93,14 +93,13 @@ class Team extends Component {
         )}
         {model.map((item, i) => (
           <CardItem key={i}>
-            <Item floatingLabel last>
-              <Label>{item.get('label')}</Label>
+            <Item floatingLabel>
+              <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
               <Input
                 value={item.get('value')}
                 returnKeyType={item.get('returnKeyType')}
                 onSubmitEditing={() => this._focusNext(item.get('nextId'))}
-                onChangeText={val => this._onInputChange(val, i)}
-                style={styles.input} />
+                onChangeText={val => this._onInputChange(val, i)} />
             </Item>
           </CardItem>
         ))}
