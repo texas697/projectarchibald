@@ -34,11 +34,11 @@ class Staff extends Component {
 
   _onSuccess () {
     this.props.resetStaffData()
-    this.props.setSpinner()
+    // this.props.setSpinner()
   }
 
   _onError (error) {
-    this.props.setSpinner()
+    // this.props.setSpinner()
     Toast.show({
       text: error.message,
       position: 'bottom',
@@ -66,7 +66,7 @@ class Staff extends Component {
         [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
       )
     } else {
-      this.props.setSpinner()
+      // this.props.setSpinner()
       const _model = utils.buildModel(model, image)
       this.props.addStaffRequest(_model)
     }

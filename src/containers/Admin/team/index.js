@@ -34,11 +34,11 @@ class Team extends Component {
 
   _onSuccess () {
     this.props.resetTeamData()
-    this.props.setSpinner()
+    // this.props.setSpinner()
   }
 
   _onError (error) {
-    this.props.setSpinner()
+    // this.props.setSpinner()
     Toast.show({
       text: error.message,
       position: 'bottom',
@@ -66,7 +66,7 @@ class Team extends Component {
         [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
       )
     } else {
-      this.props.setSpinner()
+      // this.props.setSpinner()
       const _model = utils.buildModel(model, image)
       this.props.addTeamRequest(_model)
     }

@@ -15,7 +15,7 @@ export default class AdminTeam extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      tab: 'coach'
+      tab: 'team'
     }
   }
 
@@ -27,7 +27,7 @@ export default class AdminTeam extends Component {
     const {tab} = this.state
     return (
       <Container style={mainStyles.container}>
-        <CustomHeader title='Add Team' {...this.props} />
+        <CustomHeader title='Build Team' {...this.props} />
         <Content>
           {tab === 'coach' && (<Coach />)}
           {tab === 'staff' && (<Staff />)}
@@ -40,22 +40,22 @@ export default class AdminTeam extends Component {
         <Footer>
           <FooterTab>
             <Button onPress={() => this.setState({tab: 'team'})} active={tab === 'team'}>
-              <Text>Team</Text>
+              <Text style={{fontSize: 8}}>Team</Text>
             </Button>
             <Button onPress={() => this.setState({tab: 'hs'})} active={tab === 'hs'}>
-              <Text>HighSchool</Text>
+              <Text style={{fontSize: 8}}>HS</Text>
             </Button>
             <Button onPress={() => this.setState({tab: 'coach'})} active={tab === 'coach'}>
-              <Text>Coach</Text>
+              <Text style={{fontSize: 8}}>Coach</Text>
             </Button>
             <Button onPress={() => this.setState({tab: 'staff'})} active={tab === 'staff'}>
-              <Text>Staff</Text>
+              <Text style={{fontSize: 8}}>Staff</Text>
             </Button>
             <Button onPress={() => this.setState({tab: 'players'})} active={tab === 'players'}>
-              <Text>Players</Text>
+              <Text style={{fontSize: 8}}>Player</Text>
             </Button>
             <Button onPress={() => this.setState({tab: 'roster'})} active={tab === 'roster'}>
-              <Text>Roster</Text>
+              <Text style={{fontSize: 8}}>Roster</Text>
             </Button>
           </FooterTab>
         </Footer>

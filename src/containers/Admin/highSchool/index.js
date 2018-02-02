@@ -6,14 +6,14 @@ import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
-import styles from './styles'
+// import styles from './styles'
 import * as actions from './action'
 import * as messages from '../../../messages/index'
 import * as utils from './utils'
 
 class HighSchool extends Component {
   componentDidMount () {
-    this.props.resetHSData()
+    this.props.resetHsData()
   }
 
   componentDidUpdate (prevProps) {
@@ -27,12 +27,12 @@ class HighSchool extends Component {
   }
 
   _onSuccess () {
-    this.props.resetHSData()
-    this.props.setSpinner()
+    this.props.resetHsData()
+    // this.props.setSpinner()
   }
 
   _onError (error) {
-    this.props.setSpinner()
+    // this.props.setSpinner()
     Toast.show({
       text: error.message,
       position: 'bottom',
@@ -45,7 +45,7 @@ class HighSchool extends Component {
     const {adminHS} = this.props
     let model = adminHS.get('model')
     model = model.setIn([i, 'value'], val)
-    this.props.setHSData(model)
+    this.props.setHsData(model)
   }
 
   _onSubmit () {
@@ -60,9 +60,9 @@ class HighSchool extends Component {
         [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
       )
     } else {
-      this.props.setSpinner()
+      // this.props.setSpinner()
       const _model = utils.buildModel(model, image)
-      this.props.addHSRequest(_model)
+      this.props.addHsRequest(_model)
     }
   }
 
@@ -98,10 +98,10 @@ class HighSchool extends Component {
 
 HighSchool.propTypes = {
   adminHS: PropTypes.instanceOf(Immutable.Map),
-  setHSData: PropTypes.func,
+  setHsData: PropTypes.func,
   setSpinner: PropTypes.func,
-  resetHSData: PropTypes.func,
-  addHSRequest: PropTypes.func
+  resetHsData: PropTypes.func,
+  addHsRequest: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -109,9 +109,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  addHSRequest: model => actions.addHSRequest(model),
-  setHSData: model => actions.setHSData(model),
-  resetHSData: () => actions.resetHSData()
+  addHsRequest: model => actions.addHsRequest(model),
+  setHsData: model => actions.setHsData(model),
+  resetHsData: () => actions.resetHsData()
 }, dispatch)
 
 export default connect(
