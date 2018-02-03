@@ -6,6 +6,8 @@ import * as types from '../../../types/index'
 import * as actions from './action'
 import {firebaseApp} from '../../../redux/store'
 import {PATH_STAFF} from './config'
+import * as teamsUtils from '../../../modules/Teams/utils'
+import {addTeamsRequest} from '../../../modules/Teams/action'
 
 const _post = model => firebaseApp.database().ref().child(`${PATH_STAFF}/${model.id}`).update(model)
 
@@ -14,7 +16,7 @@ const _delete = id => firebaseApp.database().ref().child(`${PATH_STAFF}/${id}`).
 const _fetchById = id => {
   return firebaseApp.database().ref(`${PATH_STAFF}/${id}`)
     .once('value').then(snapshot => {
-      if (snapshot.val()) return Object.values(snapshot.val())
+      if (snapshot.val()) return snapshot.val()
       else return {}
     })
 }
@@ -33,6 +35,8 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
+    const _model = yield teamsUtils.buildModel()
+    yield put(addTeamsRequest(_model))
     const res = yield call(_post, action.model)
     yield put(actions.addStaffSuccess(res))
   } catch (error) {

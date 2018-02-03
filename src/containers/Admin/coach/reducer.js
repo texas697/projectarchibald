@@ -7,6 +7,7 @@ export const INIT_STATE = {
   data: Immutable.fromJS([]),
   options: Immutable.fromJS([]),
   coach: Immutable.fromJS({}),
+  id: '',
   image: 'empty',
   isFetching: false,
   isAdding: true,
@@ -90,6 +91,10 @@ export default (state = initialState, action) => {
         .set('data', Immutable.fromJS([]))
         .set('options', Immutable.fromJS([]))
         .set('model', Immutable.fromJS(INPUT_FIELDS))
+
+    case types.SET_COACH_ID:
+      return state
+        .set('id', action.id)
 
     default:
       return state

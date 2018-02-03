@@ -7,6 +7,7 @@ export const INIT_STATE = {
   data: Immutable.fromJS([]),
   options: Immutable.fromJS([]),
   hs: Immutable.fromJS({}),
+  id: '',
   isFetching: false,
   isAdding: true,
   isDeleting: true,
@@ -75,6 +76,10 @@ export default (state = initialState, action) => {
     case types.SET_HS_DATA:
       return state
         .set('model', Immutable.fromJS(action.model))
+
+    case types.SET_HS_ID:
+      return state
+        .set('id', action.id)
 
     case types.RESET_HS_DATA:
       return state

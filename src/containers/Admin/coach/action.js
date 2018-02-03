@@ -100,3 +100,10 @@ export const resetCoachData = () => {
     type: types.RESET_COACH_DATA
   }
 }
+
+export const setCoachId = id => {
+  return {
+    type: types.SET_COACH_ID,
+    id
+  }
+}

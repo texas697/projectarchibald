@@ -55,6 +55,7 @@ class Coach extends Component {
     else {
       const _model = utils.buildModel(model, image)
       this.props.addCoachRequest(_model)
+      this.props.setCoachId(_model.id)
     }
   }
 
@@ -105,9 +106,8 @@ class Coach extends Component {
 Coach.propTypes = {
   adminCoach: PropTypes.instanceOf(Immutable.Map),
   setCoachData: PropTypes.func,
-  setSpinner: PropTypes.func,
   setCoachImage: PropTypes.func,
-  resetCoachData: PropTypes.func,
+  setCoachId: PropTypes.func,
   addCoachRequest: PropTypes.func
 }
 
@@ -119,6 +119,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   addCoachRequest: model => actions.addCoachRequest(model),
   setCoachData: model => actions.setCoachData(model),
   setCoachImage: image => actions.setCoachImage(image),
+  setCoachId: id => actions.setCoachId(id),
   resetCoachData: () => actions.resetCoachData()
 }, dispatch)
 

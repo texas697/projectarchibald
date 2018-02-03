@@ -93,3 +93,10 @@ export const resetHsData = () => {
     type: types.RESET_HS_DATA
   }
 }
+
+export const setHsId = id => {
+  return {
+    type: types.SET_HS_ID,
+    id
+  }
+}

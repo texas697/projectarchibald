@@ -19,9 +19,9 @@ class HighSchool extends Component {
   }
 
   componentDidMount () {
-    // const {adminHS} = this.props
-    // const id = adminHS.get('id')
-    // this.props.fetchHsByIdRequest(id)
+    const {adminHS} = this.props
+    const id = adminHS.get('id')
+    this.props.fetchHsByIdRequest(id)
   }
 
   componentDidUpdate (prevProps) {
@@ -53,6 +53,7 @@ class HighSchool extends Component {
     else {
       const _model = utils.buildModel(model)
       this.props.addHsRequest(_model)
+      this.props.setHsId(_model.id)
     }
   }
 
@@ -97,7 +98,7 @@ HighSchool.propTypes = {
   adminHS: PropTypes.instanceOf(Immutable.Map),
   setHsData: PropTypes.func,
   fetchHsByIdRequest: PropTypes.func,
-  resetHsData: PropTypes.func,
+  setHsId: PropTypes.func,
   addHsRequest: PropTypes.func
 }
 
@@ -110,6 +111,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   addHsRequest: model => actions.addHsRequest(model),
   setHsData: model => actions.setHsData(model),
   fetchHsByIdRequest: id => actions.fetchHsByIdRequest(id),
+  setHsId: id => actions.setHsId(id),
   resetHsData: () => actions.resetHsData()
 }, dispatch)
 

@@ -3,6 +3,9 @@ import { eventChannel } from 'redux-saga'
 import * as types from '../../types/index'
 import * as actions from './action'
 import {firebaseApp} from '../../redux/store'
+import {setTeamId} from '../../containers/Admin/team/action'
+import {setCoachId} from '../../containers/Admin/coach/action'
+import {setHsId} from '../../containers/Admin/highSchool/action'
 
 const PATH = 'teams'
 
@@ -11,7 +14,7 @@ const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.teamI
 const _fetchById = id => {
   return firebaseApp.database().ref(`${PATH}/${id}`)
     .once('value').then(snapshot => {
-      if (snapshot.val()) return Object.values(snapshot.val())
+      if (snapshot.val()) return snapshot.val()
       else return {}
     })
 }
@@ -20,7 +23,7 @@ const _fetchByCoachId = uid => {
   return firebaseApp.database().ref(PATH)
     .orderByChild('coachId').equalTo(uid)
     .once('value').then(snapshot => {
-      if (snapshot.val()) return Object.values(snapshot.val())
+      if (snapshot.val()) return snapshot.val()
       else return {}
     })
 }
@@ -71,7 +74,10 @@ function * _fetchByIdRequest (action) {
 function * _fetchByCoachIdRequest (action) {
   try {
     const res = yield call(_fetchByCoachId, action.uid)
-    yield put(actions.fetchTeamsByIdSuccess(res[0]))
+    yield put(actions.fetchTeamsByIdSuccess(res))
+    yield put(setTeamId(res.teamId))
+    yield put(setCoachId(res.coachId))
+    yield put(setHsId(res.hsId))
   } catch (error) {
     yield put(actions.fetchTeamsByIdFailure(error))
   }

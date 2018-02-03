@@ -1,12 +1,13 @@
-import { put, takeEvery, call, take, select } from 'redux-saga/effects'
+import { put, takeEvery, call, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
-import firebaseTime from 'firebase'
 import * as config from '../../../config/index'
 import * as utils from '../../../utils/index'
 import * as types from '../../../types/index'
 import * as actions from './action'
 import {firebaseApp} from '../../../redux/store'
 import {PATH_HS} from './config'
+import * as teamsUtils from '../../../modules/Teams/utils'
+import {addTeamsRequest} from '../../../modules/Teams/action'
 
 const _post = model => firebaseApp.database().ref().child(`${PATH_HS}/${model.id}`).update(model)
 const _delete = id => firebaseApp.database().ref().child(`${PATH_HS}/${id}`).set(null)
@@ -14,7 +15,7 @@ const _delete = id => firebaseApp.database().ref().child(`${PATH_HS}/${id}`).set
 const _fetchById = id => {
   return firebaseApp.database().ref(`${PATH_HS}/${id}`)
     .once('value').then(snapshot => {
-      if (snapshot.val()) return Object.values(snapshot.val())
+      if (snapshot.val()) return snapshot.val()
       else return {}
     })
 }
@@ -33,9 +34,8 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
-    const state = yield select()
-    action.model.teamId = state.adminTeam.get('id')
-    action.model.date = firebaseTime.database.ServerValue.TIMESTAMP
+    const _model = yield teamsUtils.buildModel()
+    yield put(addTeamsRequest(_model))
     const res = yield call(_post, action.model)
     yield put(actions.addHsSuccess(res))
   } catch (error) {
