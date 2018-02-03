@@ -1,5 +1,6 @@
 import { put, takeEvery, call, take, select } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
+import firebaseTime from 'firebase'
 import * as config from '../../../config/index'
 import * as utils from '../../../utils/index'
 import * as types from '../../../types/index'
@@ -34,6 +35,7 @@ function * _addRequest (action) {
   try {
     const state = yield select()
     action.model.teamId = state.adminTeam.get('id')
+    action.model.date = firebaseTime.database.ServerValue.TIMESTAMP
     const res = yield call(_post, action.model)
     yield put(actions.addCoachSuccess(res))
   } catch (error) {

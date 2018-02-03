@@ -1,4 +1,4 @@
-import { put, takeEvery, call, take, select } from 'redux-saga/effects'
+import { put, takeEvery, call, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as config from '../../../config/index'
 import * as utils from '../../../utils/index'
@@ -33,8 +33,6 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
-    const state = yield select()
-    action.model.teamId = state.adminTeam.get('id')
     const res = yield call(_post, action.model)
     yield put(actions.addStaffSuccess(res))
   } catch (error) {

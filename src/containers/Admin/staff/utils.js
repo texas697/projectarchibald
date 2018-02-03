@@ -1,4 +1,5 @@
 import uuid from 'uuid'
+import firebaseTime from 'firebase'
 import store, {firebaseApp} from '../../../redux/store'
 import {INPUT_FIELDS} from './config'
 import * as actions from './action'
@@ -9,7 +10,8 @@ export const buildModel = (model, image) => {
     name: model.getIn([0, 'value']),
     title: model.getIn([1, 'value']),
     image: image,
-    teamId: store.getState().adminTeam.get('id')
+    teamId: store.getState().adminTeam.get('id'),
+    date: firebaseTime.database.ServerValue.TIMESTAMP
   }
 }
 
