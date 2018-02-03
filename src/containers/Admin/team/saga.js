@@ -1,6 +1,5 @@
 import { put, takeEvery, call, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
-import firebaseTime from 'firebase'
 import * as config from '../../../config/index'
 import * as utils from '../../../utils/index'
 import * as types from '../../../types/index'
@@ -9,8 +8,6 @@ import {firebaseApp} from '../../../redux/store'
 import {PATH_TEAM} from './config'
 
 const _post = model => firebaseApp.database().ref().child(`${PATH_TEAM}/${model.id}`).update(model)
-
-const _postCoachTeam = (model, uid) => firebaseApp.database().ref().child(`coach-${PATH_TEAM}/${uid}`).update(model)
 
 const _delete = id => firebaseApp.database().ref().child(`${PATH_TEAM}/${id}`).set(null)
 
@@ -36,12 +33,7 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
-    const _uid = firebaseApp.auth().currentUser.uid
     const res = yield call(_post, action.model)
-    yield call(_postCoachTeam, {
-      teamId: action.model.id,
-      date: firebaseTime.database.ServerValue.TIMESTAMP
-    }, _uid)
     yield put(actions.addTeamSuccess(res))
   } catch (error) {
     yield put(actions.addTeamFailure(error))

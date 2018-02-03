@@ -42,6 +42,13 @@ export const fetchTeamsByIdFailure = error => {
   }
 }
 
+export const fetchTeamsByCoachIdRequest = uid => {
+  return {
+    type: types.TEAMS_BY_COACH_ID_FETCH_REQUEST,
+    uid
+  }
+}
+
 export const addTeamsRequest = model => {
   return {
     type: types.TEAMS_ADD_REQUEST,

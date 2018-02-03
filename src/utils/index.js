@@ -5,6 +5,8 @@ import store from '../redux/store'
 import {resetRegisterUserRequest} from '../containers/Register/action'
 import {addRolesRequest} from '../modules/Roles/action'
 import {addTeamRequest} from '../containers/Admin/team/action'
+import {addTeamsRequest} from '../modules/Teams/action'
+import * as teamsUtils from '../modules/Teams/utils'
 
 export const buildOptions = data => {
   return data.map(x => {
@@ -27,6 +29,7 @@ export const updateProfile = (user, name, isCoach) => {
       image: store.getState().adminTeam.get('image'),
       name: store.getState().adminTeam.getIn(['model', 0, 'value'])
     }))
+    teamsUtils.buildModel().then(model => store.dispatch(addTeamsRequest(model)))
   }
 }
 
