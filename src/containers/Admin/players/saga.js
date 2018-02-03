@@ -6,7 +6,7 @@ import * as types from '../../../types/index'
 import * as actions from './action'
 import {firebaseApp} from '../../../redux/store'
 
-const PATH = 'players'
+const PATH = 'player'
 
 const _post = (teamId, model) => {
   const newKey = firebaseApp.database().ref().child(PATH).push().key

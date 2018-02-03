@@ -13,6 +13,7 @@ const _post = (uid, model) => {
 
   const updates = {}
   updates[`/${PATH}/` + newKey] = model
+  updates[`/user-${PATH}/${uid}/${newKey}`] = model
 
   return firebaseApp.database().ref().update(updates)
 }

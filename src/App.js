@@ -15,6 +15,7 @@ import store, {firebaseApp} from './redux/store'
 import {resetRegisterUserRequest} from './containers/Register/action'
 import {loginSuccess, logoutSuccess} from './containers/Login/action'
 import {addRolesRequest} from './modules/Roles/action'
+import * as utils from './utils/index'
 
 const Drawer = DrawerNavigator(
   {
@@ -63,17 +64,9 @@ firebaseApp.auth().onAuthStateChanged(data => {
     const _name = store.getState().register.get('name')
     const _isCoach = store.getState().register.get('isCoach')
     const _user = firebaseApp.auth().currentUser
-    if (_name) {
-      _user.updateProfile({displayName: _name})
-        .then(() => store.dispatch(resetRegisterUserRequest()))
-        .catch(error => console.log(error))
-      store.dispatch(addRolesRequest({uid: _user.uid, isCoach: _isCoach}))
-    }
-    const user = {
-      name: _user.displayName || _name,
-      email: _user.email,
-      uid: _user.uid
-    }
+    if (_name) utils.updateProfile(_user, _name, _isCoach)
+    const user = {name: _user.displayName || _name, email: _user.email, uid: _user.uid}
+    utils.fetchTeamData(_user.uid)
     store.dispatch(loginSuccess(user))
   } else store.dispatch(logoutSuccess())
 })
