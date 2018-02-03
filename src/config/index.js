@@ -13,6 +13,11 @@ export const COLORS = {
 
 export const EMPTY_OPTION = { value: '', label: '' }
 
+export const TOAST_SUCCESS = {text: 'Success', position: 'bottom', duration: 3000, type: 'success'}
+export const TOAST_ERROR = error => {
+  return {text: error.message, position: 'bottom', duration: 3000, type: 'danger'}
+}
+
 export const FILTERS = {
   status: [
     {value: 'active', label: 'North'},

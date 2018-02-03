@@ -84,7 +84,7 @@ class Login extends Component {
   }
 
   _focusNext (nextField) {
-    // this.refs[nextField]._root.focus()
+    this[nextField]._root.focus()
   }
 
   _onForgotPassword () {
@@ -130,7 +130,7 @@ class Login extends Component {
                 <Label style={mainStyles.labelHeight}>Email</Label>
                 <Input
                   ref='email'
-                  onSubmitEditing={() => this._focusNext('password')}
+                  onSubmitEditing={() => this._focusNext('passwordInput')}
                   returnKeyType='next'
                   keyboardType='email-address'
                   value={email}
@@ -141,7 +141,7 @@ class Login extends Component {
               <Item floatingLabel>
                 <Label style={mainStyles.labelHeight}>Password</Label>
                 <Input
-                  ref='password'
+                  getRef={ref => { this.passwordInput = ref }}
                   secureTextEntry
                   value={password}
                   returnKeyType='go'

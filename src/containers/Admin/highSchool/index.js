@@ -2,14 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {Alert} from 'react-native'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-base'
+import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
 // import styles from './styles'
 import * as actions from './action'
 import * as messages from '../../../messages/index'
+import * as config from '../../../config/index'
 import * as utils from './utils'
+import NoTeam from '../../../components/NoTeam/index'
 
 class HighSchool extends Component {
   componentDidMount () {
@@ -27,13 +29,14 @@ class HighSchool extends Component {
   }
 
   _onSuccess () {
+    Toast.show(config.TOAST_SUCCESS)
     this.props.resetHsData()
     // this.props.setSpinner()
   }
 
   _onError (error) {
     // this.props.setSpinner()
-    Toast.show({text: error.message, position: 'bottom', duration: 3000, type: 'danger'})
+    Toast.show(config.TOAST_ERROR(error))
   }
 
   _onInputChange (val, i) {
@@ -61,36 +64,43 @@ class HighSchool extends Component {
   }
 
   render () {
-    const {adminHS} = this.props
+    const {adminHS, adminTeam} = this.props
     const model = adminHS.get('model')
+    const teamId = adminTeam.get('id')
     return (
-      <Card>
-        {model.map((item, i) => (
-          <CardItem key={i}>
-            <Item floatingLabel>
-              <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
-              <Input
-                value={item.get('value')}
-                returnKeyType={item.get('returnKeyType')}
-                onSubmitEditing={() => this._focusNext(item.get('nextId'))}
-                onChangeText={val => this._onInputChange(val, i)} />
-            </Item>
+      <View>
+        {!teamId && (<NoTeam />)}
+        <Card>
+          {model.map((item, i) => (
+            <CardItem key={i}>
+              <Item floatingLabel>
+                <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
+                <Input
+                  disabled={!teamId}
+                  value={item.get('value')}
+                  returnKeyType={item.get('returnKeyType')}
+                  onSubmitEditing={() => this._focusNext(item.get('nextId'))}
+                  onChangeText={val => this._onInputChange(val, i)} />
+              </Item>
+            </CardItem>
+          ))}
+          <CardItem style={mainStyles.submitBtnCard}>
+            <Button
+              onPress={this._onSubmit}
+              block
+              disabled={!teamId}
+              warning>
+              <Text>Submit</Text>
+            </Button>
           </CardItem>
-        ))}
-        <CardItem style={mainStyles.submitBtnCard}>
-          <Button
-            onPress={this._onSubmit}
-            block
-            warning>
-            <Text>Submit</Text>
-          </Button>
-        </CardItem>
-      </Card>
+        </Card>
+      </View>
     )
   }
 }
 
 HighSchool.propTypes = {
+  adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminHS: PropTypes.instanceOf(Immutable.Map),
   setHsData: PropTypes.func,
   setSpinner: PropTypes.func,
@@ -99,7 +109,8 @@ HighSchool.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  adminHS: state.adminHS
+  adminHS: state.adminHS,
+  adminTeam: state.adminTeam
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

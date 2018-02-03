@@ -10,6 +10,7 @@ import mainStyles from '../../../styles/index'
 import styles from './styles'
 import * as actions from './action'
 import * as messages from '../../../messages/index'
+import * as config from '../../../config/index'
 import * as utils from './utils'
 
 class Team extends Component {
@@ -33,18 +34,14 @@ class Team extends Component {
   }
 
   _onSuccess () {
+    Toast.show(config.TOAST_SUCCESS)
     this.props.resetTeamData()
     // this.props.setSpinner()
   }
 
   _onError (error) {
     // this.props.setSpinner()
-    Toast.show({
-      text: error.message,
-      position: 'bottom',
-      duration: 3000,
-      type: 'danger'
-    })
+    Toast.show(config.TOAST_ERROR(error))
   }
 
   _onInputChange (val, i) {

@@ -3,14 +3,16 @@ import PropTypes from 'prop-types'
 import {Alert, Image} from 'react-native'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-base'
+import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
 import styles from './styles'
 import * as actions from './action'
 import * as messages from '../../../messages/index'
+import * as config from '../../../config/index'
 import * as utils from './utils'
+import NoTeam from '../../../components/NoTeam/index'
 
 class Staff extends Component {
   async _onPickImage () {
@@ -32,19 +34,19 @@ class Staff extends Component {
     if (isAdding !== _isAdding && !isAdding) this._onSuccess()
   }
 
+  _focusNext (nextField) {
+    this[nextField]._root.focus()
+  }
+
   _onSuccess () {
+    Toast.show(config.TOAST_SUCCESS)
     this.props.resetStaffData()
     // this.props.setSpinner()
   }
 
   _onError (error) {
     // this.props.setSpinner()
-    Toast.show({
-      text: error.message,
-      position: 'bottom',
-      duration: 3000,
-      type: 'danger'
-    })
+    Toast.show(config.TOAST_ERROR(error))
   }
 
   _onInputChange (val, i) {
@@ -73,50 +75,58 @@ class Staff extends Component {
   }
 
   render () {
-    const {adminStaff} = this.props
+    const {adminStaff, adminTeam} = this.props
     const model = adminStaff.get('model')
     const image = adminStaff.get('image')
+    const teamId = adminTeam.get('id')
     return (
-      <Card>
-        <CardItem>
-          <Button
-            onPress={this._onPickImage}
-            block
-            transparent>
-            <Text>Select Staff Image</Text>
-          </Button>
-        </CardItem>
-        {image !== 'empty' && (
-          <CardItem style={mainStyles.alignItemsCenter}>
-            <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      <View>
+        {!teamId && (<NoTeam />)}
+        <Card>
+          <CardItem>
+            <Button
+              onPress={this._onPickImage}
+              block
+              transparent>
+              <Text>Select Staff Image</Text>
+            </Button>
           </CardItem>
-        )}
-        {model.map((item, i) => (
-          <CardItem key={i}>
-            <Item floatingLabel>
-              <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
-              <Input
-                value={item.get('value')}
-                returnKeyType={item.get('returnKeyType')}
-                onSubmitEditing={() => this._focusNext(item.get('nextId'))}
-                onChangeText={val => this._onInputChange(val, i)} />
-            </Item>
+          {image !== 'empty' && (
+            <CardItem style={mainStyles.alignItemsCenter}>
+              <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+            </CardItem>
+          )}
+          {model.map((item, i) => (
+            <CardItem key={i}>
+              <Item floatingLabel>
+                <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
+                <Input
+                  disabled={!teamId}
+                  getRef={ref => { this[item.get('id')] = ref }}
+                  value={item.get('value')}
+                  returnKeyType={item.get('returnKeyType')}
+                  onSubmitEditing={() => this._focusNext(item.get('nextId'))}
+                  onChangeText={val => this._onInputChange(val, i)} />
+              </Item>
+            </CardItem>
+          ))}
+          <CardItem style={mainStyles.submitBtnCard}>
+            <Button
+              onPress={this._onSubmit}
+              block
+              disabled={!teamId}
+              warning>
+              <Text>Submit</Text>
+            </Button>
           </CardItem>
-        ))}
-        <CardItem style={mainStyles.submitBtnCard}>
-          <Button
-            onPress={this._onSubmit}
-            block
-            warning>
-            <Text>Submit</Text>
-          </Button>
-        </CardItem>
-      </Card>
+        </Card>
+      </View>
     )
   }
 }
 
 Staff.propTypes = {
+  adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminStaff: PropTypes.instanceOf(Immutable.Map),
   setStaffData: PropTypes.func,
   setSpinner: PropTypes.func,
@@ -126,7 +136,8 @@ Staff.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  adminStaff: state.adminStaff
+  adminStaff: state.adminStaff,
+  adminTeam: state.adminTeam
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -33,6 +33,12 @@ class Coach extends Component {
   }
 
   _onSuccess () {
+    Toast.show({
+      text: 'Success',
+      position: 'bottom',
+      duration: 3000,
+      type: 'success'
+    })
     this.props.resetCoachData()
     // this.props.setSpinner()
   }

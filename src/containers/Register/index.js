@@ -9,7 +9,8 @@ import styles from './styles'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
 import {setSpinner} from '../../modules/Spinner/action'
-import * as messages from '../../messages'
+import * as messages from '../../messages/index'
+import * as config from '../../config/index'
 import CustomSpinner from '../../components/Spinner'
 const logo = require('../../../assets/basketball-logo.png')
 
@@ -31,16 +32,11 @@ class Register extends Component {
 
   _onError (error) {
     this.props.setSpinner()
-    Toast.show({
-      text: error.message,
-      position: 'bottom',
-      duration: 3000,
-      type: 'danger'
-    })
+    Toast.show(config.TOAST_ERROR(error))
   }
 
   _focusNext (nextField) {
-    this.refs[nextField]._root.focus()
+    this[nextField]._root.focus()
   }
 
   _onSubmit () {
@@ -73,12 +69,7 @@ class Register extends Component {
   }
 
   _success () {
-    Toast.show({
-      text: 'Success',
-      position: 'bottom',
-      duration: 3000,
-      type: 'success'
-    })
+    Toast.show(config.TOAST_SUCCESS)
     this.props.navigation.goBack()
     this.props.setSpinner()
   }
@@ -110,6 +101,7 @@ class Register extends Component {
                   <Item floatingLabel last>
                     <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                     <Input
+                      getRef={ref => { this[item.get('id')] = ref }}
                       secureTextEntry={item.get('password') && item.get('confirmPassword')}
                       value={item.get('value')}
                       returnKeyType={item.get('returnKeyType')}
