@@ -26,11 +26,4 @@ export const INPUT_FIELDS = [{
   keyboardType: 'default',
   nextId: '',
   returnKeyType: 'go'
-}, {
-  label: 'Team Name',
-  value: '',
-  id: 'teamName',
-  keyboardType: 'default',
-  nextId: '',
-  returnKeyType: 'go'
 }]

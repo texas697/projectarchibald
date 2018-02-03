@@ -5,20 +5,19 @@ import * as utils from '../../../utils/index'
 import * as types from '../../../types/index'
 import * as actions from './action'
 import {firebaseApp} from '../../../redux/store'
+import {PATH_PLAYER} from './config'
 
-const PATH = 'player'
+const _post = model => firebaseApp.database().ref().child(`${PATH_PLAYER}/${model.id}`).update(model)
 
-const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.id}`).update(model)
-
-const _delete = id => firebaseApp.database().ref().child(`${PATH}/${id}`).set(null)
+const _delete = id => firebaseApp.database().ref().child(`${PATH_PLAYER}/${id}`).set(null)
 
 const createChannel = () => {
   const listener = eventChannel(
     emit => {
-      firebaseApp.database().ref(`${PATH}`).on('value', snapshot => {
+      firebaseApp.database().ref(`${PATH_PLAYER}`).on('value', snapshot => {
         emit(snapshot.val() || {})
       })
-      return () => firebaseApp.database().ref(`${PATH}`).off(listener)
+      return () => firebaseApp.database().ref(`${PATH_PLAYER}`).off(listener)
     }
   )
   return listener

@@ -6,14 +6,7 @@ import {firebaseApp} from '../../redux/store'
 
 const PATH = 'teams'
 
-const _post = model => {
-  const newKey = firebaseApp.database().ref().child(PATH).push().key
-
-  const updates = {}
-  updates[`/${PATH}/${newKey}`] = model
-
-  return firebaseApp.database().ref().update(updates)
-}
+const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.id}`).update(model)
 
 const createChannel = uid => {
   const listener = eventChannel(

@@ -20,7 +20,9 @@ export const buildOptions = data => {
 
 export const updateProfile = (user, name, isCoach) => {
   user.updateProfile({displayName: name})
-    .then(() => store.dispatch(resetRegisterUserRequest()))
+    .then(() => {
+      store.dispatch(resetRegisterUserRequest())
+    })
     .catch(error => console.log(error))
   store.dispatch(addRolesRequest({uid: user.uid, isCoach: isCoach}))
 }
@@ -46,3 +48,4 @@ export const fetchTeamData = (uid) => {
 }
 
 export const fieldsRequired = () => Alert.alert(messages.ALL_FIELDS_REQUIRED.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false })
+export const passNoMatch = () => Alert.alert(messages.PASS_NO_MATCH.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false })

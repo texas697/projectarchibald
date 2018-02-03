@@ -6,6 +6,7 @@ export const INIT_STATE = {
   model: Immutable.fromJS(INPUT_FIELDS),
   data: Immutable.fromJS([]),
   options: Immutable.fromJS([]),
+  team: Immutable.fromJS({}),
   image: 'empty',
   id: '',
   isFetching: false,
@@ -18,6 +19,20 @@ const initialState = Immutable.Map(INIT_STATE)
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case types.TEAM_BY_ID_FETCH_REQUEST:
+      return state
+        .set('isFetching', true)
+
+    case types.TEAM_BY_ID_FETCH_SUCCESS:
+      return state
+        .set('isFetching', false)
+        .set('team', Immutable.fromJS(action.team))
+
+    case types.TEAM_BY_ID_FETCH_FAILURE:
+      return state
+        .set('isFetching', false)
+        .set('error', action.error)
+
     case types.TEAM_FETCH_REQUEST:
       return state
         .set('isFetching', true)

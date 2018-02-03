@@ -7,6 +7,27 @@ export const setHsData = model => {
   }
 }
 
+export const fetchHsByIdRequest = id => {
+  return {
+    type: types.HS_BY_ID_FETCH_REQUEST,
+    id
+  }
+}
+
+export const fetchHsByIdSuccess = hs => {
+  return {
+    type: types.HS_BY_ID_FETCH_SUCCESS,
+    hs
+  }
+}
+
+export const fetchHsByIdFailure = error => {
+  return {
+    type: types.HS_BY_ID_FETCH_FAILURE,
+    error
+  }
+}
+
 export const fetchHsRequest = model => {
   return {
     type: types.HS_FETCH_REQUEST,

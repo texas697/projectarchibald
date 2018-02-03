@@ -21,6 +21,27 @@ export const fetchTeamsFailure = error => {
   }
 }
 
+export const fetchTeamsByIdRequest = id => {
+  return {
+    type: types.TEAMS_BY_ID_FETCH_REQUEST,
+    id
+  }
+}
+
+export const fetchTeamsByIdSuccess = teams => {
+  return {
+    type: types.TEAMS_BY_ID_FETCH_SUCCESS,
+    teams
+  }
+}
+
+export const fetchTeamsByIdFailure = error => {
+  return {
+    type: types.TEAMS_BY_ID_FETCH_FAILURE,
+    error
+  }
+}
+
 export const addTeamsRequest = model => {
   return {
     type: types.TEAMS_ADD_REQUEST,

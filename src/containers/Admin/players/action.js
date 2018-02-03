@@ -14,6 +14,27 @@ export const setPlayerImage = image => {
   }
 }
 
+export const fetchPlayerByIdRequest = id => {
+  return {
+    type: types.PLAYER_BY_ID_FETCH_REQUEST,
+    id
+  }
+}
+
+export const fetchPlayerByIdSuccess = player => {
+  return {
+    type: types.PLAYER_BY_ID_FETCH_SUCCESS,
+    player
+  }
+}
+
+export const fetchPlayerByIdFailure = error => {
+  return {
+    type: types.PLAYER_BY_ID_FETCH_FAILURE,
+    error
+  }
+}
+
 export const fetchPlayerRequest = model => {
   return {
     type: types.PLAYER_FETCH_REQUEST,

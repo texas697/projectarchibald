@@ -14,6 +14,27 @@ export const setTeamImage = image => {
   }
 }
 
+export const fetchTeamByIdRequest = id => {
+  return {
+    type: types.TEAM_BY_ID_FETCH_REQUEST,
+    id
+  }
+}
+
+export const fetchTeamByIdSuccess = team => {
+  return {
+    type: types.TEAM_BY_ID_FETCH_SUCCESS,
+    team
+  }
+}
+
+export const fetchTeamByIdFailure = error => {
+  return {
+    type: types.TEAM_BY_ID_FETCH_FAILURE,
+    error
+  }
+}
+
 export const fetchTeamRequest = model => {
   return {
     type: types.TEAM_FETCH_REQUEST,

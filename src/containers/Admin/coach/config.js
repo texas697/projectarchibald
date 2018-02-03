@@ -20,3 +20,5 @@ export const INPUT_FIELDS = [{
   nextId: '',
   returnKeyType: 'go'
 }]
+
+export const PATH_COACH = 'coach'

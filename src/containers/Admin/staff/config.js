@@ -12,3 +12,5 @@ export const INPUT_FIELDS = [{
   keyboardType: 'default',
   returnKeyType: 'go'
 }]
+
+export const PATH_STAFF = 'staff'

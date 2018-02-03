@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
-import {Alert, Image, KeyboardAvoidingView} from 'react-native'
+import {Image, KeyboardAvoidingView} from 'react-native'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import {Container, Content, Input, Icon, Button, Item, Label, Toast, Header, Left, Title, Body, Right, Text, CardItem, Card, CheckBox, Radio, List} from 'native-base'
@@ -9,9 +9,13 @@ import * as utils from '../../utils/index'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
 import {setSpinner} from '../../modules/Spinner/action'
-import * as messages from '../../messages/index'
 import * as config from '../../config/index'
 import CustomSpinner from '../../components/Spinner'
+import TeamCard from '../Admin/team/components/team-card'
+import * as localUtils from './utils'
+import {addTeamRequest, setTeamId} from '../Admin/team/action'
+import * as teamUtils from '../Admin/team/utils'
+
 const logo = require('../../../assets/basketball-logo.png')
 
 class Register extends Component {
@@ -40,24 +44,26 @@ class Register extends Component {
   }
 
   _onSubmit () {
-    const {register} = this.props
+    const {register, adminTeam} = this.props
     const isCoach = register.get('isCoach')
-    let model = register.get('model')
-    if (!isCoach) model = model.filter(item => item.get('id') !== 'teamName')
+    const model = register.get('model')
+
+    const _passCheck = model.get('password') === model.get('confirmPassword')
     const _check = model.find(item => !item.get('value'))
-    if (_check) {
-      utils.fieldsRequired()
-      return false
-    }
-    if (model.get('password') !== model.get('confirmPassword')) {
-      Alert.alert('Passwords', 'Do not Match!', [{text: 'OK', onPress: () => console.log('OK Pressed')}])
-    } else {
+    if (_check && _passCheck) utils.fieldsRequired()
+    else if (_check && !_passCheck) utils.passNoMatch()
+    else {
       this.props.setSpinner()
-      const email = register.getIn(['model', 1, 'value'])
-      const password = register.getIn(['model', 2, 'value'])
-      const name = register.getIn(['model', 0, 'value'])
-      const credentials = {email, password}
-      this.props.registerUserRequest(credentials, name)
+      const _model = localUtils.buildmodel(model)
+      const credentials = {email: _model.email, password: _model.password}
+      this.props.registerUserRequest(credentials, _model.name)
+      if (isCoach) {
+        const _image = adminTeam.get('image')
+        let _modelTeam = adminTeam.get('model')
+        _modelTeam = teamUtils.buildModel(_modelTeam, _image)
+        this.props.setTeamId(_modelTeam.id)
+        this.props.addTeamRequest(_modelTeam)
+      }
     }
   }
 
@@ -77,8 +83,7 @@ class Register extends Component {
   render () {
     const {register} = this.props
     const isCoach = register.get('isCoach')
-    let model = register.get('model')
-    if (!isCoach) model = model.butLast()
+    const model = register.get('model')
     return (
       <Container style={mainStyles.container}>
         <Header style={{marginBottom: -15}}>
@@ -110,6 +115,7 @@ class Register extends Component {
                   </Item>
                 </CardItem>
               ))}
+              {isCoach && (<TeamCard />)}
               <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
               <CardItem>
                 <Left>
@@ -142,19 +148,25 @@ Register.propTypes = {
   registerUserRequest: PropTypes.func,
   setIsCoach: PropTypes.func,
   setSpinner: PropTypes.func,
+  setTeamId: PropTypes.func,
+  addTeamRequest: PropTypes.func,
   navigation: PropTypes.object,
-  register: PropTypes.instanceOf(Immutable.Map)
+  register: PropTypes.instanceOf(Immutable.Map),
+  adminTeam: PropTypes.instanceOf(Immutable.Map)
 }
 
 const mapStateToProps = state => ({
-  register: state.register
+  register: state.register,
+  adminTeam: state.adminTeam
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   registerUserRequest: (credentials, name) => actions.registerUserRequest(credentials, name),
   setSpinner: () => setSpinner(),
   setRegisterData: model => actions.setRegisterData(model),
-  setIsCoach: () => actions.setIsCoach()
+  addTeamRequest: model => addTeamRequest(model),
+  setIsCoach: () => actions.setIsCoach(),
+  setTeamId: id => setTeamId(id)
 }, dispatch)
 
 export default connect(

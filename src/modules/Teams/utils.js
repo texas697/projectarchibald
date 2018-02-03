@@ -1,6 +1,13 @@
 import {firebaseApp} from '../../redux/store'
 
-const _fetchStaff = teamId => firebaseApp.database().ref(`/team-staff/${teamId}`).once('value').then(snapshot => Object.values(snapshot.val()))
+const _fetchStaff = teamId => {
+  return firebaseApp.database().ref(`staff`)
+    .orderByChild('teamId').equalTo(teamId)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return Object.values(snapshot.val())
+      else return {}
+    })
+}
 const _fetchPlayers = teamId => firebaseApp.database().ref(`/team-players/${teamId}`).once('value').then(snapshot => Object.values(snapshot.val()))
 
 export const buildModel = (state) => {

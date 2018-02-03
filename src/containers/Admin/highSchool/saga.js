@@ -5,19 +5,18 @@ import * as utils from '../../../utils/index'
 import * as types from '../../../types/index'
 import * as actions from './action'
 import {firebaseApp} from '../../../redux/store'
+import {PATH_HS} from './config'
 
-const PATH = 'highschool'
-
-const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.id}`).update(model)
-const _delete = id => firebaseApp.database().ref().child(`${PATH}/${id}`).set(null)
+const _post = model => firebaseApp.database().ref().child(`${PATH_HS}/${model.id}`).update(model)
+const _delete = id => firebaseApp.database().ref().child(`${PATH_HS}/${id}`).set(null)
 
 const createChannel = () => {
   const listener = eventChannel(
     emit => {
-      firebaseApp.database().ref(`${PATH}`).on('value', snapshot => {
+      firebaseApp.database().ref(`${PATH_HS}`).on('value', snapshot => {
         emit(snapshot.val() || {})
       })
-      return () => firebaseApp.database().ref(`${PATH}`).off(listener)
+      return () => firebaseApp.database().ref(`${PATH_HS}`).off(listener)
     }
   )
   return listener

@@ -14,6 +14,27 @@ export const setCoachImage = image => {
   }
 }
 
+export const fetchCoachByIdRequest = id => {
+  return {
+    type: types.COACH_BY_ID_FETCH_REQUEST,
+    id
+  }
+}
+
+export const fetchCoachByIdSuccess = coach => {
+  return {
+    type: types.COACH_BY_ID_FETCH_SUCCESS,
+    coach
+  }
+}
+
+export const fetchCoachByIdFailure = error => {
+  return {
+    type: types.COACH_BY_ID_FETCH_FAILURE,
+    error
+  }
+}
+
 export const fetchCoachRequest = model => {
   return {
     type: types.COACH_FETCH_REQUEST,

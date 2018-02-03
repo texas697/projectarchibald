@@ -2,7 +2,6 @@ import React from 'react'
 import { Root } from 'native-base'
 import { StackNavigator, DrawerNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
-
 import Admin from './containers/Admin/index'
 import Login from './containers/Login/index'
 import Register from './containers/Register/index'
@@ -12,9 +11,7 @@ import Team from './containers/Team/index'
 import Filters from './containers/Filters/index'
 import SideBar from './containers/Sidebar/index'
 import store, {firebaseApp} from './redux/store'
-import {resetRegisterUserRequest} from './containers/Register/action'
 import {loginSuccess, logoutSuccess} from './containers/Login/action'
-import {addRolesRequest} from './modules/Roles/action'
 import * as utils from './utils/index'
 
 const Drawer = DrawerNavigator(
@@ -66,7 +63,6 @@ firebaseApp.auth().onAuthStateChanged(data => {
     const _user = firebaseApp.auth().currentUser
 
     if (_name) utils.updateProfile(_user, _name, _isCoach)
-    if (_isCoach) utils.fetchTeamData(_user.uid)
 
     const user = {name: _user.displayName || _name, email: _user.email, uid: _user.uid}
     store.dispatch(loginSuccess(user))

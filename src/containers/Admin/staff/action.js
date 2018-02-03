@@ -14,6 +14,27 @@ export const setStaffImage = image => {
   }
 }
 
+export const fetchStaffByIdRequest = id => {
+  return {
+    type: types.STAFF_BY_ID_FETCH_REQUEST,
+    id
+  }
+}
+
+export const fetchStaffByIdSuccess = staff => {
+  return {
+    type: types.STAFF_BY_ID_FETCH_SUCCESS,
+    staff
+  }
+}
+
+export const fetchStaffByIdFailure = error => {
+  return {
+    type: types.STAFF_BY_ID_FETCH_FAILURE,
+    error
+  }
+}
+
 export const fetchStaffRequest = model => {
   return {
     type: types.STAFF_FETCH_REQUEST,
