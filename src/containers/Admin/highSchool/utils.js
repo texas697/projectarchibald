@@ -1,6 +1,6 @@
 import uuid from 'uuid'
 import firebaseTime from 'firebase'
-import store, {firebaseApp} from '../../../redux/store'
+import store from '../../../redux/store'
 import {INPUT_FIELDS} from './config'
 import * as actions from './action'
 
@@ -13,11 +13,7 @@ export const buildModel = model => {
   }
 }
 
-const _fetchHs = id => firebaseApp.database().ref(`highschool`).orderByChild('id').equalTo(id).once('value').then(snapshot => Object.values(snapshot.val()))
-
-export const setHsData = teamData => {
-  _fetchHs(teamData.hsId).then(result => {
-    INPUT_FIELDS[0].value = result.name
-    store.dispatch(actions.setHsData(INPUT_FIELDS))
-  })
+export const setHsData = hs => {
+  INPUT_FIELDS[0].value = hs.name
+  store.dispatch(actions.setHsData(INPUT_FIELDS))
 }

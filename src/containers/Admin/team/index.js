@@ -25,12 +25,16 @@ class Team extends Component {
 
   componentDidUpdate (prevProps) {
     const {adminTeam} = this.props
+    const isFetching = adminTeam.get('isFetching')
+    const _isFetching = prevProps.adminTeam.get('isFetching')
     const isAdding = adminTeam.get('isAdding')
     const _isAdding = prevProps.adminTeam.get('isAdding')
     const error = adminTeam.get('error')
     const _error = prevProps.adminTeam.get('error')
     if (error !== _error) Toast.show(config.TOAST_ERROR(error))
     if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    const team = adminTeam.get('team')
+    if (isFetching !== _isFetching && !isFetching) utils.setTeamData(team)
   }
 
   _onSubmit () {

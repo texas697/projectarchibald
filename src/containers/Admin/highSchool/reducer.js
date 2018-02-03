@@ -74,7 +74,7 @@ export default (state = initialState, action) => {
 
     case types.SET_HS_DATA:
       return state
-        .set('model', action.model)
+        .set('model', Immutable.fromJS(action.model))
 
     case types.RESET_HS_DATA:
       return state

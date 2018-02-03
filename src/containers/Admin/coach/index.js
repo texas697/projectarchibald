@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Alert, Image} from 'react-native'
+import {Image} from 'react-native'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
-import styles from './styles'
 import * as actions from './action'
-import * as messages from '../../../messages/index'
 import * as utils from './utils'
+import * as config from '../../../config/index'
+import * as mainUtils from '../../../utils/index'
 
 class Coach extends Component {
   constructor (props) {
@@ -27,22 +27,16 @@ class Coach extends Component {
 
   componentDidUpdate (prevProps) {
     const {adminCoach} = this.props
+    const isFetching = adminCoach.get('isFetching')
+    const _isFetching = prevProps.adminCoach.get('isFetching')
     const isAdding = adminCoach.get('isAdding')
     const _isAdding = prevProps.adminCoach.get('isAdding')
     const error = adminCoach.get('error')
     const _error = prevProps.adminCoach.get('error')
-    if (error !== _error) this._onError(error)
-    if (isAdding !== _isAdding && !isAdding) this._onSuccess()
-  }
-
-  _onSuccess () {
-    Toast.show({text: 'Success', position: 'bottom', duration: 3000, type: 'success'})
-    // this.props.setSpinner()
-  }
-
-  _onError (error) {
-    // this.props.setSpinner()
-    Toast.show({text: error.message, position: 'bottom', duration: 3000, type: 'danger'})
+    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
+    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    const coach = adminCoach.get('coach')
+    if (isFetching !== _isFetching && !isFetching) utils.setCoachData(coach)
   }
 
   _onInputChange (val, i) {
@@ -57,14 +51,8 @@ class Coach extends Component {
     const model = adminCoach.get('model')
     const image = adminCoach.get('image')
     const _check = model.find(item => !item.get('value'))
-    if (_check) {
-      Alert.alert(
-        messages.ALL_FIELDS_REQUIRED.title,
-        messages.ALL_FIELDS_REQUIRED.body,
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
-      )
-    } else {
-      // this.props.setSpinner()
+    if (_check) mainUtils.fieldsRequired()
+    else {
       const _model = utils.buildModel(model, image)
       this.props.addCoachRequest(_model)
     }

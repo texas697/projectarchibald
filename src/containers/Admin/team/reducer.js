@@ -76,7 +76,7 @@ export default (state = initialState, action) => {
 
     case types.SET_TEAM_DATA:
       return state
-        .set('model', action.model)
+        .set('model', Immutable.fromJS(action.model))
 
     case types.SET_TEAM_IMAGE:
       return state

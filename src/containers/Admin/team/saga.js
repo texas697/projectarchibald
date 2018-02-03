@@ -66,7 +66,7 @@ function * _fetchRequest () {
 function * _fetchByIdRequest (action) {
   try {
     const res = yield call(_fetchById, action.id)
-    yield put(actions.fetchTeamByIdSuccess(res))
+    yield put(actions.fetchTeamByIdSuccess(res[0]))
   } catch (error) {
     yield put(actions.fetchTeamByIdFailure(error))
   }

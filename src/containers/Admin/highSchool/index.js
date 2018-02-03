@@ -19,19 +19,23 @@ class HighSchool extends Component {
   }
 
   componentDidMount () {
-    const {adminHS} = this.props
-    const id = adminHS.get('id')
-    this.props.fetchHsByIdRequest(id)
+    // const {adminHS} = this.props
+    // const id = adminHS.get('id')
+    // this.props.fetchHsByIdRequest(id)
   }
 
   componentDidUpdate (prevProps) {
     const {adminHS} = this.props
+    const isFetching = adminHS.get('isFetching')
+    const _isFetching = prevProps.adminHS.get('isFetching')
     const isAdding = adminHS.get('isAdding')
     const _isAdding = prevProps.adminHS.get('isAdding')
     const error = adminHS.get('error')
     const _error = prevProps.adminHS.get('error')
     if (error !== _error) Toast.show(config.TOAST_ERROR(error))
     if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    const hs = adminHS.get('hs')
+    if (isFetching !== _isFetching && !isFetching) utils.setHsData(hs)
   }
 
   _onInputChange (val, i) {
