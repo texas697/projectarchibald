@@ -11,6 +11,14 @@ const _post = model => firebaseApp.database().ref().child(`${PATH_PLAYER}/${mode
 
 const _delete = id => firebaseApp.database().ref().child(`${PATH_PLAYER}/${id}`).set(null)
 
+const _fetchById = id => {
+  return firebaseApp.database().ref(`${PATH_PLAYER}/${id}`)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return Object.values(snapshot.val())
+      else return {}
+    })
+}
+
 const createChannel = () => {
   const listener = eventChannel(
     emit => {
@@ -49,6 +57,15 @@ function * _fetchRequest () {
   }
 }
 
+function * _fetchByIdRequest (action) {
+  try {
+    const res = yield call(_fetchById, action.id)
+    yield put(actions.fetchPlayerByIdSuccess(res))
+  } catch (error) {
+    yield put(actions.fetchPlayerByIdFailure(error))
+  }
+}
+
 function * _deleteRequest (action) {
   try {
     const res = yield call(_delete, action.id)
@@ -62,4 +79,5 @@ export default function * () {
   yield takeEvery(types.PLAYER_ADD_REQUEST, _addRequest)
   yield takeEvery(types.PLAYER_FETCH_REQUEST, _fetchRequest)
   yield takeEvery(types.PLAYER_DELETE_REQUEST, _deleteRequest)
+  yield takeEvery(types.PLAYER_BY_ID_FETCH_REQUEST, _fetchByIdRequest)
 }

@@ -10,6 +10,14 @@ import {PATH_COACH} from './config'
 const _post = model => firebaseApp.database().ref().child(`${PATH_COACH}/${model.id}`).update(model)
 const _delete = id => firebaseApp.database().ref().child(`${PATH_COACH}/${id}`).set(null)
 
+const _fetchById = id => {
+  return firebaseApp.database().ref(`${PATH_COACH}/${id}`)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return Object.values(snapshot.val())
+      else return {}
+    })
+}
+
 const createChannel = () => {
   const listener = eventChannel(
     emit => {
@@ -48,6 +56,15 @@ function * _fetchRequest () {
   }
 }
 
+function * _fetchByIdRequest (action) {
+  try {
+    const res = yield call(_fetchById, action.id)
+    yield put(actions.fetchCoachByIdSuccess(res))
+  } catch (error) {
+    yield put(actions.fetchCoachByIdFailure(error))
+  }
+}
+
 function * _deleteRequest (action) {
   try {
     const res = yield call(_delete, action.id)
@@ -61,4 +78,5 @@ export default function * () {
   yield takeEvery(types.COACH_ADD_REQUEST, _addRequest)
   yield takeEvery(types.COACH_FETCH_REQUEST, _fetchRequest)
   yield takeEvery(types.COACH_DELETE_REQUEST, _deleteRequest)
+  yield takeEvery(types.COACH_BY_ID_FETCH_REQUEST, _fetchByIdRequest)
 }

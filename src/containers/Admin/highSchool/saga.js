@@ -10,6 +10,14 @@ import {PATH_HS} from './config'
 const _post = model => firebaseApp.database().ref().child(`${PATH_HS}/${model.id}`).update(model)
 const _delete = id => firebaseApp.database().ref().child(`${PATH_HS}/${id}`).set(null)
 
+const _fetchById = id => {
+  return firebaseApp.database().ref(`${PATH_HS}/${id}`)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return Object.values(snapshot.val())
+      else return {}
+    })
+}
+
 const createChannel = () => {
   const listener = eventChannel(
     emit => {
@@ -48,6 +56,15 @@ function * _fetchRequest () {
   }
 }
 
+function * _fetchByIdRequest (action) {
+  try {
+    const res = yield call(_fetchById, action.id)
+    yield put(actions.fetchHsByIdSuccess(res))
+  } catch (error) {
+    yield put(actions.fetchHsByIdFailure(error))
+  }
+}
+
 function * _deleteRequest (action) {
   try {
     const res = yield call(_delete, action.id)
@@ -61,4 +78,5 @@ export default function * () {
   yield takeEvery(types.HS_ADD_REQUEST, _addRequest)
   yield takeEvery(types.HS_FETCH_REQUEST, _fetchRequest)
   yield takeEvery(types.HS_DELETE_REQUEST, _deleteRequest)
+  yield takeEvery(types.HS_BY_ID_FETCH_REQUEST, _fetchByIdRequest)
 }

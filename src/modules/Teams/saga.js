@@ -8,6 +8,14 @@ const PATH = 'teams'
 
 const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.id}`).update(model)
 
+const _fetchById = id => {
+  return firebaseApp.database().ref(`${PATH}/${id}`)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return Object.values(snapshot.val())
+      else return {}
+    })
+}
+
 const createChannel = uid => {
   const listener = eventChannel(
     emit => {
@@ -42,7 +50,17 @@ function * _fetchRequest (action) {
   }
 }
 
+function * _fetchByIdRequest (action) {
+  try {
+    const res = yield call(_fetchById, action.id)
+    yield put(actions.fetchTeamsByIdSuccess(res))
+  } catch (error) {
+    yield put(actions.fetchTeamsByIdFailure(error))
+  }
+}
+
 export default function * () {
   yield takeEvery(types.TEAMS_ADD_REQUEST, _addRequest)
   yield takeEvery(types.TEAMS_FETCH_REQUEST, _fetchRequest)
+  yield takeEvery(types.TEAMS_BY_ID_FETCH_REQUEST, _fetchByIdRequest)
 }

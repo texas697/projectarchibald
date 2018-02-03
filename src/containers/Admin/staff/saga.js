@@ -11,6 +11,14 @@ const _post = model => firebaseApp.database().ref().child(`${PATH_STAFF}/${model
 
 const _delete = id => firebaseApp.database().ref().child(`${PATH_STAFF}/${id}`).set(null)
 
+const _fetchById = id => {
+  return firebaseApp.database().ref(`${PATH_STAFF}/${id}`)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return Object.values(snapshot.val())
+      else return {}
+    })
+}
+
 const createChannel = () => {
   const listener = eventChannel(
     emit => {
@@ -49,6 +57,15 @@ function * _fetchRequest () {
   }
 }
 
+function * _fetchByIdRequest (action) {
+  try {
+    const res = yield call(_fetchById, action.id)
+    yield put(actions.fetchStaffByIdSuccess(res))
+  } catch (error) {
+    yield put(actions.fetchStaffByIdFailure(error))
+  }
+}
+
 function * _deleteRequest (action) {
   try {
     const res = yield call(_delete, action.id)
@@ -62,4 +79,5 @@ export default function * () {
   yield takeEvery(types.STAFF_ADD_REQUEST, _addRequest)
   yield takeEvery(types.STAFF_FETCH_REQUEST, _fetchRequest)
   yield takeEvery(types.STAFF_DELETE_REQUEST, _deleteRequest)
+  yield takeEvery(types.STAFF_BY_ID_FETCH_REQUEST, _fetchByIdRequest)
 }
