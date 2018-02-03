@@ -11,7 +11,7 @@ export const buildModel = model => {
   }
 }
 
-const _fetchHs = id => firebaseApp.database().ref(`/highschool`).orderByChild('id').equalTo(id).once('value').then(snapshot => Object.values(snapshot.val()))
+const _fetchHs = id => firebaseApp.database().ref(`highschool`).orderByChild('id').equalTo(id).once('value').then(snapshot => Object.values(snapshot.val()))
 
 export const setHsData = teamData => {
   _fetchHs(teamData.hsId).then(result => {

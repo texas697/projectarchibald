@@ -18,6 +18,8 @@ export const TOAST_ERROR = error => {
   return {text: error.message, position: 'bottom', duration: 3000, type: 'danger'}
 }
 
+export const IMAGE_64 = base64String => `data:image/jpg;base64,${base64String}`
+
 export const FILTERS = {
   status: [
     {value: 'active', label: 'North'},

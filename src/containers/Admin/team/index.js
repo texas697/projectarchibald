@@ -7,20 +7,22 @@ import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
-import styles from './styles'
 import * as actions from './action'
 import * as messages from '../../../messages/index'
 import * as config from '../../../config/index'
 import * as utils from './utils'
 
 class Team extends Component {
+  constructor (props) {
+    super(props)
+    this._onSubmit = this._onSubmit.bind(this)
+    this._onInputChange = this._onInputChange.bind(this)
+    this._onPickImage = this._onPickImage.bind(this)
+  }
+
   async _onPickImage () {
     let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
     if (!result.cancelled) this.props.setTeamImage(result.base64)
-  }
-
-  componentDidMount () {
-    this.props.resetTeamData()
   }
 
   componentDidUpdate (prevProps) {
@@ -29,19 +31,8 @@ class Team extends Component {
     const _isAdding = prevProps.adminTeam.get('isAdding')
     const error = adminTeam.get('error')
     const _error = prevProps.adminTeam.get('error')
-    if (error !== _error) this._onError(error)
-    if (isAdding !== _isAdding && !isAdding) this._onSuccess()
-  }
-
-  _onSuccess () {
-    Toast.show(config.TOAST_SUCCESS)
-    this.props.resetTeamData()
-    // this.props.setSpinner()
-  }
-
-  _onError (error) {
-    // this.props.setSpinner()
-    Toast.show(config.TOAST_ERROR(error))
+    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
+    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
   }
 
   _onInputChange (val, i) {
@@ -63,7 +54,6 @@ class Team extends Component {
         [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
       )
     } else {
-      // this.props.setSpinner()
       const _model = utils.buildModel(model, image)
       this.props.setTeamId(_model.id)
       this.props.addTeamRequest(_model)
@@ -86,7 +76,7 @@ class Team extends Component {
         </CardItem>
         {image !== 'empty' && (
           <CardItem style={mainStyles.alignItemsCenter}>
-            <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+            <Image source={{ uri: config.IMAGE_64(image) }} style={{ width: 200, height: 200 }} />
           </CardItem>
         )}
         {model.map((item, i) => (

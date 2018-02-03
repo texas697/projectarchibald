@@ -13,13 +13,16 @@ import * as messages from '../../../messages/index'
 import * as utils from './utils'
 
 class Coach extends Component {
+  constructor (props) {
+    super(props)
+    this._onSubmit = this._onSubmit.bind(this)
+    this._onInputChange = this._onInputChange.bind(this)
+    this._onPickImage = this._onPickImage.bind(this)
+  }
+
   async _onPickImage () {
     let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
     if (!result.cancelled) this.props.setCoachImage(result.base64)
-  }
-
-  componentDidMount () {
-    this.props.resetCoachData()
   }
 
   componentDidUpdate (prevProps) {
@@ -33,24 +36,13 @@ class Coach extends Component {
   }
 
   _onSuccess () {
-    Toast.show({
-      text: 'Success',
-      position: 'bottom',
-      duration: 3000,
-      type: 'success'
-    })
-    this.props.resetCoachData()
+    Toast.show({text: 'Success', position: 'bottom', duration: 3000, type: 'success'})
     // this.props.setSpinner()
   }
 
   _onError (error) {
     // this.props.setSpinner()
-    Toast.show({
-      text: error.message,
-      position: 'bottom',
-      duration: 3000,
-      type: 'danger'
-    })
+    Toast.show({text: error.message, position: 'bottom', duration: 3000, type: 'danger'})
   }
 
   _onInputChange (val, i) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
-import {Image, Dimensions, Alert, KeyboardAvoidingView} from 'react-native'
+import {Image, Dimensions, KeyboardAvoidingView} from 'react-native'
 import Modal from 'react-native-modal'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
@@ -9,23 +9,21 @@ import {Content, Text, Label, Input, Item, CardItem, Card, Button, Toast, Col} f
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
-import * as messages from '../../messages'
+import * as config from '../../config'
 import {setVisibleHeight, setVisibleWidth} from '../../modules/Dimensions/action'
 import {setSpinner} from '../../modules/Spinner/action'
 import CustomSpinner from '../../components/Spinner'
 import ContactUs from '../Contact/index'
 import ForgotPassword from '../ForgotPass/index'
+import * as utils from '../../utils/index'
+
 const logo = require('../../../assets/basketball-logo.png')
 
 class Login extends Component {
   constructor (props) {
     super(props)
     this._onSubmit = this._onSubmit.bind(this)
-    this._onRegister = this._onRegister.bind(this)
     this._focusNext = this._focusNext.bind(this)
-    this._onContactUs = this._onContactUs.bind(this)
-    this._onForgotPassword = this._onForgotPassword.bind(this)
-    this._onResetPassword = this._onResetPassword.bind(this)
     this.state = {
       resetEmail: '',
       email: 'texas697@gmail.com',
@@ -62,12 +60,7 @@ class Login extends Component {
 
   _onError (error) {
     this.props.setSpinner()
-    Toast.show({
-      text: error.message,
-      position: 'bottom',
-      duration: 3000,
-      type: 'danger'
-    })
+    Toast.show(config.TOAST_ERROR(error))
   }
 
   _goToHome () {
@@ -75,35 +68,14 @@ class Login extends Component {
     this.props.navigation.navigate('Home')
   }
 
-  _onRegister () {
-    this.props.navigation.navigate('Register')
-  }
-
-  _onContactUs () {
-    this.props.toggleContactUs()
-  }
-
   _focusNext (nextField) {
     this[nextField]._root.focus()
   }
 
-  _onForgotPassword () {
-    this.props.toggleForgotPass()
-  }
-
-  _onResetPassword () {
-    this.props.resetPasswordRequest(this.state.resetEmail)
-  }
-
   _onSubmit () {
     const { email, password } = this.state
-    if (!email || !password) {
-      Alert.alert(
-        messages.ALL_FIELDS_REQUIRED.title,
-        messages.ALL_FIELDS_REQUIRED.body,
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
-      )
-    } else {
+    if (!email || !password) utils.fieldsRequired()
+    else {
       const credentials = { email, password }
       this.props.loginRequest(credentials)
     }
@@ -116,10 +88,7 @@ class Login extends Component {
     const visibleModal = login.get('visibleModal')
     const visibleForgotModal = login.get('visibleForgotModal')
     return (
-      <KeyboardAvoidingView
-        style={mainStyles.container}
-        behavior='padding'
-      >
+      <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
         <Content>
           <Card>
             <CardItem>
@@ -157,18 +126,18 @@ class Login extends Component {
                 warning>
                 <Text>Login</Text>
               </Button>
-              <Button transparent style={styles.forgotBtn} onPress={this._onForgotPassword}>
+              <Button transparent style={styles.forgotBtn} onPress={() => this.props.toggleForgotPass()}>
                 <Text style={[styles.forgotFont]}>Forgot Password</Text>
               </Button>
             </CardItem>
             <CardItem transparent style={mainStyles.pt0}>
               <Col>
-                <Button transparent style={styles.contactBtn} onPress={this._onContactUs}>
+                <Button transparent style={styles.contactBtn} onPress={() => this.props.toggleContactUs()}>
                   <Text style={styles.smFont}>Contact Us</Text>
                 </Button>
               </Col>
               <Col>
-                <Button transparent style={styles.registerBtn} onPress={this._onRegister}>
+                <Button transparent style={styles.registerBtn} onPress={() => this.props.navigation.navigate('Register')}>
                   <Text style={styles.smFont}>Register</Text>
                 </Button>
               </Col>
@@ -179,23 +148,19 @@ class Login extends Component {
         <Modal
           swipeDirection={'right'}
           isVisible={visibleForgotModal}
-          onSwipe={this._onForgotPassword}
-          onBackdropPress={this._onForgotPassword}
-          onBackButtonPress={this._onForgotPassword}
+          onBackButtonPress={() => this.props.toggleForgotPass()}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}>
           <ForgotPassword
             {...this.state}
             onChange={resetEmail => this.setState({resetEmail})}
-            onSubmit={this._onResetPassword}
+            onSubmit={() => this.props.resetPasswordRequest(this.state.resetEmail)}
           />
         </Modal>
         <Modal
           swipeDirection={'right'}
           isVisible={visibleModal}
-          onSwipe={this._onContactUs}
-          onBackdropPress={this._onContactUs}
-          onBackButtonPress={this._onContactUs}
+          onBackButtonPress={() => this.props.toggleContactUs()}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}>
           <ContactUs />

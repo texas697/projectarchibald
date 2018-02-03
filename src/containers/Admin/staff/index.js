@@ -15,13 +15,16 @@ import * as utils from './utils'
 import NoTeam from '../../../components/NoTeam/index'
 
 class Staff extends Component {
+  constructor (props) {
+    super(props)
+    this._onSubmit = this._onSubmit.bind(this)
+    this._onInputChange = this._onInputChange.bind(this)
+    this._onPickImage = this._onPickImage.bind(this)
+  }
+
   async _onPickImage () {
     let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
     if (!result.cancelled) this.props.setStaffImage(result.base64)
-  }
-
-  componentDidMount () {
-    this.props.resetStaffData()
   }
 
   componentDidUpdate (prevProps) {
@@ -40,7 +43,6 @@ class Staff extends Component {
 
   _onSuccess () {
     Toast.show(config.TOAST_SUCCESS)
-    this.props.resetStaffData()
     // this.props.setSpinner()
   }
 

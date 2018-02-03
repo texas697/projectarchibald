@@ -1,4 +1,6 @@
 
+import {Alert} from 'react-native'
+import * as messages from '../messages/index'
 import store, {firebaseApp} from '../redux/store'
 import {resetRegisterUserRequest} from '../containers/Register/action'
 import {addRolesRequest} from '../modules/Roles/action'
@@ -23,12 +25,12 @@ export const updateProfile = (user, name, isCoach) => {
   store.dispatch(addRolesRequest({uid: user.uid, isCoach: isCoach}))
 }
 
-const _fetchTeamId = uid => firebaseApp.database().ref(`/user-team/${uid}`).once('value').then(snapshot => {
+const _fetchTeamId = uid => firebaseApp.database().ref(`user-team/${uid}`).once('value').then(snapshot => {
   if (snapshot.val()) return Object.values(snapshot.val())
   else return {}
 })
 
-const _fetchTeamData = id => firebaseApp.database().ref(`/teams`).orderByChild('teamId').equalTo(id).once('value').then(snapshot => Object.values(snapshot.val()))
+const _fetchTeamData = teamId => firebaseApp.database().ref(`teams`).orderByChild('teamId').equalTo(teamId).once('value').then(snapshot => Object.values(snapshot.val()))
 
 export const fetchTeamData = (uid) => {
   _fetchTeamId(uid).then(result => {
@@ -42,3 +44,5 @@ export const fetchTeamData = (uid) => {
     }
   })
 }
+
+export const fieldsRequired = () => Alert.alert(messages.ALL_FIELDS_REQUIRED.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false })

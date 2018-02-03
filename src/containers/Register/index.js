@@ -5,7 +5,7 @@ import {Alert, Image, KeyboardAvoidingView} from 'react-native'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import {Container, Content, Input, Icon, Button, Item, Label, Toast, Header, Left, Title, Body, Right, Text, CardItem, Card, CheckBox, Radio, List} from 'native-base'
-import styles from './styles'
+import * as utils from '../../utils/index'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
 import {setSpinner} from '../../modules/Spinner/action'
@@ -41,15 +41,15 @@ class Register extends Component {
 
   _onSubmit () {
     const {register} = this.props
-    const model = register.get('model')
+    const isCoach = register.get('isCoach')
+    let model = register.get('model')
+    if (!isCoach) model = model.filter(item => item.get('id') !== 'teamName')
     const _check = model.find(item => !item.get('value'))
     if (_check) {
-      Alert.alert(
-        messages.ALL_FIELDS_REQUIRED.title,
-        messages.ALL_FIELDS_REQUIRED.body,
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
-      )
-    } else if (model.get('password') !== model.get('confirmPassword')) {
+      utils.fieldsRequired()
+      return false
+    }
+    if (model.get('password') !== model.get('confirmPassword')) {
       Alert.alert('Passwords', 'Do not Match!', [{text: 'OK', onPress: () => console.log('OK Pressed')}])
     } else {
       this.props.setSpinner()
@@ -77,8 +77,8 @@ class Register extends Component {
   render () {
     const {register} = this.props
     const isCoach = register.get('isCoach')
-    const model = register.get('model')
-
+    let model = register.get('model')
+    if (!isCoach) model = model.butLast()
     return (
       <Container style={mainStyles.container}>
         <Header style={{marginBottom: -15}}>

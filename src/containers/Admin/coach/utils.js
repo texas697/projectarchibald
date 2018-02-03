@@ -14,7 +14,7 @@ export const buildModel = (model, image) => {
   }
 }
 
-const _fetchCoach = id => firebaseApp.database().ref(`/coach`).orderByChild('id').equalTo(id).once('value').then(snapshot => Object.values(snapshot.val()))
+const _fetchCoach = id => firebaseApp.database().ref(`coach`).orderByChild('id').equalTo(id).once('value').then(snapshot => Object.values(snapshot.val()))
 
 export const setCoachData = teamData => {
   _fetchCoach(teamData.teamId).then(result => {

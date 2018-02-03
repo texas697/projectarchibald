@@ -14,8 +14,10 @@ import * as utils from './utils'
 import NoTeam from '../../../components/NoTeam/index'
 
 class HighSchool extends Component {
-  componentDidMount () {
-    this.props.resetHsData()
+  constructor (props) {
+    super(props)
+    this._onSubmit = this._onSubmit.bind(this)
+    this._onInputChange = this._onInputChange.bind(this)
   }
 
   componentDidUpdate (prevProps) {
@@ -30,7 +32,6 @@ class HighSchool extends Component {
 
   _onSuccess () {
     Toast.show(config.TOAST_SUCCESS)
-    this.props.resetHsData()
     // this.props.setSpinner()
   }
 
