@@ -1,21 +1,26 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Alert} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
 import * as actions from './action'
-import * as messages from '../../../messages/index'
 import * as config from '../../../config/index'
 import * as utils from './utils'
+import * as mainUtils from '../../../utils/index'
 import TeamCard from './components/team-card'
 
 class Team extends Component {
   constructor (props) {
     super(props)
     this._onSubmit = this._onSubmit.bind(this)
+  }
+
+  componentDidMount () {
+    const {adminTeam} = this.props
+    const id = adminTeam.get('id')
+    this.props.fetchTeamByIdRequest(id)
   }
 
   componentDidUpdate (prevProps) {
@@ -33,13 +38,8 @@ class Team extends Component {
     const model = adminTeam.get('model')
     const image = adminTeam.get('image')
     const _check = model.find(item => !item.get('value'))
-    if (_check) {
-      Alert.alert(
-        messages.ALL_FIELDS_REQUIRED.title,
-        messages.ALL_FIELDS_REQUIRED.body,
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
-      )
-    } else {
+    if (_check) mainUtils.fieldsRequired()
+    else {
       const _model = utils.buildModel(model, image)
       this.props.setTeamId(_model.id)
       this.props.addTeamRequest(_model)
@@ -68,7 +68,8 @@ class Team extends Component {
 Team.propTypes = {
   adminTeam: PropTypes.instanceOf(Immutable.Map),
   setTeamId: PropTypes.func,
-  addTeamRequest: PropTypes.func
+  addTeamRequest: PropTypes.func,
+  fetchTeamByIdRequest: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -77,6 +78,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   addTeamRequest: model => actions.addTeamRequest(model),
+  fetchTeamByIdRequest: id => actions.fetchTeamByIdRequest(id),
   setTeamId: id => actions.setTeamId(id)
 }, dispatch)
 

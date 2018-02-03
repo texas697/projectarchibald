@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Alert} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
-// import styles from './styles'
 import * as actions from './action'
-import * as messages from '../../../messages/index'
 import * as config from '../../../config/index'
 import * as utils from './utils'
+import * as mainUtils from '../../../utils/index'
 import NoTeam from '../../../components/NoTeam/index'
 
 class HighSchool extends Component {
@@ -20,24 +18,20 @@ class HighSchool extends Component {
     this._onInputChange = this._onInputChange.bind(this)
   }
 
+  componentDidMount () {
+    const {adminHS} = this.props
+    const id = adminHS.get('id')
+    this.props.fetchHsByIdRequest(id)
+  }
+
   componentDidUpdate (prevProps) {
     const {adminHS} = this.props
     const isAdding = adminHS.get('isAdding')
     const _isAdding = prevProps.adminHS.get('isAdding')
     const error = adminHS.get('error')
     const _error = prevProps.adminHS.get('error')
-    if (error !== _error) this._onError(error)
-    if (isAdding !== _isAdding && !isAdding) this._onSuccess()
-  }
-
-  _onSuccess () {
-    Toast.show(config.TOAST_SUCCESS)
-    // this.props.setSpinner()
-  }
-
-  _onError (error) {
-    // this.props.setSpinner()
-    Toast.show(config.TOAST_ERROR(error))
+    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
+    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
   }
 
   _onInputChange (val, i) {
@@ -51,14 +45,8 @@ class HighSchool extends Component {
     const {adminHS} = this.props
     const model = adminHS.get('model')
     const _check = model.find(item => !item.get('value'))
-    if (_check) {
-      Alert.alert(
-        messages.ALL_FIELDS_REQUIRED.title,
-        messages.ALL_FIELDS_REQUIRED.body,
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
-      )
-    } else {
-      // this.props.setSpinner()
+    if (_check) mainUtils.fieldsRequired()
+    else {
       const _model = utils.buildModel(model)
       this.props.addHsRequest(_model)
     }
@@ -104,7 +92,7 @@ HighSchool.propTypes = {
   adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminHS: PropTypes.instanceOf(Immutable.Map),
   setHsData: PropTypes.func,
-  setSpinner: PropTypes.func,
+  fetchHsByIdRequest: PropTypes.func,
   resetHsData: PropTypes.func,
   addHsRequest: PropTypes.func
 }
@@ -117,6 +105,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   addHsRequest: model => actions.addHsRequest(model),
   setHsData: model => actions.setHsData(model),
+  fetchHsByIdRequest: id => actions.fetchHsByIdRequest(id),
   resetHsData: () => actions.resetHsData()
 }, dispatch)
 

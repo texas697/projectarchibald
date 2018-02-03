@@ -18,7 +18,7 @@ class TeamCard extends Component {
   }
 
   async _onPickImage () {
-    let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
+    let result = await ImagePicker.launchImageLibraryAsync(config.IMAGE_OPTIONS)
     if (!result.cancelled) this.props.setTeamImage(result.base64)
   }
 

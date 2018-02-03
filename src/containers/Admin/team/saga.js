@@ -39,7 +39,7 @@ function * _addRequest (action) {
     const _uid = firebaseApp.auth().currentUser.uid
     const res = yield call(_post, action.model)
     yield call(_postCoachTeam, {
-      teamId: '',
+      teamId: action.model.id,
       date: firebaseTime.database.ServerValue.TIMESTAMP
     }, _uid)
     yield put(actions.addTeamSuccess(res))

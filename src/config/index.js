@@ -11,6 +11,8 @@ export const COLORS = {
   orange: '#e65d09'
 }
 
+export const IMAGE_OPTIONS = {allowsEditing: true, aspect: [4, 3], base64: true}
+
 export const EMPTY_OPTION = { value: '', label: '' }
 
 export const TOAST_SUCCESS = {text: 'Success', position: 'bottom', duration: 3000, type: 'success'}

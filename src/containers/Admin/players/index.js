@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Alert, Image} from 'react-native'
+import {Image} from 'react-native'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
-import styles from './styles'
 import * as actions from './action'
-import * as messages from '../../../messages/index'
 import * as config from '../../../config/index'
 import * as utils from './utils'
+import * as mainUtils from '../../../utils/index'
 import NoTeam from '../../../components/NoTeam/index'
 
 class Player extends Component {
@@ -22,8 +21,14 @@ class Player extends Component {
     this._onPickImage = this._onPickImage.bind(this)
   }
 
+  componentDidMount () {
+    const {adminPlayer} = this.props
+    const id = adminPlayer.get('id')
+    this.props.fetchPlayerByIdRequest(id)
+  }
+
   async _onPickImage () {
-    let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
+    let result = await ImagePicker.launchImageLibraryAsync(config.IMAGE_OPTIONS)
     if (!result.cancelled) this.props.setPlayerImage(result.base64)
   }
 
@@ -33,22 +38,12 @@ class Player extends Component {
     const _isAdding = prevProps.adminPlayer.get('isAdding')
     const error = adminPlayer.get('error')
     const _error = prevProps.adminPlayer.get('error')
-    if (error !== _error) this._onError(error)
-    if (isAdding !== _isAdding && !isAdding) this._onSuccess()
+    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
+    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
   }
 
   _focusNext (nextField) {
     this[nextField]._root.focus()
-  }
-
-  _onSuccess () {
-    Toast.show(config.TOAST_SUCCESS)
-    // this.props.setSpinner()
-  }
-
-  _onError (error) {
-    // this.props.setSpinner()
-    Toast.show(config.TOAST_ERROR(error))
   }
 
   _onInputChange (val, i) {
@@ -63,14 +58,8 @@ class Player extends Component {
     const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
     const _check = model.find(item => !item.get('value'))
-    if (_check) {
-      Alert.alert(
-        messages.ALL_FIELDS_REQUIRED.title,
-        messages.ALL_FIELDS_REQUIRED.body,
-        [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false }
-      )
-    } else {
-      // this.props.setSpinner()
+    if (_check) mainUtils.fieldsRequired()
+    else {
       const _model = utils.buildModel(model, image)
       this.props.addPlayerRequest(_model)
     }
@@ -131,7 +120,7 @@ Player.propTypes = {
   adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminPlayer: PropTypes.instanceOf(Immutable.Map),
   setPlayerData: PropTypes.func,
-  setSpinner: PropTypes.func,
+  fetchPlayerByIdRequest: PropTypes.func,
   setPlayerImage: PropTypes.func,
   resetPlayerData: PropTypes.func,
   addPlayerRequest: PropTypes.func
@@ -146,6 +135,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   addPlayerRequest: model => actions.addPlayerRequest(model),
   setPlayerData: model => actions.setPlayerData(model),
   setPlayerImage: image => actions.setPlayerImage(image),
+  fetchPlayerByIdRequest: id => actions.fetchPlayerByIdRequest(id),
   resetPlayerData: () => actions.resetPlayerData()
 }, dispatch)
 
