@@ -1,0 +1,42 @@
+import * as types from '../../types'
+
+export const fetchTeamsRequest = uid => {
+  return {
+    type: types.TEAMS_FETCH_REQUEST,
+    uid
+  }
+}
+
+export const fetchTeamsSuccess = data => {
+  return {
+    type: types.TEAMS_FETCH_SUCCESS,
+    data
+  }
+}
+
+export const fetchTeamsFailure = error => {
+  return {
+    type: types.TEAMS_FETCH_FAILURE,
+    error
+  }
+}
+
+export const addTeamsRequest = model => {
+  return {
+    type: types.TEAMS_ADD_REQUEST,
+    model
+  }
+}
+
+export const addTeamsSuccess = () => {
+  return {
+    type: types.TEAMS_ADD_SUCCESS
+  }
+}
+
+export const addTeamsFailure = error => {
+  return {
+    type: types.TEAMS_ADD_FAILURE,
+    error
+  }
+}

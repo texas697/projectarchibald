@@ -12,6 +12,7 @@ import filters from '../containers/Filters/reducer'
 import dimensions from '../modules/Dimensions/reducer'
 import spinner from '../modules/Spinner/reducer'
 import roles from '../modules/Roles/reducer'
+import teams from '../modules/Teams/reducer'
 
 import register from '../containers/Register/reducer'
 
@@ -28,5 +29,6 @@ export default combineReducers({
   adminStaff,
   adminHS,
   adminRoster,
-  roles
+  roles,
+  teams
 })

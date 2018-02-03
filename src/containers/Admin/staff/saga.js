@@ -1,4 +1,4 @@
-import { put, takeEvery, call, take } from 'redux-saga/effects'
+import { put, takeEvery, call, take, select } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
 import * as config from '../../../config/index'
 import * as utils from '../../../utils/index'
@@ -8,7 +8,16 @@ import {firebaseApp} from '../../../redux/store'
 
 const PATH = 'staff'
 
-const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.id}`).update(model)
+const _post = (teamId, model) => {
+  const newKey = firebaseApp.database().ref().child(PATH).push().key
+
+  const updates = {}
+  updates[`/${PATH}/` + newKey] = model
+  updates[`/team-${PATH}/${teamId}/${newKey}`] = model
+
+  return firebaseApp.database().ref().update(updates)
+}
+
 const _delete = id => firebaseApp.database().ref().child(`${PATH}/${id}`).set(null)
 
 const createChannel = () => {
@@ -25,7 +34,9 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
-    const res = yield call(_post, action.model)
+    const state = yield select()
+    const teamId = state.adminTeam.get('id')
+    const res = yield call(_post, teamId, action.model)
     yield put(actions.addStaffSuccess(res))
   } catch (error) {
     yield put(actions.addStaffFailure(error))

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Container, Tab, Tabs, ScrollableTab} from 'native-base'
+import {Container, Tab, Tabs, ScrollableTab, Content} from 'native-base'
 // import styles from './styles'
 import mainStyles from '../../styles/index'
 import CustomHeader from '../../components/Header/index'
@@ -18,22 +18,22 @@ export default class AdminTeam extends Component {
         <CustomHeader title='Build Team' {...this.props} hasTabs />
         <Tabs initialPage={0} renderTabBar={() => <ScrollableTab />}>
           <Tab heading='Team'>
-            <Team />
+            <Content><Team /></Content>
           </Tab>
           <Tab heading='HighSchool'>
-            <HighSchool />
+            <Content><HighSchool /></Content>
           </Tab>
           <Tab heading='Coach'>
-            <Coach />
+            <Content><Coach /></Content>
           </Tab>
           <Tab heading='Staff'>
-            <Staff />
+            <Content><Staff /></Content>
           </Tab>
           <Tab heading='Player'>
-            <Players />
+            <Content><Players /></Content>
           </Tab>
           <Tab heading='Roster'>
-            <Roster />
+            <Content><Roster /></Content>
           </Tab>
         </Tabs>
         <CustomSpinner />

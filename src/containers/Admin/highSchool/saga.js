@@ -8,12 +8,12 @@ import {firebaseApp} from '../../../redux/store'
 
 const PATH = 'highschool'
 
-const _post = (uid, model) => {
+const _post = (teamId, model) => {
   const newKey = firebaseApp.database().ref().child(PATH).push().key
 
   const updates = {}
   updates[`/${PATH}/` + newKey] = model
-  updates[`/coach-${PATH}/${uid}/${newKey}`] = model
+  updates[`/team-${PATH}/${teamId}/${newKey}`] = model
 
   return firebaseApp.database().ref().update(updates)
 }
@@ -35,8 +35,8 @@ const createChannel = () => {
 function * _addRequest (action) {
   try {
     const state = yield select()
-    const uid = state.login.getIn(['data', 'uid'])
-    const res = yield call(_post, uid, action.model)
+    const teamId = state.adminTeam.get('id')
+    const res = yield call(_post, teamId, action.model)
     yield put(actions.addHsSuccess(res))
   } catch (error) {
     yield put(actions.addHsFailure(error))

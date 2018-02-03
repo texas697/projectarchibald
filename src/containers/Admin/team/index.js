@@ -68,6 +68,7 @@ class Team extends Component {
     } else {
       // this.props.setSpinner()
       const _model = utils.buildModel(model, image)
+      this.props.setTeamId(_model.id)
       this.props.addTeamRequest(_model)
     }
   }
@@ -120,6 +121,7 @@ Team.propTypes = {
   adminTeam: PropTypes.instanceOf(Immutable.Map),
   setTeamData: PropTypes.func,
   setSpinner: PropTypes.func,
+  setTeamId: PropTypes.func,
   setTeamImage: PropTypes.func,
   resetTeamData: PropTypes.func,
   addTeamRequest: PropTypes.func
@@ -133,6 +135,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   addTeamRequest: model => actions.addTeamRequest(model),
   setTeamData: model => actions.setTeamData(model),
   setTeamImage: image => actions.setTeamImage(image),
+  setTeamId: id => actions.setTeamId(id),
   resetTeamData: () => actions.resetTeamData()
 }, dispatch)
 

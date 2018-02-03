@@ -79,3 +79,10 @@ export const resetTeamData = () => {
     type: types.RESET_TEAM_DATA
   }
 }
+
+export const setTeamId = id => {
+  return {
+    type: types.SET_TEAM_ID,
+    id
+  }
+}
