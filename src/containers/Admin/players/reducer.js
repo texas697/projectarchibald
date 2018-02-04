@@ -8,6 +8,7 @@ export const INIT_STATE = {
   options: Immutable.fromJS([]),
   player: Immutable.fromJS({}),
   image: 'empty',
+  id: '',
   isFetching: false,
   isAdding: true,
   isDeleting: true,
@@ -80,6 +81,10 @@ export default (state = initialState, action) => {
     case types.SET_PLAYER_IMAGE:
       return state
         .set('image', action.image)
+
+    case types.SET_PLAYER_ID:
+      return state
+        .set('id', action.id)
 
     case types.RESET_PLAYER_DATA:
       return state

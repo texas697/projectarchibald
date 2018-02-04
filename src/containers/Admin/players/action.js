@@ -35,10 +35,10 @@ export const fetchPlayerByIdFailure = error => {
   }
 }
 
-export const fetchPlayerRequest = model => {
+export const fetchPlayerRequest = teamId => {
   return {
     type: types.PLAYER_FETCH_REQUEST,
-    model
+    teamId
   }
 }
 
@@ -98,5 +98,12 @@ export const deletePlayerFailure = error => {
 export const resetPlayerData = () => {
   return {
     type: types.RESET_PLAYER_DATA
+  }
+}
+
+export const setPlayerId = id => {
+  return {
+    type: types.SET_PLAYER_ID,
+    id
   }
 }

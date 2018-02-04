@@ -9,9 +9,9 @@ export const buildModel = (model, image) => {
   return {
     id: id || uuid.v4(),
     name: model.getIn([0, 'value']).trim(),
-    phone: model.getIn([1, 'value']).trim(),
+    phone: model.getIn([1, 'value']),
     email: model.getIn([2, 'value']).trim(),
-    image: image,
+    image: image || 'empty',
     teamId: store.getState().adminTeam.get('id'),
     date: firebaseTime.database.ServerValue.TIMESTAMP
   }

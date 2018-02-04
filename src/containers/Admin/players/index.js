@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Image} from 'react-native'
+import {Image, ListView} from 'react-native'
+import cloneDeep from 'lodash/cloneDeep'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View } from 'native-base'
+import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3 } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
+import styles from './styles'
 import mainStyles from '../../../styles/index'
 import * as actions from './action'
 import * as config from '../../../config/index'
 import * as utils from './utils'
 import * as mainUtils from '../../../utils/index'
+import {INPUT_FIELDS} from './config'
 import NoTeam from '../../../components/NoTeam/index'
 
 class Player extends Component {
@@ -19,6 +22,7 @@ class Player extends Component {
     this._onSubmit = this._onSubmit.bind(this)
     this._onInputChange = this._onInputChange.bind(this)
     this._onPickImage = this._onPickImage.bind(this)
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !Immutable.is(r1, r2) })
   }
 
   componentDidMount () {
@@ -34,12 +38,16 @@ class Player extends Component {
 
   componentDidUpdate (prevProps) {
     const {adminPlayer} = this.props
+    const isFetching = adminPlayer.get('isFetching')
+    const _isFetching = prevProps.adminPlayer.get('isFetching')
     const isAdding = adminPlayer.get('isAdding')
     const _isAdding = prevProps.adminPlayer.get('isAdding')
     const error = adminPlayer.get('error')
     const _error = prevProps.adminPlayer.get('error')
     if (error !== _error) Toast.show(config.TOAST_ERROR(error))
     if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    const player = adminPlayer.get('player')
+    if (isFetching !== _isFetching && !isFetching) utils.setPlayerData(player)
   }
 
   _focusNext (nextField) {
@@ -49,7 +57,9 @@ class Player extends Component {
   _onInputChange (val, i) {
     const {adminPlayer} = this.props
     let model = adminPlayer.get('model')
-    model = model.setIn([i, 'value'], val)
+    if (i === 4 && val.length > 14) return false
+    if (i === 6 && val.length > 14) return false
+    model = model.setIn([i, 'value'], i === 4 || i === 6 ? mainUtils.formatPhone(val) : val)
     this.props.setPlayerData(model)
   }
 
@@ -57,18 +67,33 @@ class Player extends Component {
     const {adminPlayer} = this.props
     const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
-    const _check = model.find(item => !item.get('value'))
-    if (_check) mainUtils.fieldsRequired()
-    else {
-      const _model = utils.buildModel(model, image)
-      this.props.addPlayerRequest(_model)
-    }
+    // const _check = model.find(item => !item.get('value'))
+    // if (_check) mainUtils.fieldsRequired()
+    // else {
+    //   const _model = utils.buildModel(model, image)
+    //   this.props.addPlayerRequest(_model)
+    // }
+    const _model = utils.buildModel(model, image)
+    this.props.setPlayerId(_model.id)
+    this.props.addPlayerRequest(_model)
+  }
+
+  _onSelectPlayer (data) {
+    this.props.fetchPlayerByIdRequest(data.get('id'))
+  }
+
+  _onDeletePlayer (data) {
+    this.props.deletePlayerRequest(data.get('id'))
+    const _clone = cloneDeep(INPUT_FIELDS)
+    this.props.setPlayerData(_clone)
+    this.props.setPlayerImage('empty')
   }
 
   render () {
     const {adminPlayer, adminTeam} = this.props
     const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
+    const data = adminPlayer.get('data')
     const teamId = adminTeam.get('id')
     return (
       <View>
@@ -110,6 +135,29 @@ class Player extends Component {
               <Text>Submit</Text>
             </Button>
           </CardItem>
+          <CardItem style={mainStyles.alignItemsCenter}>
+            <H3>Master Player List</H3>
+          </CardItem>
+          <CardItem style={mainStyles.alignItemsCenter}>
+            <Text style={styles.subtitle}>Select to Edit / Swipe to Delete</Text>
+          </CardItem>
+          <CardItem>
+            <List
+              enableEmptySections
+              dataSource={this.ds.cloneWithRows(data.toArray())}
+              renderRow={data =>
+                <ListItem style={mainStyles.pl20} onPress={() => this._onSelectPlayer(data)}><Text>{data.get('name')}</Text></ListItem>}
+              renderRightHiddenRow={data =>
+                <Button
+                  full
+                  danger
+                  onPress={_ => this._onDeletePlayer(data)}
+                  style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                  <Icon active name='trash' />
+                </Button>}
+              rightOpenValue={-75}
+            />
+          </CardItem>
         </Card>
       </View>
     )
@@ -122,8 +170,9 @@ Player.propTypes = {
   setPlayerData: PropTypes.func,
   fetchPlayerByIdRequest: PropTypes.func,
   setPlayerImage: PropTypes.func,
-  resetPlayerData: PropTypes.func,
-  addPlayerRequest: PropTypes.func
+  setPlayerId: PropTypes.func,
+  addPlayerRequest: PropTypes.func,
+  deletePlayerRequest: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -136,6 +185,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setPlayerData: model => actions.setPlayerData(model),
   setPlayerImage: image => actions.setPlayerImage(image),
   fetchPlayerByIdRequest: id => actions.fetchPlayerByIdRequest(id),
+  deletePlayerRequest: id => actions.deletePlayerRequest(id),
+  setPlayerId: id => actions.setPlayerId(id),
   resetPlayerData: () => actions.resetPlayerData()
 }, dispatch)
 

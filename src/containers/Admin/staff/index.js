@@ -76,6 +76,7 @@ class Staff extends Component {
     this.props.deleteStaffRequest(data.get('id'))
     const _clone = cloneDeep(INPUT_FIELDS)
     this.props.setStaffData(_clone)
+    this.props.setStaffImage('empty')
   }
 
   render () {

@@ -21,12 +21,14 @@ const _fetchById = id => {
     })
 }
 
-const createChannel = () => {
+const createChannel = (teamId) => {
   const listener = eventChannel(
     emit => {
-      firebaseApp.database().ref(`${PATH_PLAYER}`).on('value', snapshot => {
-        emit(snapshot.val() || {})
-      })
+      firebaseApp.database().ref(`${PATH_PLAYER}`)
+        .orderByChild('teamId').equalTo(teamId)
+        .on('value', snapshot => {
+          emit(snapshot.val() || {})
+        })
       return () => firebaseApp.database().ref(`${PATH_PLAYER}`).off(listener)
     }
   )
@@ -35,17 +37,17 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
-    const _model = yield teamsUtils.buildModel()
-    yield put(addTeamsRequest(_model))
     const res = yield call(_post, action.model)
     yield put(actions.addPlayerSuccess(res))
+    const _model = yield teamsUtils.buildModel()
+    yield put(addTeamsRequest(_model))
   } catch (error) {
     yield put(actions.addPlayerFailure(error))
   }
 }
 
-function * _fetchRequest () {
-  const channel = createChannel()
+function * _fetchRequest (action) {
+  const channel = createChannel(action.teamId)
   while (true) {
     try {
       let data = yield take(channel)
@@ -72,6 +74,8 @@ function * _deleteRequest (action) {
   try {
     const res = yield call(_delete, action.id)
     yield put(actions.deletePlayerSuccess(res))
+    const _model = yield teamsUtils.buildModel()
+    yield put(addTeamsRequest(_model))
   } catch (error) {
     yield put(actions.deletePlayerFailure(error))
   }
