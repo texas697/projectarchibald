@@ -52,8 +52,8 @@ class HighSchool extends Component {
     if (_check) mainUtils.fieldsRequired()
     else {
       const _model = utils.buildModel(model)
-      this.props.addHsRequest(_model)
       this.props.setHsId(_model.id)
+      this.props.addHsRequest(_model)
     }
   }
 

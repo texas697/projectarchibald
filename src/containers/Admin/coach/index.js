@@ -20,6 +20,12 @@ class Coach extends Component {
     this._onPickImage = this._onPickImage.bind(this)
   }
 
+  componentDidMount () {
+    const {adminCoach} = this.props
+    const id = adminCoach.get('id')
+    this.props.fetchCoachByIdRequest(id)
+  }
+
   async _onPickImage () {
     let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
     if (!result.cancelled) this.props.setCoachImage(result.base64)
@@ -54,8 +60,8 @@ class Coach extends Component {
     if (_check) mainUtils.fieldsRequired()
     else {
       const _model = utils.buildModel(model, image)
-      this.props.addCoachRequest(_model)
       this.props.setCoachId(_model.id)
+      this.props.addCoachRequest(_model)
     }
   }
 
@@ -75,7 +81,7 @@ class Coach extends Component {
         </CardItem>
         {image !== 'empty' && (
           <CardItem style={mainStyles.alignItemsCenter}>
-            <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+            <Image source={{ uri: config.IMAGE_64(image) }} style={{ width: 200, height: 200 }} />
           </CardItem>
         )}
         {model.map((item, i) => (
@@ -108,6 +114,7 @@ Coach.propTypes = {
   setCoachData: PropTypes.func,
   setCoachImage: PropTypes.func,
   setCoachId: PropTypes.func,
+  fetchCoachByIdRequest: PropTypes.func,
   addCoachRequest: PropTypes.func
 }
 
@@ -120,6 +127,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setCoachData: model => actions.setCoachData(model),
   setCoachImage: image => actions.setCoachImage(image),
   setCoachId: id => actions.setCoachId(id),
+  fetchCoachByIdRequest: id => actions.fetchCoachByIdRequest(id),
   resetCoachData: () => actions.resetCoachData()
 }, dispatch)
 

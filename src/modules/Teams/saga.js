@@ -14,7 +14,7 @@ const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.teamI
 const _fetchById = id => {
   return firebaseApp.database().ref(`${PATH}/${id}`)
     .once('value').then(snapshot => {
-      if (snapshot.val()) return snapshot.val()
+      if (snapshot.val()) return Object.values(snapshot.val())
       else return {}
     })
 }
@@ -23,7 +23,7 @@ const _fetchByCoachId = uid => {
   return firebaseApp.database().ref(PATH)
     .orderByChild('coachId').equalTo(uid)
     .once('value').then(snapshot => {
-      if (snapshot.val()) return snapshot.val()
+      if (snapshot.val()) return Object.values(snapshot.val())
       else return {}
     })
 }
@@ -75,9 +75,9 @@ function * _fetchByCoachIdRequest (action) {
   try {
     const res = yield call(_fetchByCoachId, action.uid)
     yield put(actions.fetchTeamsByIdSuccess(res))
-    yield put(setTeamId(res.teamId))
-    yield put(setCoachId(res.coachId))
-    yield put(setHsId(res.hsId))
+    yield put(setTeamId(res[0].teamId))
+    yield put(setCoachId(res[0].coachId))
+    yield put(setHsId(res[0].hsId))
   } catch (error) {
     yield put(actions.fetchTeamsByIdFailure(error))
   }

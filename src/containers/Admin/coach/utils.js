@@ -5,8 +5,9 @@ import {INPUT_FIELDS} from './config'
 import * as actions from './action'
 
 export const buildModel = (model, image) => {
+  const id = store.getState().adminCoach.get('id')
   return {
-    id: uuid.v4(),
+    id: id || uuid.v4(),
     name: model.getIn([0, 'value']),
     phone: model.getIn([1, 'value']),
     email: model.getIn([2, 'value']),
@@ -16,9 +17,9 @@ export const buildModel = (model, image) => {
   }
 }
 export const setCoachData = coach => {
-  INPUT_FIELDS[0].value = coach.name
-  INPUT_FIELDS[1].value = coach.phone
-  INPUT_FIELDS[2].value = coach.email
+  INPUT_FIELDS[0].value = coach.get('name')
+  INPUT_FIELDS[1].value = coach.get('phone')
+  INPUT_FIELDS[2].value = coach.get('email')
   store.dispatch(actions.setCoachData(INPUT_FIELDS))
   store.dispatch(actions.setCoachImage(coach.image))
 }
