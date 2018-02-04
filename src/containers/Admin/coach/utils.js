@@ -8,9 +8,9 @@ export const buildModel = (model, image) => {
   const id = store.getState().adminCoach.get('id')
   return {
     id: id || uuid.v4(),
-    name: model.getIn([0, 'value']),
-    phone: model.getIn([1, 'value']),
-    email: model.getIn([2, 'value']),
+    name: model.getIn([0, 'value']).trim(),
+    phone: model.getIn([1, 'value']).trim(),
+    email: model.getIn([2, 'value']).trim(),
     image: image,
     teamId: store.getState().adminTeam.get('id'),
     date: firebaseTime.database.ServerValue.TIMESTAMP

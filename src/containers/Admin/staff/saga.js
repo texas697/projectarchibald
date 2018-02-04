@@ -21,12 +21,14 @@ const _fetchById = id => {
     })
 }
 
-const createChannel = () => {
+const createChannel = teamId => {
   const listener = eventChannel(
     emit => {
-      firebaseApp.database().ref(`${PATH_STAFF}`).on('value', snapshot => {
-        emit(snapshot.val() || {})
-      })
+      firebaseApp.database().ref(`${PATH_STAFF}`)
+        .orderByChild('teamId').equalTo(teamId)
+        .on('value', snapshot => {
+          emit(snapshot.val() || {})
+        })
       return () => firebaseApp.database().ref(`${PATH_STAFF}`).off(listener)
     }
   )
@@ -44,8 +46,8 @@ function * _addRequest (action) {
   }
 }
 
-function * _fetchRequest () {
-  const channel = createChannel()
+function * _fetchRequest (action) {
+  const channel = createChannel(action.teamId)
   while (true) {
     try {
       let data = yield take(channel)
@@ -72,6 +74,8 @@ function * _deleteRequest (action) {
   try {
     const res = yield call(_delete, action.id)
     yield put(actions.deleteStaffSuccess(res))
+    const _model = yield teamsUtils.buildModel()
+    yield put(addTeamsRequest(_model))
   } catch (error) {
     yield put(actions.deleteStaffFailure(error))
   }

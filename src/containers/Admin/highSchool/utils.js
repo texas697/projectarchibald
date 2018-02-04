@@ -8,7 +8,7 @@ export const buildModel = model => {
   const id = store.getState().adminHS.get('id')
   return {
     id: id || uuid.v4(),
-    name: model.getIn([0, 'value']),
+    name: model.getIn([0, 'value']).trim(),
     teamId: store.getState().adminTeam.get('id'),
     date: firebaseTime.database.ServerValue.TIMESTAMP
   }

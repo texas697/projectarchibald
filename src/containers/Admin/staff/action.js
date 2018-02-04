@@ -35,10 +35,10 @@ export const fetchStaffByIdFailure = error => {
   }
 }
 
-export const fetchStaffRequest = model => {
+export const fetchStaffRequest = teamId => {
   return {
     type: types.STAFF_FETCH_REQUEST,
-    model
+    teamId
   }
 }
 

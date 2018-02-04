@@ -12,6 +12,7 @@ const _fetchAllStaff = teamId => {
       else return []
     })
 }
+
 const _fetchAllPlayers = teamId => {
   return firebaseApp.database().ref(`${PATH_PLAYER}`)
     .orderByChild('teamId').equalTo(teamId)

@@ -98,6 +98,9 @@ export default {
   pb15: {
     paddingBottom: 15
   },
+  pl20: {
+    paddingLeft: 20
+  },
   m0: {
     margin: 0
   },

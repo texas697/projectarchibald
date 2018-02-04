@@ -59,7 +59,7 @@ class Register extends Component {
     else {
       this.props.setSpinner()
       const _model = localUtils.buildmodel(model)
-      const credentials = {email: _model.email, password: _model.password}
+      const credentials = {email: _model.email.toLowerCase().trim(), password: _model.password}
       this.props.registerUserRequest(credentials, _model.name)
       if (isCoach) {
         const _image = adminTeam.get('image')

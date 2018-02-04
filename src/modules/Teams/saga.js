@@ -6,6 +6,7 @@ import {firebaseApp} from '../../redux/store'
 import {setTeamId} from '../../containers/Admin/team/action'
 import {setCoachId} from '../../containers/Admin/coach/action'
 import {setHsId} from '../../containers/Admin/highSchool/action'
+import {fetchStaffRequest} from '../../containers/Admin/staff/action'
 
 const PATH = 'teams'
 
@@ -78,6 +79,7 @@ function * _fetchByCoachIdRequest (action) {
     yield put(setTeamId(res[0].teamId))
     yield put(setCoachId(res[0].coachId))
     yield put(setHsId(res[0].hsId))
+    yield put(fetchStaffRequest(res[0].teamId))
   } catch (error) {
     yield put(actions.fetchTeamsByIdFailure(error))
   }

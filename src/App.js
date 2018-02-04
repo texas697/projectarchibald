@@ -64,7 +64,7 @@ firebaseApp.auth().onAuthStateChanged(data => {
     const _user = firebaseApp.auth().currentUser
 
     if (_name) utils.updateProfile(_user, _name, _isCoach)
-    else store.dispatch(fetchTeamsByCoachIdRequest(_user.uid))
+    else if (_isCoach) store.dispatch(fetchTeamsByCoachIdRequest(_user.uid))
     const user = {name: _user.displayName || _name, email: _user.email, uid: _user.uid}
     store.dispatch(loginSuccess(user))
   } else store.dispatch(logoutSuccess())

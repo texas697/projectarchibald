@@ -35,3 +35,5 @@ export const updateProfile = (user, name, isCoach) => {
 
 export const fieldsRequired = () => Alert.alert(messages.ALL_FIELDS_REQUIRED.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false })
 export const passNoMatch = () => Alert.alert(messages.PASS_NO_MATCH.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false })
+
+export const formatPhone = string => string.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')

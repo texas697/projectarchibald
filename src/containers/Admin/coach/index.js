@@ -48,7 +48,8 @@ class Coach extends Component {
   _onInputChange (val, i) {
     const {adminCoach} = this.props
     let model = adminCoach.get('model')
-    model = model.setIn([i, 'value'], val)
+    if (i === 1 && val.length > 14) return false
+    model = model.setIn([i, 'value'], i === 1 ? mainUtils.formatPhone(val) : val)
     this.props.setCoachData(model)
   }
 

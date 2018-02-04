@@ -4779,7 +4779,7 @@ mkpath@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/mkpath/-/mkpath-0.1.0.tgz#7554a6f8d871834cc97b5462b122c4c124d6de91"
 
-moment@2.x.x, moment@^2.10.6, moment@^2.20.1:
+moment@2.x.x, moment@^2.10.6, moment@^2.19.1, moment@^2.20.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
 
@@ -5667,6 +5667,13 @@ react-native-keyboard-aware-scroll-view@0.4.2:
 react-native-maps@0.19.0:
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.19.0.tgz#ce94fad1cf360e335cb4338a68c95f791e869074"
+
+react-native-masked-text@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/react-native-masked-text/-/react-native-masked-text-1.6.5.tgz#991b6701bacfff647d70b216ccbe1bc87af0b8b8"
+  dependencies:
+    moment "^2.19.1"
+    tinymask "^1.0.2"
 
 react-native-modal@^4.1.1:
   version "4.1.1"
@@ -6818,6 +6825,10 @@ timed-out@4.0.1, timed-out@^4.0.0:
 tiny-queue@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/tiny-queue/-/tiny-queue-0.2.1.tgz#25a67f2c6e253b2ca941977b5ef7442ef97a6046"
+
+tinymask@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/tinymask/-/tinymask-1.0.2.tgz#df3775a94087b0d3d056c256e8923c01b7ec0941"
 
 title-case@^1.1.0:
   version "1.1.2"

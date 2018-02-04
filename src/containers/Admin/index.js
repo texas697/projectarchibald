@@ -16,7 +16,7 @@ export default class AdminTeam extends Component {
     return (
       <Container style={mainStyles.container}>
         <CustomHeader title='Build Team' {...this.props} hasTabs />
-        <Tabs initialPage={0} renderTabBar={() => <ScrollableTab />}>
+        <Tabs locked initialPage={0} renderTabBar={() => <ScrollableTab />}>
           <Tab heading='Team'>
             <Content><Team /></Content>
           </Tab>
