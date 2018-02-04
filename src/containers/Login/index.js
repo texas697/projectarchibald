@@ -125,7 +125,7 @@ class Login extends Component {
               <Button
                 onPress={this._onSubmit}
                 block
-                warning>
+                dark>
                 <Text>Login</Text>
               </Button>
               <Button transparent style={styles.forgotBtn} onPress={() => this.props.toggleForgotPass()}>

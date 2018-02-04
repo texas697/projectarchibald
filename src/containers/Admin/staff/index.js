@@ -4,7 +4,7 @@ import {Image, ListView, Alert} from 'react-native'
 import {ImagePicker} from 'expo'
 import {bindActionCreators} from 'redux'
 import ReactTimeout from 'react-timeout'
-import {Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3} from 'native-base'
+import {Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3, Thumbnail, Left} from 'native-base'
 import Immutable from 'immutable'
 import cloneDeep from 'lodash/cloneDeep'
 import {connect} from 'react-redux'
@@ -121,9 +121,9 @@ class Staff extends Component {
         <Card>
           {id !== '' && (
             <CardItem style={mainStyles.alignItemsRight}>
-              <Button small dark iconRight onPress={this._onClearFields} transparent>
-                <Text>Clear Fields</Text>
+              <Button small danger iconLeft onPress={this._onClearFields}>
                 <Icon name='ios-close-circle' />
+                <Text>Clear Fields</Text>
               </Button>
             </CardItem>
           )}
@@ -156,8 +156,8 @@ class Staff extends Component {
               onPress={this._onSubmit}
               block
               disabled={!teamId}
-              warning={!id}>
-              <Text>{id ? 'Update' : 'Submit'}</Text>
+              dark>
+              <Text>{id ? 'Update' : 'Add'}</Text>
             </Button>
           </CardItem>
           <CardItem style={mainStyles.alignItemsCenter}>
@@ -171,8 +171,14 @@ class Staff extends Component {
               enableEmptySections
               dataSource={this.ds.cloneWithRows(data.toArray())}
               renderRow={data =>
-                <ListItem style={mainStyles.pl20}
-                  onPress={() => this._onSelectStaff(data)}><Text>{data.get('name')}</Text></ListItem>}
+                <ListItem
+                  avatar
+                  onPress={() => this._onSelectStaff(data)}>
+                  <Left>
+                    <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
+                  </Left>
+                  <Text style={mainStyles.ml15}>{data.get('name')}</Text>
+                </ListItem>}
               renderRightHiddenRow={data =>
                 <Button full danger onPress={_ => this._onDeleteStaff(data)} style={mainStyles.deleteSlideBtn}>
                   <Icon active name='trash' />

@@ -53,18 +53,22 @@ class Coach extends Component {
   _onInputChange (val, i) {
     const {adminCoach} = this.props
     let model = adminCoach.get('model')
-    if (i === 1 && val.length > 14) return false
-    model = model.setIn([i, 'value'], i === 1 ? mainUtils.formatPhone(val) : val)
+    if (i === 1 && val.length > 10) return false
+    // model = model.setIn([i, 'value'], i === 1 ? mainUtils.formatPhone(val) : val)
+    model = model.setIn([i, 'value'], val)
     this.props.setCoachData(model)
   }
 
   _onSubmit () {
     const {adminCoach} = this.props
     const model = adminCoach.get('model')
+    const id = adminCoach.get('id')
     const _check = model.find(item => !item.get('value'))
     if (_check) mainUtils.fieldsRequired()
     else {
-      const _message = messages.UPDATE_COACH(model.get(0).value)
+      let _message = {}
+      if (id) _message = messages.UPDATE_COACH(model.get(0).value)
+      else _message = messages.ADD_COACH(model.get(0).value)
       Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
     }
   }
@@ -82,6 +86,7 @@ class Coach extends Component {
     const {adminCoach} = this.props
     const model = adminCoach.get('model')
     const image = adminCoach.get('image')
+    const id = adminCoach.get('id')
     return (
       <Card>
         <CardItem>
@@ -116,8 +121,8 @@ class Coach extends Component {
           <Button
             onPress={this._onSubmit}
             block
-            warning>
-            <Text>Submit</Text>
+            dark>
+            <Text>{id ? 'Update' : 'Add'}</Text>
           </Button>
         </CardItem>
       </Card>

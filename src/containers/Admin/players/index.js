@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Image, ListView} from 'react-native'
+import {Image, ListView, Alert} from 'react-native'
 import cloneDeep from 'lodash/cloneDeep'
+import ReactTimeout from 'react-timeout'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3 } from 'native-base'
+import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3, Thumbnail, Left } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import styles from './styles'
 import mainStyles from '../../../styles/index'
 import * as actions from './action'
 import * as config from '../../../config/index'
+import * as messages from '../../../messages/index'
 import * as utils from './utils'
 import * as mainUtils from '../../../utils/index'
 import {INPUT_FIELDS} from './config'
@@ -22,13 +24,12 @@ class Player extends Component {
     this._onSubmit = this._onSubmit.bind(this)
     this._onInputChange = this._onInputChange.bind(this)
     this._onPickImage = this._onPickImage.bind(this)
+    this._onClearFields = this._onClearFields.bind(this)
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !Immutable.is(r1, r2) })
   }
 
   componentDidMount () {
-    const {adminPlayer} = this.props
-    const id = adminPlayer.get('id')
-    this.props.fetchPlayerByIdRequest(id)
+    this._onClearFields()
   }
 
   async _onPickImage () {
@@ -57,25 +58,34 @@ class Player extends Component {
   _onInputChange (val, i) {
     const {adminPlayer} = this.props
     let model = adminPlayer.get('model')
-    if (i === 4 && val.length > 14) return false
-    if (i === 6 && val.length > 14) return false
-    model = model.setIn([i, 'value'], i === 4 || i === 6 ? mainUtils.formatPhone(val) : val)
+    if (i === 5 && val.length > 10) return false
+    if (i === 7 && val.length > 10) return false
+    model = model.setIn([i, 'value'], val)
     this.props.setPlayerData(model)
   }
 
   _onSubmit () {
     const {adminPlayer} = this.props
     const model = adminPlayer.get('model')
+    const id = adminPlayer.get('id')
+    const _check = model.find(item => !item.get('value'))
+    if (_check) mainUtils.fieldsRequired()
+    else {
+      let _message = {}
+      if (id) _message = messages.UPDATE_PLAYER(model.get(0).value)
+      else _message = messages.ADD_PLAYER(model.get(0).value)
+      Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
+    }
+  }
+
+  _onConfirmSubmit () {
+    const {adminPlayer} = this.props
+    const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
-    // const _check = model.find(item => !item.get('value'))
-    // if (_check) mainUtils.fieldsRequired()
-    // else {
-    //   const _model = utils.buildModel(model, image)
-    //   this.props.addPlayerRequest(_model)
-    // }
     const _model = utils.buildModel(model, image)
     this.props.setPlayerId(_model.id)
     this.props.addPlayerRequest(_model)
+    this.props.setTimeout(() => this._onClearFields(), 1000)
   }
 
   _onSelectPlayer (data) {
@@ -83,10 +93,20 @@ class Player extends Component {
   }
 
   _onDeletePlayer (data) {
+    const _message = messages.DELETE_PLAYER(data.get('name'))
+    Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmDelete(data)}])
+  }
+
+  _onConfirmDelete (data) {
     this.props.deletePlayerRequest(data.get('id'))
+    this._onClearFields()
+  }
+
+  _onClearFields () {
     const _clone = cloneDeep(INPUT_FIELDS)
     this.props.setPlayerData(_clone)
     this.props.setPlayerImage('empty')
+    this.props.setPlayerId('')
   }
 
   render () {
@@ -94,11 +114,20 @@ class Player extends Component {
     const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
     const data = adminPlayer.get('data')
+    const id = adminPlayer.get('id')
     const teamId = adminTeam.get('id')
     return (
       <View>
         {!teamId && (<NoTeam />)}
         <Card>
+          {id !== '' && (
+            <CardItem style={mainStyles.alignItemsRight}>
+              <Button small danger iconLeft onPress={this._onClearFields}>
+                <Icon name='ios-close-circle' />
+                <Text>Clear Fields</Text>
+              </Button>
+            </CardItem>
+          )}
           <CardItem>
             <Button
               onPress={this._onPickImage}
@@ -109,7 +138,7 @@ class Player extends Component {
           </CardItem>
           {image !== 'empty' && (
             <CardItem style={mainStyles.alignItemsCenter}>
-              <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+              <Image source={{ uri: config.IMAGE_64(image) }} style={mainStyles.imagePick} />
             </CardItem>
           )}
           {model.map((item, i) => (
@@ -133,8 +162,8 @@ class Player extends Component {
               disabled={!teamId}
               onPress={this._onSubmit}
               block
-              warning>
-              <Text>Submit</Text>
+              dark>
+              <Text>{id ? 'Update' : 'Add'}</Text>
             </Button>
           </CardItem>
           <CardItem style={mainStyles.alignItemsCenter}>
@@ -148,7 +177,14 @@ class Player extends Component {
               enableEmptySections
               dataSource={this.ds.cloneWithRows(data.toArray())}
               renderRow={data =>
-                <ListItem style={mainStyles.pl20} onPress={() => this._onSelectPlayer(data)}><Text>{data.get('name')}</Text></ListItem>}
+                <ListItem
+                  avatar
+                  onPress={() => this._onSelectPlayer(data)}>
+                  <Left>
+                    <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
+                  </Left>
+                  <Text style={mainStyles.ml15}>{data.get('name')}</Text>
+                </ListItem>}
               renderRightHiddenRow={data =>
                 <Button
                   full
@@ -174,7 +210,8 @@ Player.propTypes = {
   setPlayerImage: PropTypes.func,
   setPlayerId: PropTypes.func,
   addPlayerRequest: PropTypes.func,
-  deletePlayerRequest: PropTypes.func
+  deletePlayerRequest: PropTypes.func,
+  setTimeout: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -195,4 +232,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Player)
+)(ReactTimeout(Player))

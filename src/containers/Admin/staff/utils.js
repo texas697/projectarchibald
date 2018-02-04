@@ -21,5 +21,6 @@ export const setStaffData = staff => {
   _clone[0].value = staff.get('name')
   _clone[1].value = staff.get('title')
   store.dispatch(actions.setStaffData(_clone))
+  store.dispatch(actions.setStaffId(staff.get('id')))
   store.dispatch(actions.setStaffImage(staff.get('image')))
 }

@@ -135,8 +135,8 @@ class Register extends Component {
                 <Button
                   onPress={this._onSubmit}
                   block
-                  warning>
-                  <Text>Submit</Text>
+                  dark>
+                  <Text>Register</Text>
                 </Button>
               </CardItem>
             </Card>

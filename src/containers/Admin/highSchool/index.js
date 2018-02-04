@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {Alert} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
@@ -10,6 +11,7 @@ import * as config from '../../../config/index'
 import * as utils from './utils'
 import * as mainUtils from '../../../utils/index'
 import NoTeam from '../../../components/NoTeam/index'
+import * as messages from '../../../messages'
 
 class HighSchool extends Component {
   constructor (props) {
@@ -47,19 +49,30 @@ class HighSchool extends Component {
 
   _onSubmit () {
     const {adminHS} = this.props
+    const id = adminHS.get('id')
     const model = adminHS.get('model')
     const _check = model.find(item => !item.get('value'))
     if (_check) mainUtils.fieldsRequired()
     else {
-      const _model = utils.buildModel(model)
-      this.props.setHsId(_model.id)
-      this.props.addHsRequest(_model)
+      let _message = {}
+      if (id) _message = messages.UPDATE_HS(model.get(0).value)
+      else _message = messages.ADD_HS(model.get(0).value)
+      Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
     }
+  }
+
+  _onConfirmSubmit () {
+    const {adminHS} = this.props
+    const model = adminHS.get('model')
+    const _model = utils.buildModel(model)
+    this.props.setHsId(_model.id)
+    this.props.addHsRequest(_model)
   }
 
   render () {
     const {adminHS, adminTeam} = this.props
     const model = adminHS.get('model')
+    const id = adminHS.get('id')
     const teamId = adminTeam.get('id')
     return (
       <View>
@@ -85,8 +98,8 @@ class HighSchool extends Component {
               onPress={this._onSubmit}
               block
               disabled={!teamId}
-              warning>
-              <Text>Submit</Text>
+              dark>
+              <Text>{id ? 'Update' : 'Add'}</Text>
             </Button>
           </CardItem>
         </Card>

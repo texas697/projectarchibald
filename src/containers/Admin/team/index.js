@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {Alert} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
@@ -10,6 +11,7 @@ import * as config from '../../../config/index'
 import * as utils from './utils'
 import * as mainUtils from '../../../utils/index'
 import TeamCard from './components/team-card'
+import * as messages from '../../../messages'
 
 class Team extends Component {
   constructor (props) {
@@ -40,14 +42,21 @@ class Team extends Component {
   _onSubmit () {
     const {adminTeam} = this.props
     const model = adminTeam.get('model')
-    const image = adminTeam.get('image')
     const _check = model.find(item => !item.get('value'))
     if (_check) mainUtils.fieldsRequired()
     else {
-      const _model = utils.buildModel(model, image)
-      this.props.setTeamId(_model.id)
-      this.props.addTeamRequest(_model)
+      const _message = messages.UPDATE_TEAM(model.get(0).value)
+      Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
     }
+  }
+
+  _onConfirmSubmit () {
+    const {adminTeam} = this.props
+    const model = adminTeam.get('model')
+    const image = adminTeam.get('image')
+    const _model = utils.buildModel(model, image)
+    this.props.setTeamId(_model.id)
+    this.props.addTeamRequest(_model)
   }
 
   render () {
@@ -58,9 +67,9 @@ class Team extends Component {
           <CardItem style={mainStyles.alignStretch}>
             <Button
               onPress={this._onSubmit}
-              block
-              warning>
-              <Text>Submit</Text>
+              dark
+              block>
+              <Text>Update</Text>
             </Button>
           </CardItem>
         </Card>
