@@ -68,14 +68,14 @@ class Player extends Component {
     const {adminPlayer} = this.props
     const model = adminPlayer.get('model')
     const id = adminPlayer.get('id')
-    const _check = model.find(item => !item.get('value'))
-    if (_check) mainUtils.fieldsRequired()
-    else {
-      let _message = {}
-      if (id) _message = messages.UPDATE_PLAYER(model.get(0).value)
-      else _message = messages.ADD_PLAYER(model.get(0).value)
-      Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
-    }
+    // const _check = model.find(item => !item.get('value'))
+    // if (_check) mainUtils.fieldsRequired()
+    // else {
+    let _message = {}
+    if (id) _message = messages.UPDATE_PLAYER(model.get(0).value)
+    else _message = messages.ADD_PLAYER(model.get(0).value)
+    Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
+    // }
   }
 
   _onConfirmSubmit () {
