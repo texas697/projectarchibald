@@ -51,7 +51,8 @@ class Player extends Component {
   }
 
   _focusNext (nextField) {
-    this[nextField]._root.focus()
+    if (nextField === 'go') this._onSubmit()
+    else this.refs[nextField]._root.focus()
   }
 
   _onInputChange (val, i) {
@@ -146,7 +147,7 @@ class Player extends Component {
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   disabled={!teamId}
-                  getRef={ref => { this[item.get('id')] = ref }}
+                  ref={item.get('id')}
                   value={item.get('value')}
                   placeholder={item.get('placeholder')}
                   keyboardType={item.get('keyboardType')}

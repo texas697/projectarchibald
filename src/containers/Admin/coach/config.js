@@ -20,7 +20,7 @@ export const INPUT_FIELDS = [{
   id: 'coachEmail',
   keyboardType: 'email-address',
   placeholder: 'xxxxx@xxxxx.com',
-  nextId: '',
+  nextId: 'go',
   returnKeyType: 'go'
 }]
 

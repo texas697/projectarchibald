@@ -44,7 +44,8 @@ class Register extends Component {
   }
 
   _focusNext (nextField) {
-    this[nextField]._root.focus()
+    if (nextField === 'go') this._onSubmit()
+    else this.refs[nextField]._root.focus()
   }
 
   _onSubmit () {
@@ -109,7 +110,7 @@ class Register extends Component {
                   <Item stackedLabel>
                     <Label>{item.get('label')}</Label>
                     <Input
-                      getRef={ref => { this[item.get('id')] = ref }}
+                      ref={item.get('id')}
                       secureTextEntry={item.get('password') && item.get('confirmPassword')}
                       value={item.get('value')}
                       placeholder={item.get('placeholder')}
@@ -120,7 +121,7 @@ class Register extends Component {
                   </Item>
                 </CardItem>
               ))}
-              {isCoach && (<TeamCard />)}
+              {isCoach && (<TeamCard onSubmit={this._onSubmit} />)}
               <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
               <CardItem>
                 <Left>

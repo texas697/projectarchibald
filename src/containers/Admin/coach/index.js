@@ -42,7 +42,8 @@ class Coach extends Component {
   }
 
   _focusNext (nextField) {
-    this[nextField]._root.focus()
+    if (nextField === 'go') this._onSubmit()
+    else this.refs[nextField]._root.focus()
   }
 
   async _onPickImage () {
@@ -54,7 +55,6 @@ class Coach extends Component {
     const {adminCoach} = this.props
     let model = adminCoach.get('model')
     if (i === 1 && val.length > 10) return false
-    // model = model.setIn([i, 'value'], i === 1 ? mainUtils.formatPhone(val) : val)
     model = model.setIn([i, 'value'], val)
     this.props.setCoachData(model)
   }
@@ -109,7 +109,7 @@ class Coach extends Component {
               <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
               <Input
                 value={item.get('value')}
-                getRef={ref => { this[item.get('id')] = ref }}
+                ref={item.get('id')}
                 returnKeyType={item.get('returnKeyType')}
                 keyboardType={item.get('keyboardType')}
                 placeholder={item.get('placeholder')}

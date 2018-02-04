@@ -50,13 +50,13 @@ class TeamCard extends Component {
         )}
         {model.map((item, i) => (
           <CardItem key={i} style={mainStyles.alignStretch}>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
               <Input
                 value={item.get('value')}
                 placeholder={item.get('placeholder')}
                 returnKeyType={item.get('returnKeyType')}
-                onSubmitEditing={() => this._focusNext(item.get('nextId'))}
+                onSubmitEditing={() => this.props.onSubmit()}
                 onChangeText={val => this._onInputChange(val, i)} />
             </Item>
           </CardItem>
@@ -69,7 +69,8 @@ class TeamCard extends Component {
 TeamCard.propTypes = {
   adminTeam: PropTypes.instanceOf(Immutable.Map),
   setTeamData: PropTypes.func,
-  setTeamImage: PropTypes.func
+  setTeamImage: PropTypes.func,
+  onSubmit: PropTypes.func
 }
 
 const mapStateToProps = state => ({

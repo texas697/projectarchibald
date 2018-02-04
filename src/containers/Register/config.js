@@ -1,7 +1,7 @@
 export const INPUT_FIELDS = [{
   label: 'Name',
-  value: 'Rudy Sanchez',
-  // value: '',
+  // value: 'Rudy Sanchez',
+  value: '',
   id: 'name',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
@@ -9,8 +9,8 @@ export const INPUT_FIELDS = [{
   returnKeyType: 'next'
 }, {
   label: 'Email',
-  value: 'texas697@gmail.com',
-  // value: '',
+  // value: 'texas697@gmail.com',
+  value: '',
   id: 'email',
   keyboardType: 'email-address',
   placeholder: 'xxxxx@xxxxx.com',
@@ -18,8 +18,8 @@ export const INPUT_FIELDS = [{
   returnKeyType: 'next'
 }, {
   label: 'Password',
-  value: 'pass123',
-  // value: '',
+  // value: 'pass123',
+  value: '',
   id: 'password',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
@@ -27,11 +27,11 @@ export const INPUT_FIELDS = [{
   returnKeyType: 'next'
 }, {
   label: 'Confirm Password',
-  value: 'pass123',
-  // value: '',
+  // value: 'pass123',
+  value: '',
   id: 'confirmPassword',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
-  nextId: '',
+  nextId: 'go',
   returnKeyType: 'go'
 }]

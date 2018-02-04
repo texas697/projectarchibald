@@ -1,13 +1,14 @@
-import uuid from 'uuid'
+
 import firebaseTime from 'firebase'
-import store from '../../../redux/store'
+import cloneDeep from 'lodash/cloneDeep'
+import store, {firebaseApp} from '../../../redux/store'
 import {INPUT_FIELDS} from './config'
 import * as actions from './action'
 
 export const buildModel = (model, image) => {
   const id = store.getState().adminCoach.get('id')
   return {
-    id: id || uuid.v4(),
+    id: id || firebaseApp.auth().currentUser.uid,
     name: model.getIn([0, 'value']).trim(),
     phone: model.getIn([1, 'value']).trim(),
     email: model.getIn([2, 'value']).trim().toLowerCase(),
@@ -17,9 +18,10 @@ export const buildModel = (model, image) => {
   }
 }
 export const setCoachData = coach => {
-  INPUT_FIELDS[0].value = coach.get('name')
-  INPUT_FIELDS[1].value = coach.get('phone')
-  INPUT_FIELDS[2].value = coach.get('email')
-  store.dispatch(actions.setCoachData(INPUT_FIELDS))
+  const _clone = cloneDeep(INPUT_FIELDS)
+  _clone[0].value = coach.get('name')
+  _clone[1].value = coach.get('phone')
+  _clone[2].value = coach.get('email')
+  store.dispatch(actions.setCoachData(_clone))
   store.dispatch(actions.setCoachImage(coach.get('image')))
 }

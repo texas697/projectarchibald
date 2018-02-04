@@ -218,7 +218,7 @@ export default {
   segmentBorderColorMain: platform === 'ios' ? '#a7a6ab' : '#3F51B5',
 
   // Tab
-  tabDefaultBg: platform === 'ios' ? '#F8F8F8' : '#3F51B5',
+  tabDefaultBg: '#F8F8F8',
   topTabBarTextColor: platform === 'ios' ? '#6b6b6b' : '#b3c7f9',
   // topTabBarActiveTextColor: platform === 'ios' ? '#007aff' : '#fff',
   topTabBarActiveTextColor: '#000',

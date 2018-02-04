@@ -4,7 +4,7 @@ export const INPUT_FIELDS = [{
   id: 'staffName',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
-  nextId: 'coachPhone',
+  nextId: 'staffTitle',
   returnKeyType: 'next'
 }, {
   label: 'Staff Title',
@@ -12,6 +12,7 @@ export const INPUT_FIELDS = [{
   id: 'staffTitle',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
+  nextId: 'go',
   returnKeyType: 'go'
 }]
 

@@ -26,10 +26,10 @@ class Login extends Component {
     this._focusNext = this._focusNext.bind(this)
     this.state = {
       resetEmail: '',
-      email: 'texas697@gmail.com',
-      password: 'pass123'
-      // email: '',
-      // password: ''
+      // email: 'texas697@gmail.com',
+      // password: 'pass123'
+      email: '',
+      password: ''
     }
   }
 
@@ -69,7 +69,7 @@ class Login extends Component {
   }
 
   _focusNext (nextField) {
-    this[nextField]._root.focus()
+    this.refs[nextField]._root.focus()
   }
 
   _onSubmit () {
@@ -111,7 +111,7 @@ class Login extends Component {
               <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>Password</Label>
                 <Input
-                  getRef={ref => { this.passwordInput = ref }}
+                  ref='passwordInput'
                   secureTextEntry
                   placeholder={'xxxxxxx'}
                   value={password}

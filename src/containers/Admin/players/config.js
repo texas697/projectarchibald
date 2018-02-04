@@ -4,7 +4,7 @@ export const INPUT_FIELDS = [{
   id: 'playerName',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
-  nextId: 'gradYear',
+  nextId: 'email',
   returnKeyType: 'next'
 }, {
   label: 'Player Email',
@@ -12,8 +12,8 @@ export const INPUT_FIELDS = [{
   id: 'email',
   keyboardType: 'email-address',
   placeholder: 'xxxxx@xxxxx.com',
-  nextId: '',
-  returnKeyType: 'go'
+  nextId: 'gradYear',
+  returnKeyType: 'next'
 }, {
   label: 'Grad Year',
   value: '',
@@ -84,8 +84,8 @@ export const INPUT_FIELDS = [{
   id: 'instagram',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
-  nextId: 'email',
-  returnKeyType: 'next'
+  nextId: 'go',
+  returnKeyType: 'go'
 }]
 
 export const PATH_PLAYER = 'player'

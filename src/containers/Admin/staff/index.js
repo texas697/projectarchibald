@@ -52,7 +52,8 @@ class Staff extends Component {
   }
 
   _focusNext (nextField) {
-    this[nextField]._root.focus()
+    if (nextField === 'go') this._onSubmit()
+    else this.refs[nextField]._root.focus()
   }
 
   _onInputChange (val, i) {
@@ -143,7 +144,7 @@ class Staff extends Component {
                   disabled={!teamId}
                   placeholder={item.get('placeholder')}
                   keyboardType={item.get('keyboardType')}
-                  getRef={ref => { this[item.get('id')] = ref }}
+                  ref={item.get('id')}
                   value={item.get('value')}
                   returnKeyType={item.get('returnKeyType')}
                   onSubmitEditing={() => this._focusNext(item.get('nextId'))}

@@ -88,7 +88,7 @@ class HighSchool extends Component {
                   value={item.get('value')}
                   keyboardType={item.get('keyboardType')}
                   returnKeyType={item.get('returnKeyType')}
-                  onSubmitEditing={() => this._focusNext(item.get('nextId'))}
+                  onSubmitEditing={this._onSubmit}
                   onChangeText={val => this._onInputChange(val, i)} />
               </Item>
             </CardItem>

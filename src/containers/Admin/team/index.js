@@ -62,7 +62,7 @@ class Team extends Component {
   render () {
     return (
       <View>
-        <TeamCard />
+        <TeamCard onSubmit={this._onSubmit} />
         <Card>
           <CardItem style={mainStyles.alignStretch}>
             <Button

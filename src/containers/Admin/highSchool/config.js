@@ -4,7 +4,7 @@ export const INPUT_FIELDS = [{
   id: 'hsName',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
-  nextId: '',
+  nextId: 'go',
   returnKeyType: 'go'
 }]
 
