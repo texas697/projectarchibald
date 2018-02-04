@@ -113,20 +113,22 @@ class Player extends Component {
             </CardItem>
           )}
           {model.map((item, i) => (
-            <CardItem key={i}>
-              <Item floatingLabel last>
+            <CardItem key={i} style={mainStyles.alignStretch}>
+              <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   disabled={!teamId}
                   getRef={ref => { this[item.get('id')] = ref }}
                   value={item.get('value')}
+                  placeholder={item.get('placeholder')}
+                  keyboardType={item.get('keyboardType')}
                   returnKeyType={item.get('returnKeyType')}
                   onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                   onChangeText={val => this._onInputChange(val, i)} />
               </Item>
             </CardItem>
           ))}
-          <CardItem style={mainStyles.submitBtnCard}>
+          <CardItem style={mainStyles.alignStretch}>
             <Button
               disabled={!teamId}
               onPress={this._onSubmit}

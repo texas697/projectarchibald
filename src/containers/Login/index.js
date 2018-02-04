@@ -26,10 +26,10 @@ class Login extends Component {
     this._focusNext = this._focusNext.bind(this)
     this.state = {
       resetEmail: '',
-      // email: 'texas697@gmail.com',
-      // password: 'pass123'
-      email: '',
-      password: ''
+      email: 'texas697@gmail.com',
+      password: 'pass123'
+      // email: '',
+      // password: ''
     }
   }
 
@@ -94,24 +94,26 @@ class Login extends Component {
             <CardItem>
               <Image source={logo} style={styles.logo} />
             </CardItem>
-            <CardItem style={{marginTop: visibleHeight / 17}}>
-              <Item floatingLabel>
+            <CardItem style={[{marginTop: visibleHeight / 17}, mainStyles.alignStretch]}>
+              <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>Email</Label>
                 <Input
                   ref='email'
                   onSubmitEditing={() => this._focusNext('passwordInput')}
                   returnKeyType='next'
+                  placeholder={'xxxxx@xxxxx.com'}
                   keyboardType='email-address'
                   value={email}
                   onChangeText={email => this.setState({ email })} />
               </Item>
             </CardItem>
-            <CardItem>
-              <Item floatingLabel>
+            <CardItem style={mainStyles.alignStretch}>
+              <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>Password</Label>
                 <Input
                   getRef={ref => { this.passwordInput = ref }}
                   secureTextEntry
+                  placeholder={'xxxxxxx'}
                   value={password}
                   returnKeyType='go'
                   onSubmitEditing={this._onSubmit}
@@ -119,7 +121,7 @@ class Login extends Component {
                 />
               </Item>
             </CardItem>
-            <CardItem style={mainStyles.submitBtnCard}>
+            <CardItem style={mainStyles.alignStretch}>
               <Button
                 onPress={this._onSubmit}
                 block

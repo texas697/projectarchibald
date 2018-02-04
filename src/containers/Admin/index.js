@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Container, Tab, Tabs, ScrollableTab, Content} from 'native-base'
-// import styles from './styles'
+import {KeyboardAvoidingView} from 'react-native'
+
 import mainStyles from '../../styles/index'
 import CustomHeader from '../../components/Header/index'
 import CustomSpinner from '../../components/Spinner/index'
@@ -18,22 +19,34 @@ export default class AdminTeam extends Component {
         <CustomHeader title='Build Team' {...this.props} hasTabs />
         <Tabs locked initialPage={0} renderTabBar={() => <ScrollableTab />}>
           <Tab heading='Team'>
-            <Content><Team /></Content>
+            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+              <Content><Team /></Content>
+            </KeyboardAvoidingView>
           </Tab>
           <Tab heading='HighSchool'>
-            <Content><HighSchool /></Content>
+            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+              <Content><HighSchool /></Content>
+            </KeyboardAvoidingView>
           </Tab>
           <Tab heading='Coach'>
-            <Content><Coach /></Content>
+            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+              <Content><Coach /></Content>
+            </KeyboardAvoidingView>
           </Tab>
           <Tab heading='Staff'>
-            <Content><Staff /></Content>
+            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+              <Content><Staff /></Content>
+            </KeyboardAvoidingView>
           </Tab>
           <Tab heading='Player'>
-            <Content><Players /></Content>
+            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+              <Content><Players /></Content>
+            </KeyboardAvoidingView>
           </Tab>
           <Tab heading='Roster'>
-            <Content><Roster /></Content>
+            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+              <Content><Roster /></Content>
+            </KeyboardAvoidingView>
           </Tab>
         </Tabs>
         <CustomSpinner />

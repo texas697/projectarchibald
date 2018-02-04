@@ -105,13 +105,15 @@ class Register extends Component {
                 <Image source={logo} style={{height: 200, width: null, flex: 1}} />
               </CardItem>
               {model.map((item, i) => (
-                <CardItem key={i}>
-                  <Item floatingLabel last>
-                    <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
+                <CardItem key={i} style={mainStyles.alignStretch}>
+                  <Item stackedLabel>
+                    <Label>{item.get('label')}</Label>
                     <Input
                       getRef={ref => { this[item.get('id')] = ref }}
                       secureTextEntry={item.get('password') && item.get('confirmPassword')}
                       value={item.get('value')}
+                      placeholder={item.get('placeholder')}
+                      keyboardType={item.get('keyboardType')}
                       returnKeyType={item.get('returnKeyType')}
                       onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                       onChangeText={val => this._onInputChange(val, i)} />
@@ -129,7 +131,7 @@ class Register extends Component {
                 </Right>
               </CardItem>
               <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
-              <CardItem style={mainStyles.submitBtnCard}>
+              <CardItem style={mainStyles.alignStretch}>
                 <Button
                   onPress={this._onSubmit}
                   block

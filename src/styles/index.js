@@ -18,7 +18,16 @@ export default {
   modalHeader: {
     backgroundColor: config.COLORS.orange
   },
-  submitBtnCard: {
+  imagePick: {
+    width: 200,
+    height: 200
+  },
+  deleteSlideBtn: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  alignStretch: {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch'

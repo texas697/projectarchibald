@@ -49,11 +49,12 @@ class TeamCard extends Component {
           </CardItem>
         )}
         {model.map((item, i) => (
-          <CardItem key={i}>
+          <CardItem key={i} style={mainStyles.alignStretch}>
             <Item floatingLabel>
               <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
               <Input
                 value={item.get('value')}
+                placeholder={item.get('placeholder')}
                 returnKeyType={item.get('returnKeyType')}
                 onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                 onChangeText={val => this._onInputChange(val, i)} />

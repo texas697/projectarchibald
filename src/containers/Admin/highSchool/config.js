@@ -3,6 +3,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'hsName',
   keyboardType: 'default',
+  placeholder: 'xxxxxxx',
   nextId: '',
   returnKeyType: 'go'
 }]

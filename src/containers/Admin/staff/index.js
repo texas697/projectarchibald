@@ -1,15 +1,17 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {Image, ListView} from 'react-native'
-import { ImagePicker } from 'expo'
-import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3 } from 'native-base'
+import {Image, ListView, Alert} from 'react-native'
+import {ImagePicker} from 'expo'
+import {bindActionCreators} from 'redux'
+import ReactTimeout from 'react-timeout'
+import {Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3} from 'native-base'
 import Immutable from 'immutable'
 import cloneDeep from 'lodash/cloneDeep'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import styles from './styles'
 import mainStyles from '../../../styles/index'
 import * as actions from './action'
+import * as messages from '../../../messages/index'
 import * as config from '../../../config/index'
 import * as utils from './utils'
 import * as mainUtils from '../../../utils/index'
@@ -19,15 +21,20 @@ import NoTeam from '../../../components/NoTeam/index'
 class Staff extends Component {
   constructor (props) {
     super(props)
-    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => !Immutable.is(r1, r2) })
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)})
     this._onSubmit = this._onSubmit.bind(this)
     this._onInputChange = this._onInputChange.bind(this)
     this._onPickImage = this._onPickImage.bind(this)
+    this._onClearFields = this._onClearFields.bind(this)
   }
 
   async _onPickImage () {
     let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
     if (!result.cancelled) this.props.setStaffImage(result.base64)
+  }
+
+  componentDidMount () {
+    this._onClearFields()
   }
 
   componentDidUpdate (prevProps) {
@@ -58,14 +65,25 @@ class Staff extends Component {
   _onSubmit () {
     const {adminStaff} = this.props
     const model = adminStaff.get('model')
-    const image = adminStaff.get('image')
+    const id = adminStaff.get('id')
     const _check = model.find(item => !item.get('value'))
     if (_check) mainUtils.fieldsRequired()
     else {
-      const _model = utils.buildModel(model, image)
-      this.props.setStaffId(_model.id)
-      this.props.addStaffRequest(_model)
+      let _message = {}
+      if (id) _message = messages.UPDATE_STAFF(model.get(0).value)
+      else _message = messages.ADD_STAFF(model.get(0).value)
+      Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
     }
+  }
+
+  _onConfirmSubmit () {
+    const {adminStaff} = this.props
+    const model = adminStaff.get('model')
+    const image = adminStaff.get('image')
+    const _model = utils.buildModel(model, image)
+    this.props.setStaffId(_model.id)
+    this.props.addStaffRequest(_model)
+    this.props.setTimeout(() => this._onClearFields(), 1000)
   }
 
   _onSelectStaff (data) {
@@ -73,42 +91,58 @@ class Staff extends Component {
   }
 
   _onDeleteStaff (data) {
+    const _message = messages.DELETE_STAFF(data.get('name'))
+    Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmDelete(data)}])
+  }
+
+  _onConfirmDelete (data) {
     this.props.deleteStaffRequest(data.get('id'))
+    this._onClearFields()
+  }
+
+  _onClearFields () {
     const _clone = cloneDeep(INPUT_FIELDS)
     this.props.setStaffData(_clone)
     this.props.setStaffImage('empty')
+    this.props.setStaffId('')
   }
 
   render () {
     const {adminStaff, adminTeam} = this.props
     const model = adminStaff.get('model')
     const image = adminStaff.get('image')
-    const teamId = adminTeam.get('id')
     const data = adminStaff.get('data')
+    const id = adminStaff.get('id')
+    const teamId = adminTeam.get('id')
 
     return (
       <View>
         {!teamId && (<NoTeam />)}
         <Card>
+          {id !== '' && (
+            <CardItem style={mainStyles.alignItemsRight}>
+              <Button small dark iconRight onPress={this._onClearFields} transparent>
+                <Text>Clear Fields</Text>
+                <Icon name='ios-close-circle' />
+              </Button>
+            </CardItem>
+          )}
           <CardItem>
-            <Button
-              onPress={this._onPickImage}
-              block
-              transparent>
-              <Text>Select Staff Image</Text>
-            </Button>
+            <Button onPress={this._onPickImage} block transparent><Text>Select Staff Image</Text></Button>
           </CardItem>
           {image !== 'empty' && (
             <CardItem style={mainStyles.alignItemsCenter}>
-              <Image source={{ uri: config.IMAGE_64(image) }} style={{ width: 200, height: 200 }} />
+              <Image source={{uri: config.IMAGE_64(image)}} style={mainStyles.imagePick} />
             </CardItem>
           )}
           {model.map((item, i) => (
-            <CardItem key={i}>
-              <Item floatingLabel>
+            <CardItem key={i} style={mainStyles.alignStretch}>
+              <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   disabled={!teamId}
+                  placeholder={item.get('placeholder')}
+                  keyboardType={item.get('keyboardType')}
                   getRef={ref => { this[item.get('id')] = ref }}
                   value={item.get('value')}
                   returnKeyType={item.get('returnKeyType')}
@@ -117,13 +151,13 @@ class Staff extends Component {
               </Item>
             </CardItem>
           ))}
-          <CardItem style={mainStyles.submitBtnCard}>
+          <CardItem style={mainStyles.alignStretch}>
             <Button
               onPress={this._onSubmit}
               block
               disabled={!teamId}
-              warning>
-              <Text>Submit</Text>
+              warning={!id}>
+              <Text>{id ? 'Update' : 'Submit'}</Text>
             </Button>
           </CardItem>
           <CardItem style={mainStyles.alignItemsCenter}>
@@ -137,13 +171,10 @@ class Staff extends Component {
               enableEmptySections
               dataSource={this.ds.cloneWithRows(data.toArray())}
               renderRow={data =>
-                <ListItem style={mainStyles.pl20} onPress={() => this._onSelectStaff(data)}><Text>{data.get('name')}</Text></ListItem>}
+                <ListItem style={mainStyles.pl20}
+                  onPress={() => this._onSelectStaff(data)}><Text>{data.get('name')}</Text></ListItem>}
               renderRightHiddenRow={data =>
-                <Button
-                  full
-                  danger
-                  onPress={_ => this._onDeleteStaff(data)}
-                  style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <Button full danger onPress={_ => this._onDeleteStaff(data)} style={mainStyles.deleteSlideBtn}>
                   <Icon active name='trash' />
                 </Button>}
               rightOpenValue={-75}
@@ -164,7 +195,8 @@ Staff.propTypes = {
   resetStaffData: PropTypes.func,
   fetchStaffByIdRequest: PropTypes.func,
   addStaffRequest: PropTypes.func,
-  deleteStaffRequest: PropTypes.func
+  deleteStaffRequest: PropTypes.func,
+  setTimeout: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -185,4 +217,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Staff)
+)(ReactTimeout(Staff))

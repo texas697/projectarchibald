@@ -3,6 +3,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'teamName',
   keyboardType: 'default',
+  placeholder: 'xxxxxxx',
   nextId: '',
   returnKeyType: 'go'
 }]

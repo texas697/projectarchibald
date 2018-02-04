@@ -66,19 +66,21 @@ class HighSchool extends Component {
         {!teamId && (<NoTeam />)}
         <Card>
           {model.map((item, i) => (
-            <CardItem key={i}>
-              <Item floatingLabel>
+            <CardItem key={i} style={mainStyles.alignStretch}>
+              <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   disabled={!teamId}
+                  placeholder={item.get('placeholder')}
                   value={item.get('value')}
+                  keyboardType={item.get('keyboardType')}
                   returnKeyType={item.get('returnKeyType')}
                   onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                   onChangeText={val => this._onInputChange(val, i)} />
               </Item>
             </CardItem>
           ))}
-          <CardItem style={mainStyles.submitBtnCard}>
+          <CardItem style={mainStyles.alignStretch}>
             <Button
               onPress={this._onSubmit}
               block

@@ -83,7 +83,7 @@ class Roster extends Component {
             </Item>
           </CardItem>
         ))}
-        <CardItem style={mainStyles.submitBtnCard}>
+        <CardItem style={mainStyles.alignStretch}>
           <Button
             onPress={this._onSubmit}
             block

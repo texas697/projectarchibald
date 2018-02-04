@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Image} from 'react-native'
+import {Image, Alert} from 'react-native'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-base'
@@ -11,6 +11,7 @@ import * as actions from './action'
 import * as utils from './utils'
 import * as config from '../../../config/index'
 import * as mainUtils from '../../../utils/index'
+import * as messages from '../../../messages/index'
 
 class Coach extends Component {
   constructor (props) {
@@ -24,11 +25,6 @@ class Coach extends Component {
     const {adminCoach} = this.props
     const id = adminCoach.get('id')
     this.props.fetchCoachByIdRequest(id)
-  }
-
-  async _onPickImage () {
-    let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
-    if (!result.cancelled) this.props.setCoachImage(result.base64)
   }
 
   componentDidUpdate (prevProps) {
@@ -45,6 +41,15 @@ class Coach extends Component {
     if (isFetching !== _isFetching && !isFetching) utils.setCoachData(coach)
   }
 
+  _focusNext (nextField) {
+    this[nextField]._root.focus()
+  }
+
+  async _onPickImage () {
+    let result = await ImagePicker.launchImageLibraryAsync({allowsEditing: true, aspect: [4, 3], base64: true})
+    if (!result.cancelled) this.props.setCoachImage(result.base64)
+  }
+
   _onInputChange (val, i) {
     const {adminCoach} = this.props
     let model = adminCoach.get('model')
@@ -56,14 +61,21 @@ class Coach extends Component {
   _onSubmit () {
     const {adminCoach} = this.props
     const model = adminCoach.get('model')
-    const image = adminCoach.get('image')
     const _check = model.find(item => !item.get('value'))
     if (_check) mainUtils.fieldsRequired()
     else {
-      const _model = utils.buildModel(model, image)
-      this.props.setCoachId(_model.id)
-      this.props.addCoachRequest(_model)
+      const _message = messages.UPDATE_COACH(model.get(0).value)
+      Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
     }
+  }
+
+  _onConfirmSubmit () {
+    const {adminCoach} = this.props
+    const model = adminCoach.get('model')
+    const image = adminCoach.get('image')
+    const _model = utils.buildModel(model, image)
+    this.props.setCoachId(_model.id)
+    this.props.addCoachRequest(_model)
   }
 
   render () {
@@ -82,22 +94,25 @@ class Coach extends Component {
         </CardItem>
         {image !== 'empty' && (
           <CardItem style={mainStyles.alignItemsCenter}>
-            <Image source={{ uri: config.IMAGE_64(image) }} style={{ width: 200, height: 200 }} />
+            <Image source={{ uri: config.IMAGE_64(image) }} style={mainStyles.imagePick} />
           </CardItem>
         )}
         {model.map((item, i) => (
-          <CardItem key={i}>
-            <Item floatingLabel>
+          <CardItem key={i} style={mainStyles.alignStretch}>
+            <Item stackedLabel>
               <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
               <Input
                 value={item.get('value')}
+                getRef={ref => { this[item.get('id')] = ref }}
                 returnKeyType={item.get('returnKeyType')}
+                keyboardType={item.get('keyboardType')}
+                placeholder={item.get('placeholder')}
                 onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                 onChangeText={val => this._onInputChange(val, i)} />
             </Item>
           </CardItem>
         ))}
-        <CardItem style={mainStyles.submitBtnCard}>
+        <CardItem style={mainStyles.alignStretch}>
           <Button
             onPress={this._onSubmit}
             block

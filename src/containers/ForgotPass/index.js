@@ -30,7 +30,7 @@ class ForgotPassword extends Component {
                     onChangeText={resetEmail => this.props.onChange(resetEmail)} />
                 </Item>
               </ListItem>
-              <ListItem style={mainStyles.submitBtnCard}>
+              <ListItem style={mainStyles.alignStretch}>
                 <Button
                   onPress={this.props.onSubmit}
                   block

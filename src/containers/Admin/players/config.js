@@ -3,6 +3,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'playerName',
   keyboardType: 'default',
+  placeholder: 'xxxxxxx',
   nextId: 'gradYear',
   returnKeyType: 'next'
 }, {
@@ -10,6 +11,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'gradYear',
   keyboardType: 'numeric',
+  placeholder: '9999',
   nextId: 'height',
   returnKeyType: 'next'
 }, {
@@ -17,6 +19,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'height',
   keyboardType: 'numeric',
+  placeholder: "9'99",
   nextId: 'weight',
   returnKeyType: 'next'
 }, {
@@ -24,6 +27,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'weight',
   keyboardType: 'numeric',
+  placeholder: '999',
   nextId: 'phone',
   returnKeyType: 'next'
 }, {
@@ -31,13 +35,15 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'phone',
   keyboardType: 'phone-pad',
+  placeholder: '9999999999',
   nextId: 'parent',
   returnKeyType: 'next'
 }, {
-  label: 'Parent',
+  label: 'Parent Name',
   value: '',
   id: 'parent',
   keyboardType: 'default',
+  placeholder: 'xxxxxxx',
   nextId: 'parentPhone',
   returnKeyType: 'next'
 }, {
@@ -45,6 +51,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'parentPhone',
   keyboardType: 'phone-pad',
+  placeholder: '9999999999',
   nextId: 'twitter',
   returnKeyType: 'next'
 }, {
@@ -52,6 +59,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'twitter',
   keyboardType: 'twitter',
+  placeholder: 'xxxxxxx',
   nextId: 'snapchat',
   returnKeyType: 'next'
 }, {
@@ -59,6 +67,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'snapchat',
   keyboardType: 'default',
+  placeholder: 'xxxxxxx',
   nextId: 'instagram',
   returnKeyType: 'next'
 }, {
@@ -66,13 +75,15 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'instagram',
   keyboardType: 'default',
+  placeholder: 'xxxxxxx',
   nextId: 'email',
   returnKeyType: 'next'
 }, {
-  label: 'Email',
+  label: 'Player Email',
   value: '',
   id: 'email',
   keyboardType: 'email-address',
+  placeholder: 'xxxxx@xxxxx.com',
   nextId: '',
   returnKeyType: 'go'
 }]

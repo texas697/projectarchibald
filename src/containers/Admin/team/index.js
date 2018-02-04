@@ -55,7 +55,7 @@ class Team extends Component {
       <View>
         <TeamCard />
         <Card>
-          <CardItem style={mainStyles.submitBtnCard}>
+          <CardItem style={mainStyles.alignStretch}>
             <Button
               onPress={this._onSubmit}
               block

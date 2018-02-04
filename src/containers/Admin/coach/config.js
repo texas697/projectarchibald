@@ -3,6 +3,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'coachName',
   keyboardType: 'default',
+  placeholder: 'xxxxxxx',
   nextId: 'coachPhone',
   returnKeyType: 'next'
 }, {
@@ -10,6 +11,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'coachPhone',
   keyboardType: 'phone-pad',
+  placeholder: '9999999999',
   nextId: 'coachEmail',
   returnKeyType: 'next'
 }, {
@@ -17,6 +19,7 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'coachEmail',
   keyboardType: 'email-address',
+  placeholder: 'xxxxx@xxxxx.com',
   nextId: '',
   returnKeyType: 'go'
 }]
