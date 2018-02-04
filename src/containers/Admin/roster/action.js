@@ -1,9 +1,37 @@
 import * as types from '../../../types/index'
 
-export const setRosterData = model => {
+export const setRosterPlayer = player => {
   return {
-    type: types.SET_ROSTER_DATA,
-    model
+    type: types.SET_ROSTER_PLAYER,
+    player
+  }
+}
+
+export const setRosterStaff = staff => {
+  return {
+    type: types.SET_ROSTER_STAFF,
+    staff
+  }
+}
+
+export const fetchRosterByIdRequest = id => {
+  return {
+    type: types.ROSTER_BY_ID_FETCH_REQUEST,
+    id
+  }
+}
+
+export const fetchRosterByIdSuccess = roster => {
+  return {
+    type: types.ROSTER_BY_ID_FETCH_SUCCESS,
+    roster
+  }
+}
+
+export const fetchRosterByIdFailure = error => {
+  return {
+    type: types.ROSTER_BY_ID_FETCH_FAILURE,
+    error
   }
 }
 
@@ -69,5 +97,12 @@ export const deleteRosterFailure = error => {
 export const resetRosterData = () => {
   return {
     type: types.RESET_ROSTER_DATA
+  }
+}
+
+export const setRosterId = id => {
+  return {
+    type: types.SET_ROSTER_ID,
+    id
   }
 }

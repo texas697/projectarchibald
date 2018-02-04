@@ -13,7 +13,7 @@ export const COLORS = {
 
 export const IMAGE_OPTIONS = {allowsEditing: true, aspect: [4, 3], base64: true}
 
-export const EMPTY_OPTION = { value: '', label: '' }
+export const EMPTY_OPTION = { value: 'undefined', label: '-Select-' }
 
 export const TOAST_SUCCESS = {text: 'Success', position: 'bottom', duration: 3000, type: 'success'}
 export const TOAST_ERROR = error => {

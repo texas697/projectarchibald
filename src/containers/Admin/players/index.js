@@ -14,7 +14,6 @@ import * as actions from './action'
 import * as config from '../../../config/index'
 import * as messages from '../../../messages/index'
 import * as utils from './utils'
-import * as mainUtils from '../../../utils/index'
 import {INPUT_FIELDS} from './config'
 import NoTeam from '../../../components/NoTeam/index'
 

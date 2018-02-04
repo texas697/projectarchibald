@@ -72,3 +72,27 @@ export const DELETE_PLAYER = name => {
     body: name
   }
 }
+export const ADD_ROSTER = {
+  title: 'Add Roster?',
+  body: ''
+}
+export const UPDATE_ROSTER = {
+  title: 'Update Roster?',
+  body: ''
+}
+export const ROSTER_IN_LIST = {
+  title: 'Selected is Already In Roster',
+  body: ''
+}
+export const ROSTER_NO_HS_COACH = {
+  title: 'High School and Coach must be filled out',
+  body: ''
+}
+export const ROSTER_NO_PLAYERS = {
+  title: 'Roster must have at least 1 player',
+  body: ''
+}
+export const ROSTER_NO_STAFF = {
+  title: 'Roster must have at least 1 staff',
+  body: ''
+}
