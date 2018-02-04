@@ -35,10 +35,10 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
-    const _model = yield teamsUtils.buildModel()
-    yield put(addTeamsRequest(_model))
     const res = yield call(_post, action.model)
     yield put(actions.addStaffSuccess(res))
+    const _model = yield teamsUtils.buildModel()
+    yield put(addTeamsRequest(_model))
   } catch (error) {
     yield put(actions.addStaffFailure(error))
   }

@@ -5,8 +5,9 @@ import {INPUT_FIELDS} from './config'
 import * as actions from './action'
 
 export const buildModel = (model, image) => {
+  const id = store.getState().adminStaff.get('id')
   return {
-    id: uuid.v4(),
+    id: id || uuid.v4(),
     name: model.getIn([0, 'value']),
     title: model.getIn([1, 'value']),
     image: image,

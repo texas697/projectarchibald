@@ -100,3 +100,10 @@ export const resetStaffData = () => {
     type: types.RESET_STAFF_DATA
   }
 }
+
+export const setStaffId = id => {
+  return {
+    type: types.SET_STAFF_ID,
+    id
+  }
+}

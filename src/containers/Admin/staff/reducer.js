@@ -8,6 +8,7 @@ export const INIT_STATE = {
   options: Immutable.fromJS([]),
   staff: Immutable.fromJS({}),
   image: 'empty',
+  id: '',
   isFetching: false,
   isAdding: true,
   isDeleting: true,
@@ -76,6 +77,10 @@ export default (state = initialState, action) => {
     case types.SET_STAFF_DATA:
       return state
         .set('model', Immutable.fromJS(action.model))
+
+    case types.SET_STAFF_ID:
+      return state
+        .set('id', action.id)
 
     case types.SET_STAFF_IMAGE:
       return state

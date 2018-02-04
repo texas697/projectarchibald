@@ -56,6 +56,7 @@ class Staff extends Component {
     if (_check) mainUtils.fieldsRequired()
     else {
       const _model = utils.buildModel(model, image)
+      this.props.setStaffId(_model.id)
       this.props.addStaffRequest(_model)
     }
   }
@@ -79,7 +80,7 @@ class Staff extends Component {
           </CardItem>
           {image !== 'empty' && (
             <CardItem style={mainStyles.alignItemsCenter}>
-              <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+              <Image source={{ uri: config.IMAGE_64(image) }} style={{ width: 200, height: 200 }} />
             </CardItem>
           )}
           {model.map((item, i) => (
@@ -115,7 +116,7 @@ Staff.propTypes = {
   adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminStaff: PropTypes.instanceOf(Immutable.Map),
   setStaffData: PropTypes.func,
-  setSpinner: PropTypes.func,
+  setStaffId: PropTypes.func,
   setStaffImage: PropTypes.func,
   resetStaffData: PropTypes.func,
   addStaffRequest: PropTypes.func
@@ -130,7 +131,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   addStaffRequest: model => actions.addStaffRequest(model),
   setStaffData: model => actions.setStaffData(model),
   setStaffImage: image => actions.setStaffImage(image),
-  resetStaffData: () => actions.resetStaffData()
+  resetStaffData: () => actions.resetStaffData(),
+  setStaffId: id => actions.setStaffId(id)
 }, dispatch)
 
 export default connect(

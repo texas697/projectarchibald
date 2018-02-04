@@ -21,5 +21,5 @@ export const setCoachData = coach => {
   INPUT_FIELDS[1].value = coach.get('phone')
   INPUT_FIELDS[2].value = coach.get('email')
   store.dispatch(actions.setCoachData(INPUT_FIELDS))
-  store.dispatch(actions.setCoachImage(coach.image))
+  store.dispatch(actions.setCoachImage(coach.get('image')))
 }
