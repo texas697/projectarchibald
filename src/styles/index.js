@@ -31,6 +31,11 @@ export default {
   textCenter: {
     textAlign: 'center'
   },
+  selectLabel: {
+    color: 'grey',
+    fontSize: 15,
+    paddingLeft: 5
+  },
   deleteSlideBtn: {
     flex: 1,
     alignItems: 'center',

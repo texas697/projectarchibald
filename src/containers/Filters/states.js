@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import {Platform} from 'react-native'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import {Container, Content, Text, Card, List, ListItem, Right, Icon, Button, Picker, H3, Col} from 'native-base'
+import {Container, Content, Text, Card, List, ListItem, Right, Icon, Button, Picker, H3, Col, Label} from 'native-base'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
 import * as config from '../../config/index'
@@ -47,11 +47,11 @@ class States extends Component {
                 </Right>
               </ListItem>
               <ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
-                <H3>Select State</H3>
+                <Label style={mainStyles.selectLabel}>Select Age State</Label>
               </ListItem>
               <ListItem style={mainStyles.alignStretch}>
                 <Picker
-                  placeholder='-Select State-'
+                  placeholder='-Select-'
                   textStyle={{color: '#000'}}
                   iosHeader='Select one'
                   mode='dropdown'

@@ -117,11 +117,11 @@ class Roster extends Component {
       <View>
         <Card>
           <CardItem style={[styles.alignItemsCenter]}>
-            <Label>Select Staff</Label>
+            <Label style={mainStyles.selectLabel}>Select Staff</Label>
           </CardItem>
           <CardItem style={mainStyles.alignStretch}>
             <Picker
-              placeholder='-Select Staff-'
+              placeholder='-Select-'
               textStyle={{color: '#000'}}
               iosHeader='Select one'
               mode='dropdown'
@@ -134,11 +134,11 @@ class Roster extends Component {
             </Picker>
           </CardItem>
           <CardItem style={[styles.alignItemsCenter]}>
-            <Label>Select Player</Label>
+            <Label style={mainStyles.selectLabel}>Select Player</Label>
           </CardItem>
           <CardItem style={mainStyles.alignStretch}>
             <Picker
-              placeholder='-Select Player-'
+              placeholder='-Select-'
               textStyle={{color: '#000'}}
               iosHeader='Select one'
               mode='dropdown'

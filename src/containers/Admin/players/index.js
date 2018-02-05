@@ -153,11 +153,11 @@ class Player extends Component {
             </CardItem>
           )}
           <CardItem style={[styles.alignItemsCenter]}>
-            <Label>Select Age Group</Label>
+            <Label style={mainStyles.selectLabel}>Age Group</Label>
           </CardItem>
           <CardItem style={mainStyles.alignStretch}>
             <Picker
-              placeholder='-Select Age Group-'
+              placeholder='-Select-'
               textStyle={{color: '#000'}}
               iosHeader='Select one'
               mode='dropdown'

@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 import {Image, Platform} from 'react-native'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Picker, Label } from 'native-base'
+import { Card, CardItem, Item, Label, Input, Button, Text, Picker } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../../styles/index'
@@ -58,11 +58,11 @@ class TeamCard extends Component {
           </CardItem>
         )}
         <CardItem style={[styles.alignItemsCenter]}>
-          <Label>Select State</Label>
+          <Label style={mainStyles.selectLabel}>State</Label>
         </CardItem>
         <CardItem style={mainStyles.alignStretch}>
           <Picker
-            placeholder='-Select State-'
+            placeholder='-Select-'
             textStyle={{color: '#000'}}
             iosHeader='Select one'
             mode='dropdown'

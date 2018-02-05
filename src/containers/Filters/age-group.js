@@ -28,11 +28,11 @@ class AgeGroup extends Component {
                 </Right>
               </ListItem>
               <ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
-                <Label>Select Age Group</Label>
+                <Label style={mainStyles.selectLabel}>Select Age Group</Label>
               </ListItem>
               <ListItem style={mainStyles.alignStretch}>
                 <Picker
-                  placeholder='-Select Age Group-'
+                  placeholder='-Select-'
                   textStyle={{color: '#000'}}
                   iosHeader='Select one'
                   mode='dropdown'
