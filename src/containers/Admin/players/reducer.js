@@ -88,6 +88,7 @@ export default (state = initialState, action) => {
 
     case types.RESET_PLAYER_DATA:
       return state
+        .set('id', '')
         .set('image', 'empty')
         .set('isFetching', false)
         .set('isAdding', false)

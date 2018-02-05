@@ -73,8 +73,8 @@ class Roster extends Component {
     let _message = {}
     if (id) _message = messages.UPDATE_ROSTER
     else _message = messages.ADD_ROSTER
-    if (adminRoster.get('player').size <= 0) Alert.alert(messages.ROSTER_NO_PLAYERS.title, '', [{text: 'OK', onPress: () => console.log('')}])
-    else if (adminRoster.get('staff').size <= 0) Alert.alert(messages.ROSTER_NO_STAFF.title, '', [{text: 'OK', onPress: () => console.log('')}])
+    if (adminRoster.get('player').size === 0) Alert.alert(messages.ROSTER_NO_PLAYERS.title, '', [{text: 'OK', onPress: () => console.log('')}])
+    else if (adminRoster.get('staff').size === 0) Alert.alert(messages.ROSTER_NO_STAFF.title, '', [{text: 'OK', onPress: () => console.log('')}])
     else if (!adminHS.get('id') || !adminCoach.get('id')) Alert.alert(messages.ROSTER_NO_HS_COACH.title, '', [{text: 'OK', onPress: () => console.log('')}])
     else {
       Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])

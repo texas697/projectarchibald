@@ -39,12 +39,12 @@ export default (state = initialState, action) => {
     case types.ROSTER_FETCH_SUCCESS:
       return state
         .set('isFetching', false)
-        .set('id', action.data.id)
-        .set('coachId', action.data.coachId)
-        .set('hsId', action.data.hsId)
-        .set('teamId', action.data.teamId)
-        .set('player', Immutable.fromJS(action.data.player || []))
-        .set('staff', Immutable.fromJS(action.data.staff || []))
+        .set('id', action.data ? action.data.id : '')
+        .set('coachId', action.data ? action.data.coachId : '')
+        .set('hsId', action.data ? action.data.hsId : '')
+        .set('teamId', action.data ? action.data.teamId : '')
+        .set('player', Immutable.fromJS(action.data ? action.data.player : []))
+        .set('staff', Immutable.fromJS(action.data ? action.data.staff : []))
 
     case types.ROSTER_FETCH_FAILURE:
       return state
@@ -87,12 +87,17 @@ export default (state = initialState, action) => {
 
     case types.RESET_ROSTER_DATA:
       return state
+        .set('id', '')
+        .set('coachId', '')
+        .set('hsId', '')
+        .set('teamId', '')
+        .set('id', '')
         .set('image', 'empty')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)
-        .set('data', Immutable.fromJS([]))
-        .set('roster', Immutable.fromJS({}))
+        .set('player', Immutable.fromJS([]))
+        .set('staff', Immutable.fromJS([]))
 
     case types.SET_ROSTER_ID:
       return state

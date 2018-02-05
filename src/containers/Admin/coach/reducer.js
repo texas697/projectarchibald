@@ -84,6 +84,7 @@ export default (state = initialState, action) => {
 
     case types.RESET_COACH_DATA:
       return state
+        .set('id', '')
         .set('image', 'empty')
         .set('isFetching', false)
         .set('isAdding', false)

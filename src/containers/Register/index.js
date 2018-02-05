@@ -14,6 +14,11 @@ import CustomSpinner from '../../components/Spinner'
 import TeamCard from '../Admin/team/components/team-card'
 import * as localUtils from './utils'
 import {setTeamId, resetTeamData} from '../Admin/team/action'
+import {resetCoachData} from '../Admin/coach/action'
+import {resetHsData} from '../Admin/highSchool/action'
+import {resetPlayerData} from '../Admin/players/action'
+import {resetRosterData} from '../Admin/roster/action'
+import {resetStaffData} from '../Admin/staff/action'
 import * as teamUtils from '../Admin/team/utils'
 
 const logo = require('../../../assets/basketball-logo.png')
@@ -26,6 +31,11 @@ class Register extends Component {
 
   componentDidMount () {
     this.props.resetTeamData()
+    this.props.resetCoachData()
+    this.props.resetHsData()
+    this.props.resetPlayerData()
+    this.props.resetRosterData()
+    this.props.resetStaffData()
   }
 
   componentDidUpdate (prevProps) {
@@ -155,6 +165,11 @@ Register.propTypes = {
   setIsCoach: PropTypes.func,
   setSpinner: PropTypes.func,
   resetTeamData: PropTypes.func,
+  resetCoachData: PropTypes.func,
+  resetHsData: PropTypes.func,
+  resetPlayerData: PropTypes.func,
+  resetRosterData: PropTypes.func,
+  resetStaffData: PropTypes.func,
   setTeamId: PropTypes.func,
   navigation: PropTypes.object,
   register: PropTypes.instanceOf(Immutable.Map),
@@ -172,7 +187,12 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setRegisterData: model => actions.setRegisterData(model),
   setIsCoach: () => actions.setIsCoach(),
   setTeamId: id => setTeamId(id),
-  resetTeamData: () => resetTeamData()
+  resetTeamData: () => resetTeamData(),
+  resetCoachData: () => resetCoachData(),
+  resetHsData: () => resetHsData(),
+  resetPlayerData: () => resetPlayerData(),
+  resetRosterData: () => resetRosterData(),
+  resetStaffData: () => resetStaffData()
 }, dispatch)
 
 export default connect(
