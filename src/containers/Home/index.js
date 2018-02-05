@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
+import {ImageBackground} from 'react-native'
 import Modal from 'react-native-modal'
 import {
   Container,
   Content,
-  Thumbnail,
   Text,
   List,
   ListItem,
@@ -19,19 +19,35 @@ import {
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import CustomHeader from '../../components/Header/index'
-import Filters from '../Filters/index'
+import * as actions from '../Filters/action'
+import TeamName from '../Filters/team-name'
+import AgeGroup from '../Filters/age-group'
+import States from '../Filters/states'
+import PlayerName from '../Filters/player-name'
 
-const teamName = require('../../../assets/team-thumbnail.png')
-const playerName = require('../../../assets/player-thumbnail.png')
-const ageGroup = require('../../../assets/age-thumbnail.png')
-const state = require('../../../assets/state-thumbnail.png')
-const event = require('../../../assets/event-thumbnail.png')
-const tournament = require('../../../assets/tournament-thumbnail.png')
+const basketball = require('../../../assets/home-ball.png')
+
+const FilterCol = ({onPress, label}) => (
+  <Col style={styles.thumbCol}>
+    <ImageBackground style={styles.thumbImage} source={basketball}>
+      <Text onPress={onPress} style={styles.thumbText}>{label}</Text>
+    </ImageBackground>
+  </Col>
+)
+
+FilterCol.propTypes = {
+  label: PropTypes.string,
+  onPress: PropTypes.func
+}
 
 class Home extends Component {
   render () {
-    const {home} = this.props
-    const visibleModal = home.get('visibleModal')
+    const {filters} = this.props
+    const visibleAgeGroup = filters.get('visibleAgeGroup')
+    const visibleState = filters.get('visibleState')
+    const visibleEvent = filters.get('visibleEvent')
+    const visiblePlayer = filters.get('visiblePlayer')
+    const visibleTeamName = filters.get('visibleTeamName')
     return (
       <Container style={mainStyles.container}>
         <CustomHeader title='Home' {...this.props} />
@@ -50,38 +66,36 @@ class Home extends Component {
                   <H3>Search By</H3>
                 </ListItem>
                 <ListItem style={styles.noBorder}>
-                  <Col style={styles.thumbCol}>
-                    <Thumbnail style={styles.thumbImage} source={teamName} />
-                  </Col>
-                  <Col style={styles.thumbCol}>
-                    <Thumbnail style={styles.thumbImage} source={playerName} />
-                  </Col>
+                  <FilterCol label='Team Name' onPress={() => this.props.toggleTeamModal()} />
+                  <FilterCol label='Player Name' onPress={() => this.props.togglePlayerModal()} />
                 </ListItem>
                 <ListItem style={styles.noBorder}>
-                  <Col style={styles.thumbCol}>
-                    <Thumbnail style={styles.thumbImage} source={ageGroup} />
-                  </Col>
-                  <Col style={styles.thumbCol}>
-                    <Thumbnail style={styles.thumbImage} source={state} />
-                  </Col>
+                  <FilterCol label='Age Group' onPress={() => this.props.toggleAgeGroupModal()} />
+                  <FilterCol label='State/Region' onPress={() => this.props.toggleStateModal()} />
                 </ListItem>
                 <ListItem style={styles.noBorder}>
-                  <Col style={styles.thumbCol}>
-                    <Thumbnail style={styles.thumbImage} source={event} />
-                  </Col>
-                  <Col style={styles.thumbCol}>
-                    <Thumbnail style={styles.thumbImage} source={tournament} />
-                  </Col>
+                  <FilterCol label='Event' onPress={() => this.props.toggleEventModal()} />
+                  <FilterCol label='Tournament' onPress={() => this.props.toggleEventModal()} />
                 </ListItem>
               </List>
             </CardItem>
           </Card>
         </Content>
         <Modal
-          isVisible={visibleModal}
-          animationIn={'slideInLeft'}
-          animationOut={'slideOutRight'}>
-          <Filters />
+          isVisible={visibleAgeGroup}>
+          <AgeGroup />
+        </Modal>
+        <Modal
+          isVisible={visibleState}>
+          <States />
+        </Modal>
+        <Modal
+          isVisible={visiblePlayer}>
+          <PlayerName />
+        </Modal>
+        <Modal
+          isVisible={visibleTeamName}>
+          <TeamName />
         </Modal>
       </Container>
     )
@@ -90,16 +104,25 @@ class Home extends Component {
 
 Home.propTypes = {
   dimensions: PropTypes.instanceOf(Immutable.Map),
-  home: PropTypes.instanceOf(Immutable.Map)
+  filters: PropTypes.instanceOf(Immutable.Map),
+  toggleTeamModal: PropTypes.func,
+  toggleAgeGroupModal: PropTypes.func,
+  toggleEventModal: PropTypes.func,
+  toggleStateModal: PropTypes.func,
+  togglePlayerModal: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  home: state.home,
+  filters: state.filters,
   dimensions: state.dimensions
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-
+  toggleTeamModal: () => actions.toggleTeamModal(),
+  toggleAgeGroupModal: () => actions.toggleAgeGroupModal(),
+  toggleEventModal: () => actions.toggleEventModal(),
+  togglePlayerModal: () => actions.togglePlayerModal(),
+  toggleStateModal: () => actions.toggleStateModal()
 }, dispatch)
 
 export default connect(

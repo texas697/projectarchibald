@@ -8,7 +8,7 @@ export const INIT_STATE = {
   options: Immutable.fromJS([]),
   coach: Immutable.fromJS({}),
   id: '',
-  image: 'empty',
+  image: '',
   isFetching: false,
   isAdding: true,
   isDeleting: true,
@@ -85,7 +85,7 @@ export default (state = initialState, action) => {
     case types.RESET_COACH_DATA:
       return state
         .set('id', '')
-        .set('image', 'empty')
+        .set('image', '')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)

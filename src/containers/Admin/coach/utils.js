@@ -1,9 +1,11 @@
 
 import firebaseTime from 'firebase'
 import cloneDeep from 'lodash/cloneDeep'
+import isEmpty from 'lodash/isEmpty'
 import store, {firebaseApp} from '../../../redux/store'
 import {INPUT_FIELDS} from './config'
 import * as actions from './action'
+import * as config from '../../../config/index'
 
 export const buildModel = (model, image) => {
   const id = store.getState().adminCoach.get('id')
@@ -12,7 +14,7 @@ export const buildModel = (model, image) => {
     name: model.getIn([0, 'value']).trim(),
     phone: model.getIn([1, 'value']).trim(),
     email: model.getIn([2, 'value']).trim().toLowerCase(),
-    image: image || 'empty',
+    image: isEmpty(image) ? config.PLACEHOLDER_IMAGE : image,
     teamId: store.getState().adminTeam.get('id'),
     date: firebaseTime.database.ServerValue.TIMESTAMP
   }

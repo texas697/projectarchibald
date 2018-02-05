@@ -107,3 +107,10 @@ export const setTeamId = id => {
     id
   }
 }
+
+export const setTeamState = state => {
+  return {
+    type: types.SET_TEAM_STATE,
+    state
+  }
+}

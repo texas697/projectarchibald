@@ -107,3 +107,10 @@ export const setPlayerId = id => {
     id
   }
 }
+
+export const setPlayerAgeGroup = ageGroup => {
+  return {
+    type: types.SET_PLAYER_AGE_GROUP,
+    ageGroup
+  }
+}

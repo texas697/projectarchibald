@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Image, ListView, Alert} from 'react-native'
+import {Image, ListView, Alert, Platform} from 'react-native'
+import isEmpty from 'lodash/isEmpty'
 import cloneDeep from 'lodash/cloneDeep'
 import ReactTimeout from 'react-timeout'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3, Thumbnail, Left } from 'native-base'
+import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3, Thumbnail, Left, Picker } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import styles from './styles'
@@ -18,6 +19,7 @@ import {INPUT_FIELDS} from './config'
 import CustomSpinner from '../../../components/Spinner'
 import {setSpinner} from '../../../modules/Spinner/action'
 
+const platform = Platform.OS
 class Player extends Component {
   constructor (props) {
     super(props)
@@ -90,7 +92,8 @@ class Player extends Component {
     this.props.setSpinner(true)
     const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
-    const _model = utils.buildModel(model, image)
+    const ageGroup = adminPlayer.get('ageGroup')
+    const _model = utils.buildModel(model, image, ageGroup)
     this.props.setPlayerId(_model.id)
     this.props.addPlayerRequest(_model)
     this.props.setTimeout(() => this._onClearFields(), 1000)
@@ -113,7 +116,7 @@ class Player extends Component {
   _onClearFields () {
     const _clone = cloneDeep(INPUT_FIELDS)
     this.props.setPlayerData(_clone)
-    this.props.setPlayerImage('empty')
+    this.props.setPlayerImage('')
     this.props.setPlayerId('')
   }
 
@@ -121,8 +124,10 @@ class Player extends Component {
     const {adminPlayer} = this.props
     const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
+    const ageGroup = adminPlayer.get('ageGroup')
     const data = adminPlayer.get('data')
     const id = adminPlayer.get('id')
+    if (platform !== 'ios') config.AGE_GROUP_OPTIONS.unshift(config.EMPTY_OPTION)
     return (
       <View>
         <Card>
@@ -142,11 +147,28 @@ class Player extends Component {
               <Text>Select Player Image</Text>
             </Button>
           </CardItem>
-          {image !== 'empty' && (
+          {!isEmpty(image) && (
             <CardItem style={mainStyles.alignItemsCenter}>
               <Image source={{ uri: config.IMAGE_64(image) }} style={mainStyles.imagePick} />
             </CardItem>
           )}
+          <CardItem style={[styles.alignItemsCenter]}>
+            <Label>Select Age Group</Label>
+          </CardItem>
+          <CardItem style={mainStyles.alignStretch}>
+            <Picker
+              placeholder='-Select Age Group-'
+              textStyle={{color: '#000'}}
+              iosHeader='Select one'
+              mode='dropdown'
+              selectedValue={ageGroup}
+              onValueChange={this.props.setPlayerAgeGroup}
+            >
+              {config.AGE_GROUP_OPTIONS.map((item, i) => (
+                <Picker.Item key={i} label={item.label} value={item.label} />
+              ))}
+            </Picker>
+          </CardItem>
           {model.map((item, i) => (
             <CardItem key={i} style={mainStyles.alignStretch}>
               <Item stackedLabel>
@@ -216,7 +238,8 @@ Player.propTypes = {
   addPlayerRequest: PropTypes.func,
   deletePlayerRequest: PropTypes.func,
   setTimeout: PropTypes.func,
-  setSpinner: PropTypes.func
+  setSpinner: PropTypes.func,
+  setPlayerAgeGroup: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -231,6 +254,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   fetchPlayerByIdRequest: id => actions.fetchPlayerByIdRequest(id),
   deletePlayerRequest: id => actions.deletePlayerRequest(id),
   setPlayerId: id => actions.setPlayerId(id),
+  setPlayerAgeGroup: ageGroup => actions.setPlayerAgeGroup(ageGroup),
   resetPlayerData: () => actions.resetPlayerData()
 }, dispatch)
 

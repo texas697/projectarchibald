@@ -44,6 +44,7 @@
     "moment": "^2.20.1",
     "native-base": "^2.3.7",
     "prop-types": "^15.6.0",
+    "provinces": "^1.11.0",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-modal": "^4.1.1",

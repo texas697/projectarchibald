@@ -1,6 +1,5 @@
 import Immutable from 'immutable'
 import * as types from '../../../types/index'
-import {INPUT_FIELDS} from './config'
 
 export const INIT_STATE = {
   coachId: '',
@@ -92,7 +91,7 @@ export default (state = initialState, action) => {
         .set('hsId', '')
         .set('teamId', '')
         .set('id', '')
-        .set('image', 'empty')
+        .set('image', '')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)

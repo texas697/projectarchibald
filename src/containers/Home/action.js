@@ -5,3 +5,4 @@ export const toggleUserModal = () => {
     type: types.TOGGLE_USER_MODAL
   }
 }
+

@@ -7,7 +7,7 @@ export const INIT_STATE = {
   data: Immutable.fromJS([]),
   options: Immutable.fromJS([]),
   staff: Immutable.fromJS({}),
-  image: 'empty',
+  image: '',
   id: '',
   isFetching: false,
   isAdding: true,
@@ -89,7 +89,7 @@ export default (state = initialState, action) => {
     case types.RESET_STAFF_DATA:
       return state
         .set('id', '')
-        .set('image', 'empty')
+        .set('image', '')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)

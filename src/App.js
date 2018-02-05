@@ -8,11 +8,11 @@ import Register from './containers/Register/index'
 import Home from './containers/Home/index'
 import Player from './containers/Player/index'
 import Team from './containers/Team/index'
-import Filters from './containers/Filters/index'
 import SideBar from './containers/Sidebar/index'
 import store, {firebaseApp} from './redux/store'
 import {loginSuccess, logoutSuccess} from './containers/Login/action'
 import {fetchTeamsByCoachIdRequest} from './modules/Teams/action'
+import {statesFetchRequest} from './modules/States/index'
 import * as utils from './utils/index'
 
 const Drawer = DrawerNavigator(
@@ -41,7 +41,6 @@ const AppNavigator = StackNavigator(
     Home: {screen: Home},
     Player: {screen: Player},
     Team: {screen: Team},
-    Filters: {screen: Filters},
     Admin: {screen: Admin}
   },
   {
@@ -67,5 +66,6 @@ firebaseApp.auth().onAuthStateChanged(data => {
     else if (_isCoach) store.dispatch(fetchTeamsByCoachIdRequest(_user.uid))
     const user = {name: _user.displayName || _name, email: _user.email, uid: _user.uid}
     store.dispatch(loginSuccess(user))
+    store.dispatch(statesFetchRequest())
   } else store.dispatch(logoutSuccess())
 })

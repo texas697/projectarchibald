@@ -7,7 +7,8 @@ export const INIT_STATE = {
   data: Immutable.fromJS([]),
   options: Immutable.fromJS([]),
   player: Immutable.fromJS({}),
-  image: 'empty',
+  image: '',
+  ageGroup: '',
   id: '',
   isFetching: false,
   isAdding: true,
@@ -89,13 +90,17 @@ export default (state = initialState, action) => {
     case types.RESET_PLAYER_DATA:
       return state
         .set('id', '')
-        .set('image', 'empty')
+        .set('image', '')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)
         .set('data', Immutable.fromJS([]))
         .set('options', Immutable.fromJS([]))
         .set('model', Immutable.fromJS(INPUT_FIELDS))
+
+    case types.SET_PLAYER_AGE_GROUP:
+      return state
+        .set('ageGroup', action.ageGroup)
 
     default:
       return state

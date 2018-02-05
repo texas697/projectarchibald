@@ -28,6 +28,9 @@ export default {
     width: 200,
     height: 200
   },
+  textCenter: {
+    textAlign: 'center'
+  },
   deleteSlideBtn: {
     flex: 1,
     alignItems: 'center',

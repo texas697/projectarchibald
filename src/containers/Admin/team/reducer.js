@@ -7,8 +7,9 @@ export const INIT_STATE = {
   data: Immutable.fromJS([]),
   options: Immutable.fromJS([]),
   team: Immutable.fromJS({}),
-  image: 'empty',
+  image: '',
   id: '',
+  state: '',
   isFetching: false,
   isAdding: true,
   isDeleting: true,
@@ -82,6 +83,10 @@ export default (state = initialState, action) => {
       return state
         .set('image', action.image)
 
+    case types.SET_TEAM_STATE:
+      return state
+        .set('state', action.state)
+
     case types.SET_TEAM_ID:
       return state
         .set('id', action.id)
@@ -89,7 +94,7 @@ export default (state = initialState, action) => {
     case types.RESET_TEAM_DATA:
       return state
         .set('id', '')
-        .set('image', 'empty')
+        .set('image', '')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)

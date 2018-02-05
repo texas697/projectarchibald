@@ -44,7 +44,15 @@ export const INPUT_FIELDS = [{
   id: 'phone',
   keyboardType: 'phone-pad',
   placeholder: '9999999999',
-  nextId: 'parent',
+  nextId: 'age',
+  returnKeyType: 'next'
+}, {
+  label: 'Age',
+  value: '',
+  id: 'age',
+  keyboardType: 'phone-pad',
+  placeholder: 'xx',
+  nextId: 'parentPhone',
   returnKeyType: 'next'
 }, {
   label: 'Parent Name',

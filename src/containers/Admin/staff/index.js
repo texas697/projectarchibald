@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import isEmpty from 'lodash/isEmpty'
 import {Image, ListView, Alert} from 'react-native'
 import {ImagePicker} from 'expo'
 import {bindActionCreators} from 'redux'
@@ -112,7 +113,7 @@ class Staff extends Component {
   _onClearFields () {
     const _clone = cloneDeep(INPUT_FIELDS)
     this.props.setStaffData(_clone)
-    this.props.setStaffImage('empty')
+    this.props.setStaffImage('')
     this.props.setStaffId('')
   }
 
@@ -137,7 +138,7 @@ class Staff extends Component {
           <CardItem>
             <Button onPress={this._onPickImage} block transparent><Text>Select Staff Image</Text></Button>
           </CardItem>
-          {image !== 'empty' && (
+          {!isEmpty(image) && (
             <CardItem style={mainStyles.alignItemsCenter}>
               <Image source={{uri: config.IMAGE_64(image)}} style={mainStyles.imagePick} />
             </CardItem>

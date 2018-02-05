@@ -13,7 +13,7 @@ import * as config from '../../config/index'
 import CustomSpinner from '../../components/Spinner'
 import TeamCard from '../Admin/team/components/team-card'
 import * as localUtils from './utils'
-import {setTeamId, resetTeamData} from '../Admin/team/action'
+import {setTeamId, resetTeamData, addTeamRequest} from '../Admin/team/action'
 import {resetCoachData} from '../Admin/coach/action'
 import {resetHsData} from '../Admin/highSchool/action'
 import {resetPlayerData} from '../Admin/players/action'
@@ -74,9 +74,11 @@ class Register extends Component {
       this.props.registerUserRequest(credentials, _model.name)
       if (isCoach) {
         const _image = adminTeam.get('image')
+        const _state = adminTeam.get('state')
         let _modelTeam = adminTeam.get('model')
-        _modelTeam = teamUtils.buildModel(_modelTeam, _image)
+        _modelTeam = teamUtils.buildModel(_modelTeam, _image, _state)
         this.props.setTeamId(_modelTeam.id)
+        this.props.addTeamRequest(_model)
       }
     }
   }
@@ -131,7 +133,7 @@ class Register extends Component {
                   </Item>
                 </CardItem>
               ))}
-              {isCoach && (<TeamCard onSubmit={this._onSubmit} />)}
+              {isCoach && (<CardItem style={mainStyles.alignStretch}><TeamCard onSubmit={this._onSubmit} /></CardItem>)}
               <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
               <CardItem>
                 <Left>
@@ -170,6 +172,7 @@ Register.propTypes = {
   resetPlayerData: PropTypes.func,
   resetRosterData: PropTypes.func,
   resetStaffData: PropTypes.func,
+  addTeamRequest: PropTypes.func,
   setTeamId: PropTypes.func,
   navigation: PropTypes.object,
   register: PropTypes.instanceOf(Immutable.Map),
@@ -192,7 +195,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   resetHsData: () => resetHsData(),
   resetPlayerData: () => resetPlayerData(),
   resetRosterData: () => resetRosterData(),
-  resetStaffData: () => resetStaffData()
+  resetStaffData: () => resetStaffData(),
+  addTeamRequest: model => addTeamRequest(model)
 }, dispatch)
 
 export default connect(

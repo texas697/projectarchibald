@@ -1,6 +1,7 @@
 import {all} from 'redux-saga/effects'
 
 import login from '../containers/Login/saga'
+import filters from '../containers/Filters/saga'
 import register from '../containers/Register/saga'
 import adminCoach from '../containers/Admin/coach/saga'
 import adminStaff from '../containers/Admin/staff/saga'
@@ -14,6 +15,7 @@ import teams from '../modules/Teams/saga'
 export default function * () {
   yield all([
     login(),
+    filters(),
     register(),
     adminCoach(),
     adminStaff(),

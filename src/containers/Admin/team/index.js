@@ -63,7 +63,8 @@ class Team extends Component {
     this.props.setSpinner(true)
     const model = adminTeam.get('model')
     const image = adminTeam.get('image')
-    const _model = utils.buildModel(model, image)
+    const state = adminTeam.get('state')
+    const _model = utils.buildModel(model, image, state)
     this.props.setTeamId(_model.id)
     this.props.addTeamRequest(_model)
   }

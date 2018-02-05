@@ -84,7 +84,7 @@ export default (state = initialState, action) => {
     case types.RESET_HS_DATA:
       return state
         .set('id', '')
-        .set('image', 'empty')
+        .set('image', '')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)

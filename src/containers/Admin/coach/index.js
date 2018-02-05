@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {Image, Alert} from 'react-native'
 import { ImagePicker } from 'expo'
+import isEmpty from 'lodash/isEmpty'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
@@ -108,7 +109,7 @@ class Coach extends Component {
               <Text>Select Coach Image</Text>
             </Button>
           </CardItem>
-          {image !== 'empty' && (
+          {!isEmpty(image) && (
             <CardItem style={mainStyles.alignItemsCenter}>
               <Image source={{ uri: config.IMAGE_64(image) }} style={mainStyles.imagePick} />
             </CardItem>

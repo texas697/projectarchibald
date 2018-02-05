@@ -11,7 +11,8 @@ export const COLORS = {
   orange: '#e65d09'
 }
 
-export const IMAGE_OPTIONS = {allowsEditing: true, aspect: [4, 3], base64: true}
+export const PLACEHOLDER_IMAGE = 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEXMzMyWlpbFxcWqqqqcnJyjo6OxsbG3t7e+vr6pf3+GAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABTElEQVR4nO3UT07CQByG4Q8phSUtRV2WyAFK4gFaMyYuhRO0N6CJiVu4uTNTgw5h1XZh4vssfsnMl7TzXwIAAAAAAAAAAAAAAACA/+Pu+TWXPrLjd7l4MgfdDHqIsipVnFQPXflRmSS/GfTQFPFKm5dF1pUL29sUt4I+9rkytUftTr5IbaG2lmapJmUQDGDswrg/nWtf7Po9uj5FpaJlEAzwKTuTStoUvkiLdex2YH50M/kdDDJfuaFv3n2x7X1bdoFduCAYokntXOywfbHtc9Id2DjJw2CAaXYKBzxdd8HuTWPN5K46KFz6qDuv23WusfZktpI/x23ti220lavaF9dBf637VnAdzDaVPw7XQX92mAoudnwfu+/P3J/GuvGVMSZ4orb2duRuZ4wpx3q7Eit4bJvaL+HE9i/HeoUBAAAAAAAAAAAAAAAA/AFffMdIP+g1B4cAAAAASUVORK5CYII='
+export const IMAGE_OPTIONS = {allowsEditing: true, aspect: [4, 3], quality: 0.5, base64: true}
 
 export const EMPTY_OPTION = { value: 'undefined', label: '-Select-' }
 
@@ -22,74 +23,9 @@ export const TOAST_ERROR = error => {
 
 export const IMAGE_64 = base64String => `data:image/jpg;base64,${base64String}`
 
-export const FILTERS = {
-  status: [
-    {value: 'active', label: 'North'},
-    {value: 'builtout', label: 'East'},
-    {value: 'future', label: 'West'},
-    {value: 'future', label: 'South'}],
-  listPriceMin: [
-    {value: -1, label: 'No min'},
-    {value: 25000, label: '$25,000'},
-    {value: 50000, label: '$50,000'},
-    {value: 75000, label: '$75,000'},
-    {value: 100000, label: '$100,000'},
-    {value: 125000, label: '$125,000'},
-    {value: 150000, label: '$150,000'},
-    {value: 175000, label: '$175,000'},
-    {value: 200000, label: '$200,000'},
-    {value: 300000, label: '$300,000'},
-    {value: 400000, label: '$400,000'},
-    {value: 500000, label: '$500,000'},
-    {value: 600000, label: '$600,000'},
-    {value: 700000, label: '$700,000'},
-    {value: 800000, label: '$800,000'},
-    {value: 900000, label: '$900,000'},
-    {value: 1000000, label: '$1,000,000'}
-  ],
-  listPriceMax: [
-    {value: 10000000000, label: 'No max'},
-    {value: 25000, label: '$25,000'},
-    {value: 50000, label: '$50,000'},
-    {value: 75000, label: '$75,000'},
-    {value: 100000, label: '$100,000'},
-    {value: 125000, label: '$125,000'},
-    {value: 150000, label: '$150,000'},
-    {value: 175000, label: '$175,000'},
-    {value: 200000, label: '$200,000'},
-    {value: 300000, label: '$300,000'},
-    {value: 400000, label: '$400,000'},
-    {value: 500000, label: '$500,000'},
-    {value: 600000, label: '$600,000'},
-    {value: 700000, label: '$700,000'},
-    {value: 800000, label: '$800,000'},
-    {value: 900000, label: '$900,000'},
-    {value: 1000000, label: '$1,000,000'}
-  ],
-  lotSizeMin: [
-    {value: -1, label: 'No min'},
-    {value: 2000, label: '2,000 sqft'},
-    {value: 4500, label: '4,500 sqft'},
-    {value: 6500, label: '6,500 sqft'},
-    {value: 8000, label: '8,000 sqft'},
-    {value: 10890, label: '0.25 acre'},
-    {value: 14375, label: '0.33 acre'},
-    {value: 21780, label: '0.5 acre'},
-    {value: 43560, label: '1 acre'},
-    {value: 87120, label: '2 acre'},
-    {value: 130680, label: '3 acre'}
-  ],
-  lotSizeMax: [
-    {value: 10000000000, label: 'No max'},
-    {value: 2000, label: '2,000 sqft'},
-    {value: 4500, label: '4,500 sqft'},
-    {value: 6500, label: '6,500 sqft'},
-    {value: 8000, label: '8,000 sqft'},
-    {value: 10890, label: '0.25 acre'},
-    {value: 14375, label: '0.33 acre'},
-    {value: 21780, label: '0.5 acre'},
-    {value: 43560, label: '1 acre'},
-    {value: 87120, label: '2 acre'},
-    {value: 130680, label: '3 acre'}
-  ]
-}
+export const AGE_GROUP_OPTIONS = [
+  {value: '17', label: '17-Under'},
+  {value: '16', label: '16-Under'},
+  {value: '15', label: '15-Under'},
+  {value: '14', label: '14-Under'},
+  {value: '13', label: '13-Under'}]
