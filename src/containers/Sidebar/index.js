@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image } from 'react-native'
+import {Image, Platform} from 'react-native'
 import PropTypes from 'prop-types'
 import {
   Content,
@@ -44,6 +44,7 @@ const datas = [
   }
 ]
 
+const platform = Platform.OS
 class SideBar extends Component {
   constructor (props) {
     super(props)
@@ -55,7 +56,7 @@ class SideBar extends Component {
 
   render () {
     return (
-      <Container style={mainStyles.container}>
+      <Container style={platform === 'ios' ? mainStyles.scrollContainer : mainStyles.container}>
         <Content
           bounces={false}
           style={{ flex: 1, backgroundColor: '#fff', top: -1 }}

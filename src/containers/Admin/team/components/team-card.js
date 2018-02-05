@@ -33,6 +33,7 @@ class TeamCard extends Component {
     const {adminTeam} = this.props
     const model = adminTeam.get('model')
     const image = adminTeam.get('image')
+
     return (
       <Card>
         <CardItem>

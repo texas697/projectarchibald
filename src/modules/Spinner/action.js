@@ -1,7 +1,8 @@
 import * as types from '../../types'
 
-export const setSpinner = () => {
+export const setSpinner = isSpinner => {
   return {
-    type: types.SET_SPINNER
+    type: types.SET_SPINNER,
+    isSpinner
   }
 }

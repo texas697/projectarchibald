@@ -1,4 +1,5 @@
 import uuid from 'uuid'
+import cloneDeep from 'lodash/cloneDeep'
 import firebaseTime from 'firebase'
 import store from '../../../redux/store'
 import {INPUT_FIELDS} from './config'
@@ -15,7 +16,8 @@ export const buildModel = (model, image) => {
 }
 
 export const setTeamData = team => {
-  INPUT_FIELDS[0].value = team.get('name')
-  store.dispatch(actions.setTeamData(INPUT_FIELDS))
+  const _clone = cloneDeep(INPUT_FIELDS)
+  _clone[0].value = team.get('name')
+  store.dispatch(actions.setTeamData(_clone))
   store.dispatch(actions.setTeamImage(team.get('image')))
 }

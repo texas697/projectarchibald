@@ -1,6 +1,5 @@
 import { put, takeEvery, call, take } from 'redux-saga/effects'
 import { eventChannel } from 'redux-saga'
-import * as config from '../../../config/index'
 import * as utils from '../../../utils/index'
 import * as types from '../../../types/index'
 import * as actions from './action'
@@ -53,7 +52,6 @@ function * _fetchRequest (action) {
       let data = yield take(channel)
       data = Object.values(data)
       const options = utils.buildOptions(data)
-      options.unshift(config.EMPTY_OPTION)
       yield put(actions.fetchPlayerSuccess(data, options))
     } catch (error) {
       yield put(actions.fetchPlayerFailure(error))

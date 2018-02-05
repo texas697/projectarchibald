@@ -2,18 +2,19 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {Alert, ListView} from 'react-native'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Label, Button, Text, Toast, View, Picker, List, ListItem, Thumbnail, Left, Icon, H3 } from 'native-base'
+import { Card, CardItem, Button, Text, Toast, Picker, List, ListItem, Thumbnail, Left, Icon, H3, View } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
 import * as actions from './action'
 import * as config from '../../../config/index'
 import * as utils from './utils'
-import NoTeam from '../../../components/NoTeam/index'
 import * as messages from '../../../messages'
 import styles from '../players/styles'
+import CustomSpinner from '../../../components/Spinner'
+import {setSpinner} from '../../../modules/Spinner/action'
 
-const PickerItem = Picker.Item
+const Item = Picker.Item
 class Roster extends Component {
   constructor (props) {
     super(props)
@@ -26,26 +27,28 @@ class Roster extends Component {
 
   componentDidUpdate (prevProps) {
     const {adminRoster} = this.props
-    const isFetching = adminRoster.get('isFetching')
-    const _isFetching = prevProps.adminRoster.get('isFetching')
     const isAdding = adminRoster.get('isAdding')
     const _isAdding = prevProps.adminRoster.get('isAdding')
     const error = adminRoster.get('error')
     const _error = prevProps.adminRoster.get('error')
-    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
-    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
-    const roster = adminRoster.get('roster')
-    if (isFetching !== _isFetching && !isFetching) utils.setRosterData(roster)
+    if (error !== _error) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_ERROR(error))
+    }
+    if (isAdding !== _isAdding && !isAdding) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_SUCCESS)
+    }
   }
 
   _onSelectStaff (val) {
     const {adminRoster, adminStaff} = this.props
     let staff = adminRoster.get('staff')
-    const _check = staff.find(x => x.get('id') === val)
+    const _check = staff.find(x => x.get('name') === val)
     if (_check) Alert.alert(messages.ROSTER_IN_LIST.title, '', [{text: 'OK', onPress: () => console.log('')}])
     else {
       const data = adminStaff.get('data')
-      const _obj = data.find(x => x.get('id') === val)
+      const _obj = data.find(x => x.get('name') === val)
       staff = staff.push(_obj)
       this.props.setRosterStaff(staff)
     }
@@ -54,11 +57,11 @@ class Roster extends Component {
   _onSelectPlayer (val) {
     const {adminRoster, adminPlayer} = this.props
     let player = adminRoster.get('player')
-    const _check = player.find(x => x.get('id') === val)
+    const _check = player.find(x => x.get('name') === val)
     if (_check) Alert.alert(messages.ROSTER_IN_LIST.title, '', [{text: 'OK', onPress: () => console.log('')}])
     else {
       const data = adminPlayer.get('data')
-      const _obj = data.find(x => x.get('id') === val)
+      const _obj = data.find(x => x.get('name') === val)
       player = player.push(_obj)
       this.props.setRosterPlayer(player)
     }
@@ -79,6 +82,7 @@ class Roster extends Component {
   }
 
   _onConfirmSubmit () {
+    this.props.setSpinner(true)
     const _model = utils.buildModel()
     this.props.addRosterRequest(_model)
   }
@@ -98,44 +102,40 @@ class Roster extends Component {
   }
 
   render () {
-    const {adminRoster, adminTeam, adminStaff, adminPlayer} = this.props
+    const {adminRoster, adminStaff, adminPlayer} = this.props
     const staffOptions = adminStaff.get('options').toJS()
     const playerOptions = adminPlayer.get('options').toJS()
     const player = adminRoster.get('player')
     const staff = adminRoster.get('staff')
     const id = adminRoster.get('id')
-    const teamId = adminTeam.get('id')
     return (
       <View>
-        {!teamId && (<NoTeam />)}
         <Card>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            <Label>Select Staff</Label>
-          </CardItem>
-          <CardItem>
+          <CardItem style={mainStyles.alignStretch}>
             <Picker
+              placeholder='-Select Staff-'
+              textStyle={{color: '#000'}}
               iosHeader='Select one'
               mode='dropdown'
               selectedValue={''}
               onValueChange={this._onSelectStaff}
             >
               {staffOptions.map((item, i) => (
-                <PickerItem key={i} label={item.label} value={item.label} />
+                <Item key={i} label={item.label} value={item.label} />
               ))}
             </Picker>
           </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            <Label>Select Players</Label>
-          </CardItem>
-          <CardItem>
+          <CardItem style={mainStyles.alignStretch}>
             <Picker
+              placeholder='-Select Player-'
+              textStyle={{color: '#000'}}
               iosHeader='Select one'
               mode='dropdown'
-              selectedValue={''}
+              selectedValue={'undefined'}
               onValueChange={this._onSelectPlayer}
             >
               {playerOptions.map((item, i) => (
-                <PickerItem key={i} label={item.label} value={item.label} />
+                <Item key={i} label={item.label} value={item.label} />
               ))}
             </Picker>
           </CardItem>
@@ -201,19 +201,18 @@ class Roster extends Component {
             <Button
               onPress={this._onSubmit}
               block
-              disabled={!teamId}
               dark>
               <Text>{id ? 'Update' : 'Add'}</Text>
             </Button>
           </CardItem>
         </Card>
+        <CustomSpinner />
       </View>
     )
   }
 }
 
 Roster.propTypes = {
-  adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminPlayer: PropTypes.instanceOf(Immutable.Map),
   adminStaff: PropTypes.instanceOf(Immutable.Map),
   adminHS: PropTypes.instanceOf(Immutable.Map),
@@ -221,14 +220,14 @@ Roster.propTypes = {
   adminCoach: PropTypes.instanceOf(Immutable.Map),
   setRosterPlayer: PropTypes.func,
   setRosterStaff: PropTypes.func,
-  addRosterRequest: PropTypes.func
+  addRosterRequest: PropTypes.func,
+  setSpinner: PropTypes.func
 }
 
 const mapStateToProps = state => ({
   adminHS: state.adminHS,
   adminPlayer: state.adminPlayer,
   adminStaff: state.adminStaff,
-  adminTeam: state.adminTeam,
   adminCoach: state.adminCoach,
   adminRoster: state.adminRoster
 })
@@ -239,6 +238,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setRosterPlayer: player => actions.setRosterPlayer(player),
   fetchRosterByIdRequest: id => actions.fetchRosterByIdRequest(id),
   setRosterId: id => actions.setRosterId(id),
+  setSpinner: isSpinner => setSpinner(isSpinner),
   resetRosterData: () => actions.resetRosterData()
 }, dispatch)
 

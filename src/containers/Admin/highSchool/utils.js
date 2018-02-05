@@ -1,4 +1,5 @@
 import uuid from 'uuid'
+import cloneDeep from 'lodash/cloneDeep'
 import firebaseTime from 'firebase'
 import store from '../../../redux/store'
 import {INPUT_FIELDS} from './config'
@@ -15,6 +16,7 @@ export const buildModel = model => {
 }
 
 export const setHsData = hs => {
-  INPUT_FIELDS[0].value = hs.get('name')
-  store.dispatch(actions.setHsData(INPUT_FIELDS))
+  const _clone = cloneDeep(INPUT_FIELDS)
+  _clone[0].value = hs.get('name')
+  store.dispatch(actions.setHsData(_clone))
 }

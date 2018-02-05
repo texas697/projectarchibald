@@ -15,7 +15,8 @@ import * as config from '../../../config/index'
 import * as messages from '../../../messages/index'
 import * as utils from './utils'
 import {INPUT_FIELDS} from './config'
-import NoTeam from '../../../components/NoTeam/index'
+import CustomSpinner from '../../../components/Spinner'
+import {setSpinner} from '../../../modules/Spinner/action'
 
 class Player extends Component {
   constructor (props) {
@@ -44,8 +45,14 @@ class Player extends Component {
     const _isAdding = prevProps.adminPlayer.get('isAdding')
     const error = adminPlayer.get('error')
     const _error = prevProps.adminPlayer.get('error')
-    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
-    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    if (error !== _error) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_ERROR(error))
+    }
+    if (isAdding !== _isAdding && !isAdding) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_SUCCESS)
+    }
     const player = adminPlayer.get('player')
     if (isFetching !== _isFetching && !isFetching) utils.setPlayerData(player)
   }
@@ -80,6 +87,7 @@ class Player extends Component {
 
   _onConfirmSubmit () {
     const {adminPlayer} = this.props
+    this.props.setSpinner(true)
     const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
     const _model = utils.buildModel(model, image)
@@ -110,15 +118,13 @@ class Player extends Component {
   }
 
   render () {
-    const {adminPlayer, adminTeam} = this.props
+    const {adminPlayer} = this.props
     const model = adminPlayer.get('model')
     const image = adminPlayer.get('image')
     const data = adminPlayer.get('data')
     const id = adminPlayer.get('id')
-    const teamId = adminTeam.get('id')
     return (
       <View>
-        {!teamId && (<NoTeam />)}
         <Card>
           {id !== '' && (
             <CardItem style={mainStyles.alignItemsRight}>
@@ -146,7 +152,6 @@ class Player extends Component {
               <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
-                  disabled={!teamId}
                   ref={item.get('id')}
                   value={item.get('value')}
                   placeholder={item.get('placeholder')}
@@ -159,7 +164,6 @@ class Player extends Component {
           ))}
           <CardItem style={mainStyles.alignStretch}>
             <Button
-              disabled={!teamId}
               onPress={this._onSubmit}
               block
               dark>
@@ -197,13 +201,13 @@ class Player extends Component {
             />
           </CardItem>
         </Card>
+        <CustomSpinner />
       </View>
     )
   }
 }
 
 Player.propTypes = {
-  adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminPlayer: PropTypes.instanceOf(Immutable.Map),
   setPlayerData: PropTypes.func,
   fetchPlayerByIdRequest: PropTypes.func,
@@ -211,17 +215,18 @@ Player.propTypes = {
   setPlayerId: PropTypes.func,
   addPlayerRequest: PropTypes.func,
   deletePlayerRequest: PropTypes.func,
-  setTimeout: PropTypes.func
+  setTimeout: PropTypes.func,
+  setSpinner: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  adminPlayer: state.adminPlayer,
-  adminTeam: state.adminTeam
+  adminPlayer: state.adminPlayer
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   addPlayerRequest: model => actions.addPlayerRequest(model),
   setPlayerData: model => actions.setPlayerData(model),
+  setSpinner: isSpinner => setSpinner(isSpinner),
   setPlayerImage: image => actions.setPlayerImage(image),
   fetchPlayerByIdRequest: id => actions.fetchPlayerByIdRequest(id),
   deletePlayerRequest: id => actions.deletePlayerRequest(id),

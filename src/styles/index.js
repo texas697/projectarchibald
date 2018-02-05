@@ -12,6 +12,12 @@ export default {
     backgroundColor: config.COLORS.orange,
     marginTop: getStatusBarHeight()
   },
+  scrollContainer: {
+    flex: 1,
+    width: null,
+    height: null,
+    backgroundColor: config.COLORS.orange
+  },
   labelHeight: {
     lineHeight: 37
   },

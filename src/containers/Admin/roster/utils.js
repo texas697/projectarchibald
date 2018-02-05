@@ -9,8 +9,8 @@ export const buildModel = model => {
     teamId: _state.adminTeam.get('id'),
     hsId: _state.adminHS.get('id'),
     coachId: _state.adminCoach.get('id'),
-    player: _state.adminRoster.get('player'),
-    staff: _state.adminRoster.get('staff'),
+    player: _state.adminRoster.get('player').toJS(),
+    staff: _state.adminRoster.get('staff').toJS(),
     date: firebaseTime.database.ServerValue.TIMESTAMP
   }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Image, Alert} from 'react-native'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Toast } from 'native-base'
+import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View } from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
@@ -12,6 +12,8 @@ import * as utils from './utils'
 import * as config from '../../../config/index'
 import * as mainUtils from '../../../utils/index'
 import * as messages from '../../../messages/index'
+import CustomSpinner from '../../../components/Spinner'
+import {setSpinner} from '../../../modules/Spinner/action'
 
 class Coach extends Component {
   constructor (props) {
@@ -35,8 +37,14 @@ class Coach extends Component {
     const _isAdding = prevProps.adminCoach.get('isAdding')
     const error = adminCoach.get('error')
     const _error = prevProps.adminCoach.get('error')
-    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
-    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    if (error !== _error) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_ERROR(error))
+    }
+    if (isAdding !== _isAdding && !isAdding) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_SUCCESS)
+    }
     const coach = adminCoach.get('coach')
     if (isFetching !== _isFetching && !isFetching) utils.setCoachData(coach)
   }
@@ -75,6 +83,7 @@ class Coach extends Component {
 
   _onConfirmSubmit () {
     const {adminCoach} = this.props
+    this.props.setSpinner(true)
     const model = adminCoach.get('model')
     const image = adminCoach.get('image')
     const _model = utils.buildModel(model, image)
@@ -89,44 +98,47 @@ class Coach extends Component {
     const id = adminCoach.get('id')
 
     return (
-      <Card>
-        <CardItem>
-          <Button
-            onPress={this._onPickImage}
-            block
-            transparent>
-            <Text>Select Coach Image</Text>
-          </Button>
-        </CardItem>
-        {image !== 'empty' && (
-          <CardItem style={mainStyles.alignItemsCenter}>
-            <Image source={{ uri: config.IMAGE_64(image) }} style={mainStyles.imagePick} />
+      <View>
+        <Card>
+          <CardItem>
+            <Button
+              onPress={this._onPickImage}
+              block
+              transparent>
+              <Text>Select Coach Image</Text>
+            </Button>
           </CardItem>
-        )}
-        {model.map((item, i) => (
-          <CardItem key={i} style={mainStyles.alignStretch}>
-            <Item stackedLabel>
-              <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
-              <Input
-                value={item.get('value')}
-                ref={item.get('id')}
-                returnKeyType={item.get('returnKeyType')}
-                keyboardType={item.get('keyboardType')}
-                placeholder={item.get('placeholder')}
-                onSubmitEditing={() => this._focusNext(item.get('nextId'))}
-                onChangeText={val => this._onInputChange(val, i)} />
-            </Item>
+          {image !== 'empty' && (
+            <CardItem style={mainStyles.alignItemsCenter}>
+              <Image source={{ uri: config.IMAGE_64(image) }} style={mainStyles.imagePick} />
+            </CardItem>
+          )}
+          {model.map((item, i) => (
+            <CardItem key={i} style={mainStyles.alignStretch}>
+              <Item stackedLabel>
+                <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
+                <Input
+                  value={item.get('value')}
+                  ref={item.get('id')}
+                  returnKeyType={item.get('returnKeyType')}
+                  keyboardType={item.get('keyboardType')}
+                  placeholder={item.get('placeholder')}
+                  onSubmitEditing={() => this._focusNext(item.get('nextId'))}
+                  onChangeText={val => this._onInputChange(val, i)} />
+              </Item>
+            </CardItem>
+          ))}
+          <CardItem style={mainStyles.alignStretch}>
+            <Button
+              onPress={this._onSubmit}
+              block
+              dark>
+              <Text>{id ? 'Update' : 'Add'}</Text>
+            </Button>
           </CardItem>
-        ))}
-        <CardItem style={mainStyles.alignStretch}>
-          <Button
-            onPress={this._onSubmit}
-            block
-            dark>
-            <Text>{id ? 'Update' : 'Add'}</Text>
-          </Button>
-        </CardItem>
-      </Card>
+        </Card>
+        <CustomSpinner />
+      </View>
     )
   }
 }
@@ -137,7 +149,8 @@ Coach.propTypes = {
   setCoachImage: PropTypes.func,
   setCoachId: PropTypes.func,
   fetchCoachByIdRequest: PropTypes.func,
-  addCoachRequest: PropTypes.func
+  addCoachRequest: PropTypes.func,
+  setSpinner: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -149,6 +162,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setCoachData: model => actions.setCoachData(model),
   setCoachImage: image => actions.setCoachImage(image),
   setCoachId: id => actions.setCoachId(id),
+  setSpinner: isSpinner => setSpinner(isSpinner),
   fetchCoachByIdRequest: id => actions.fetchCoachByIdRequest(id),
   resetCoachData: () => actions.resetCoachData()
 }, dispatch)

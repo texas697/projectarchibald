@@ -12,6 +12,8 @@ import * as utils from './utils'
 import * as mainUtils from '../../../utils/index'
 import TeamCard from './components/team-card'
 import * as messages from '../../../messages'
+import CustomSpinner from '../../../components/Spinner'
+import {setSpinner} from '../../../modules/Spinner/action'
 
 class Team extends Component {
   constructor (props) {
@@ -33,8 +35,14 @@ class Team extends Component {
     const _isAdding = prevProps.adminTeam.get('isAdding')
     const error = adminTeam.get('error')
     const _error = prevProps.adminTeam.get('error')
-    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
-    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    if (error !== _error) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_ERROR(error))
+    }
+    if (isAdding !== _isAdding && !isAdding) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_SUCCESS)
+    }
     const team = adminTeam.get('team')
     if (isFetching !== _isFetching && !isFetching) utils.setTeamData(team)
   }
@@ -52,6 +60,7 @@ class Team extends Component {
 
   _onConfirmSubmit () {
     const {adminTeam} = this.props
+    this.props.setSpinner(true)
     const model = adminTeam.get('model')
     const image = adminTeam.get('image')
     const _model = utils.buildModel(model, image)
@@ -73,6 +82,7 @@ class Team extends Component {
             </Button>
           </CardItem>
         </Card>
+        <CustomSpinner />
       </View>
     )
   }
@@ -82,7 +92,8 @@ Team.propTypes = {
   adminTeam: PropTypes.instanceOf(Immutable.Map),
   setTeamId: PropTypes.func,
   addTeamRequest: PropTypes.func,
-  fetchTeamByIdRequest: PropTypes.func
+  fetchTeamByIdRequest: PropTypes.func,
+  setSpinner: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -91,6 +102,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   addTeamRequest: model => actions.addTeamRequest(model),
+  setSpinner: isSpinner => setSpinner(isSpinner),
   fetchTeamByIdRequest: id => actions.fetchTeamByIdRequest(id),
   setTeamId: id => actions.setTeamId(id)
 }, dispatch)

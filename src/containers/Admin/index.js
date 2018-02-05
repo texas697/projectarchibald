@@ -19,32 +19,32 @@ export default class AdminTeam extends Component {
         <CustomHeader title='Build Team' {...this.props} hasTabs />
         <Tabs locked initialPage={0} renderTabBar={() => <ScrollableTab />}>
           <Tab heading='Team'>
-            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+            <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
               <Content><Team /></Content>
             </KeyboardAvoidingView>
           </Tab>
           <Tab heading='HighSchool'>
-            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+            <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
               <Content><HighSchool /></Content>
             </KeyboardAvoidingView>
           </Tab>
           <Tab heading='Coach'>
-            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+            <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
               <Content><Coach /></Content>
             </KeyboardAvoidingView>
           </Tab>
           <Tab heading='Staff'>
-            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+            <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
               <Content><Staff /></Content>
             </KeyboardAvoidingView>
           </Tab>
           <Tab heading='Player'>
-            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+            <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
               <Content><Players /></Content>
             </KeyboardAvoidingView>
           </Tab>
           <Tab heading='Roster'>
-            <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+            <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
               <Content><Roster /></Content>
             </KeyboardAvoidingView>
           </Tab>

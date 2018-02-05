@@ -59,12 +59,12 @@ class Login extends Component {
   }
 
   _onError (error) {
-    this.props.setSpinner()
+    this.props.setSpinner(false)
     Toast.show(config.TOAST_ERROR(error))
   }
 
   _goToHome () {
-    this.props.setSpinner()
+    this.props.setSpinner(false)
     this.props.navigation.navigate('Home')
   }
 
@@ -88,7 +88,7 @@ class Login extends Component {
     const visibleModal = login.get('visibleModal')
     const visibleForgotModal = login.get('visibleForgotModal')
     return (
-      <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+      <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
         <Content>
           <Card>
             <CardItem>

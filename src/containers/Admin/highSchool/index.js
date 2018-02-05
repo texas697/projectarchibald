@@ -10,8 +10,9 @@ import * as actions from './action'
 import * as config from '../../../config/index'
 import * as utils from './utils'
 import * as mainUtils from '../../../utils/index'
-import NoTeam from '../../../components/NoTeam/index'
 import * as messages from '../../../messages'
+import CustomSpinner from '../../../components/Spinner'
+import {setSpinner} from '../../../modules/Spinner/action'
 
 class HighSchool extends Component {
   constructor (props) {
@@ -34,8 +35,14 @@ class HighSchool extends Component {
     const _isAdding = prevProps.adminHS.get('isAdding')
     const error = adminHS.get('error')
     const _error = prevProps.adminHS.get('error')
-    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
-    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    if (error !== _error) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_ERROR(error))
+    }
+    if (isAdding !== _isAdding && !isAdding) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_SUCCESS)
+    }
     const hs = adminHS.get('hs')
     if (isFetching !== _isFetching && !isFetching) utils.setHsData(hs)
   }
@@ -63,6 +70,7 @@ class HighSchool extends Component {
 
   _onConfirmSubmit () {
     const {adminHS} = this.props
+    this.props.setSpinner(true)
     const model = adminHS.get('model')
     const _model = utils.buildModel(model)
     this.props.setHsId(_model.id)
@@ -70,20 +78,17 @@ class HighSchool extends Component {
   }
 
   render () {
-    const {adminHS, adminTeam} = this.props
+    const {adminHS} = this.props
     const model = adminHS.get('model')
     const id = adminHS.get('id')
-    const teamId = adminTeam.get('id')
     return (
       <View>
-        {!teamId && (<NoTeam />)}
         <Card>
           {model.map((item, i) => (
             <CardItem key={i} style={mainStyles.alignStretch}>
               <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
-                  disabled={!teamId}
                   placeholder={item.get('placeholder')}
                   value={item.get('value')}
                   keyboardType={item.get('keyboardType')}
@@ -97,34 +102,34 @@ class HighSchool extends Component {
             <Button
               onPress={this._onSubmit}
               block
-              disabled={!teamId}
               dark>
               <Text>{id ? 'Update' : 'Add'}</Text>
             </Button>
           </CardItem>
         </Card>
+        <CustomSpinner />
       </View>
     )
   }
 }
 
 HighSchool.propTypes = {
-  adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminHS: PropTypes.instanceOf(Immutable.Map),
   setHsData: PropTypes.func,
   fetchHsByIdRequest: PropTypes.func,
   setHsId: PropTypes.func,
-  addHsRequest: PropTypes.func
+  addHsRequest: PropTypes.func,
+  setSpinner: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  adminHS: state.adminHS,
-  adminTeam: state.adminTeam
+  adminHS: state.adminHS
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   addHsRequest: model => actions.addHsRequest(model),
   setHsData: model => actions.setHsData(model),
+  setSpinner: isSpinner => setSpinner(isSpinner),
   fetchHsByIdRequest: id => actions.fetchHsByIdRequest(id),
   setHsId: id => actions.setHsId(id),
   resetHsData: () => actions.resetHsData()

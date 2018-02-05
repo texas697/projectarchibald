@@ -39,7 +39,7 @@ class Register extends Component {
   }
 
   _onError (error) {
-    this.props.setSpinner()
+    this.props.setSpinner(false)
     Toast.show(config.TOAST_ERROR(error))
   }
 
@@ -58,7 +58,7 @@ class Register extends Component {
     if (_check && _passCheck) utils.fieldsRequired()
     else if (_check && !_passCheck) utils.passNoMatch()
     else {
-      this.props.setSpinner()
+      this.props.setSpinner(true)
       const _model = localUtils.buildmodel(model)
       const credentials = {email: _model.email.toLowerCase().trim(), password: _model.password}
       this.props.registerUserRequest(credentials, _model.name)
@@ -81,7 +81,7 @@ class Register extends Component {
   _success () {
     Toast.show(config.TOAST_SUCCESS)
     this.props.navigation.goBack()
-    this.props.setSpinner()
+    this.props.setSpinner(false)
   }
 
   render () {
@@ -90,7 +90,7 @@ class Register extends Component {
     const model = register.get('model')
     return (
       <Container style={mainStyles.container}>
-        <Header style={{marginBottom: -15}}>
+        <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon name='arrow-back' />
@@ -99,7 +99,7 @@ class Register extends Component {
           <Body><Title>&nbsp;</Title></Body>
           <Right />
         </Header>
-        <KeyboardAvoidingView style={mainStyles.container} behavior='padding'>
+        <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
           <Content>
             <Card>
               <CardItem>
@@ -168,7 +168,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   registerUserRequest: (credentials, name) => actions.registerUserRequest(credentials, name),
-  setSpinner: () => setSpinner(),
+  setSpinner: isSpinner => setSpinner(isSpinner),
   setRegisterData: model => actions.setRegisterData(model),
   setIsCoach: () => actions.setIsCoach(),
   setTeamId: id => setTeamId(id),

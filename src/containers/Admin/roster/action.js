@@ -35,10 +35,10 @@ export const fetchRosterByIdFailure = error => {
   }
 }
 
-export const fetchRosterRequest = model => {
+export const fetchRosterRequest = teamId => {
   return {
     type: types.ROSTER_FETCH_REQUEST,
-    model
+    teamId
   }
 }
 
@@ -74,10 +74,10 @@ export const addRosterFailure = error => {
   }
 }
 
-export const deleteRosterRequest = id => {
+export const deleteRosterRequest = teamId => {
   return {
     type: types.ROSTER_DELETE_REQUEST,
-    id
+    teamId
   }
 }
 

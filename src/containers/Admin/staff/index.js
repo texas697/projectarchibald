@@ -16,7 +16,8 @@ import * as config from '../../../config/index'
 import * as utils from './utils'
 import * as mainUtils from '../../../utils/index'
 import {INPUT_FIELDS} from './config'
-import NoTeam from '../../../components/NoTeam/index'
+import CustomSpinner from '../../../components/Spinner'
+import {setSpinner} from '../../../modules/Spinner/action'
 
 class Staff extends Component {
   constructor (props) {
@@ -45,8 +46,14 @@ class Staff extends Component {
     const _isAdding = prevProps.adminStaff.get('isAdding')
     const error = adminStaff.get('error')
     const _error = prevProps.adminStaff.get('error')
-    if (error !== _error) Toast.show(config.TOAST_ERROR(error))
-    if (isAdding !== _isAdding && !isAdding) Toast.show(config.TOAST_SUCCESS)
+    if (error !== _error) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_ERROR(error))
+    }
+    if (isAdding !== _isAdding && !isAdding) {
+      this.props.setSpinner(false)
+      Toast.show(config.TOAST_SUCCESS)
+    }
     const staff = adminStaff.get('staff')
     if (isFetching !== _isFetching && !isFetching) utils.setStaffData(staff)
   }
@@ -79,6 +86,7 @@ class Staff extends Component {
 
   _onConfirmSubmit () {
     const {adminStaff} = this.props
+    this.props.setSpinner(true)
     const model = adminStaff.get('model')
     const image = adminStaff.get('image')
     const _model = utils.buildModel(model, image)
@@ -109,16 +117,14 @@ class Staff extends Component {
   }
 
   render () {
-    const {adminStaff, adminTeam} = this.props
+    const {adminStaff} = this.props
     const model = adminStaff.get('model')
     const image = adminStaff.get('image')
     const data = adminStaff.get('data')
     const id = adminStaff.get('id')
-    const teamId = adminTeam.get('id')
 
     return (
       <View>
-        {!teamId && (<NoTeam />)}
         <Card>
           {id !== '' && (
             <CardItem style={mainStyles.alignItemsRight}>
@@ -141,7 +147,6 @@ class Staff extends Component {
               <Item stackedLabel>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
-                  disabled={!teamId}
                   placeholder={item.get('placeholder')}
                   keyboardType={item.get('keyboardType')}
                   ref={item.get('id')}
@@ -156,7 +161,6 @@ class Staff extends Component {
             <Button
               onPress={this._onSubmit}
               block
-              disabled={!teamId}
               dark>
               <Text>{id ? 'Update' : 'Add'}</Text>
             </Button>
@@ -188,32 +192,32 @@ class Staff extends Component {
             />
           </CardItem>
         </Card>
+        <CustomSpinner />
       </View>
     )
   }
 }
 
 Staff.propTypes = {
-  adminTeam: PropTypes.instanceOf(Immutable.Map),
   adminStaff: PropTypes.instanceOf(Immutable.Map),
   setStaffData: PropTypes.func,
   setStaffId: PropTypes.func,
   setStaffImage: PropTypes.func,
-  resetStaffData: PropTypes.func,
   fetchStaffByIdRequest: PropTypes.func,
   addStaffRequest: PropTypes.func,
   deleteStaffRequest: PropTypes.func,
-  setTimeout: PropTypes.func
+  setTimeout: PropTypes.func,
+  setSpinner: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  adminStaff: state.adminStaff,
-  adminTeam: state.adminTeam
+  adminStaff: state.adminStaff
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   addStaffRequest: model => actions.addStaffRequest(model),
   setStaffData: model => actions.setStaffData(model),
+  setSpinner: isSpinner => setSpinner(isSpinner),
   setStaffImage: image => actions.setStaffImage(image),
   resetStaffData: () => actions.resetStaffData(),
   setStaffId: id => actions.setStaffId(id),

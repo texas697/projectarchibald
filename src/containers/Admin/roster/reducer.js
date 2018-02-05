@@ -43,8 +43,8 @@ export default (state = initialState, action) => {
         .set('coachId', action.data.coachId)
         .set('hsId', action.data.hsId)
         .set('teamId', action.data.teamId)
-        .set('player', Immutable.fromJS(action.data.player))
-        .set('staff', Immutable.fromJS(action.data.staff))
+        .set('player', Immutable.fromJS(action.data.player || []))
+        .set('staff', Immutable.fromJS(action.data.staff || []))
 
     case types.ROSTER_FETCH_FAILURE:
       return state

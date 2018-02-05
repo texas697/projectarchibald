@@ -9,7 +9,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case types.SET_SPINNER:
       return state
-        .set('visibleHeight', !state.get('isSpinner'))
+        .set('isSpinner', action.isSpinner)
 
     default:
       return state
