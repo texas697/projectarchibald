@@ -141,7 +141,7 @@ class Player extends Component {
             </CardItem>
           )}
           <CardItem style={mainStyles.alignItemsRight}>
-            <Text style={mainStyles.helperText}>* required fields</Text>
+            <Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</Text>
           </CardItem>
           <CardItem>
             <Button

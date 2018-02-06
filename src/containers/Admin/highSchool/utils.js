@@ -20,3 +20,8 @@ export const setHsData = hs => {
   _clone[0].value = hs.get('name')
   store.dispatch(actions.setHsData(_clone))
 }
+
+export const validate = (val, id, model, i) => {
+  model = model.setIn([i, 'isValid'], val.length > 0)
+  store.dispatch(actions.setHsData(model))
+}

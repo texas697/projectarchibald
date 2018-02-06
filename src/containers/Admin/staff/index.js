@@ -76,7 +76,7 @@ class Staff extends Component {
     const model = adminStaff.get('model')
     const id = adminStaff.get('id')
     const _check = model.find(item => !item.get('value'))
-    if (_check) mainUtils.fieldsRequired()
+    if (_check) mainUtils.formNotValid()
     else {
       let _message = {}
       if (id) _message = messages.UPDATE_STAFF(model.get(0).value)
@@ -135,6 +135,9 @@ class Staff extends Component {
               </Button>
             </CardItem>
           )}
+          <CardItem style={mainStyles.alignItemsRight}>
+            <Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</Text>
+          </CardItem>
           <CardItem>
             <Button onPress={this._onPickImage} block transparent><Text>Select Staff Image</Text></Button>
           </CardItem>
@@ -145,16 +148,18 @@ class Staff extends Component {
           )}
           {model.map((item, i) => (
             <CardItem key={i} style={mainStyles.alignStretch}>
-              <Item stackedLabel>
+              <Item stackedLabel error={!item.get('isValid')}>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   placeholder={item.get('placeholder')}
                   keyboardType={item.get('keyboardType')}
                   ref={item.get('id')}
                   value={item.get('value')}
+                  onBlur={() => utils.validate(item.get('value'), item.get('id'), model, i)}
                   returnKeyType={item.get('returnKeyType')}
                   onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                   onChangeText={val => this._onInputChange(val, i)} />
+                {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
               </Item>
             </CardItem>
           ))}

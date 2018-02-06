@@ -26,3 +26,9 @@ export const setStaffData = staff => {
   store.dispatch(actions.setStaffId(staff.get('id')))
   store.dispatch(actions.setStaffImage(staff.get('image')))
 }
+
+export const validate = (val, id, model, i) => {
+  if (id === 'name') model = model.setIn([i, 'isValid'], val.length > 0)
+  else if (id === 'title') model = model.setIn([i, 'isValid'], val.length > 0)
+  store.dispatch(actions.setStaffData(model))
+}

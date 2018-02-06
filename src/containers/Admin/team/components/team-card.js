@@ -11,6 +11,8 @@ import mainStyles from '../../../../styles/index'
 import * as actions from '../action'
 import * as config from '../../../../config/index'
 import styles from '../../players/styles'
+import * as utils from '../../../../utils'
+import * as localUtils from '../utils'
 
 class TeamCard extends Component {
   constructor (props) {
@@ -55,7 +57,7 @@ class TeamCard extends Component {
           </CardItem>
         )}
         <CardItem style={[styles.alignItemsCenter]}>
-          <Label style={mainStyles.selectLabel}>State</Label>
+          <Label style={mainStyles.selectLabel}>State*</Label>
         </CardItem>
         <CardItem style={mainStyles.alignStretch}>
           <Picker
@@ -72,7 +74,7 @@ class TeamCard extends Component {
           </Picker>
         </CardItem>
         <CardItem style={[styles.alignItemsCenter]}>
-          <Label style={mainStyles.selectLabel}>Region</Label>
+          <Label style={mainStyles.selectLabel}>Region*</Label>
         </CardItem>
         <CardItem style={mainStyles.alignStretch}>
           <Picker
@@ -90,14 +92,16 @@ class TeamCard extends Component {
         </CardItem>
         {model.map((item, i) => (
           <CardItem key={i} style={mainStyles.alignStretch}>
-            <Item stackedLabel>
+            <Item stackedLabel error={!item.get('isValid')}>
               <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
               <Input
                 value={item.get('value')}
                 placeholder={item.get('placeholder')}
+                onBlur={() => localUtils.validate(item.get('value'), item.get('id'), model, i)}
                 returnKeyType={item.get('returnKeyType')}
                 onSubmitEditing={() => this.props.onSubmit()}
                 onChangeText={val => this._onInputChange(val, i)} />
+              {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
             </Item>
           </CardItem>
         ))}

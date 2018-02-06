@@ -29,3 +29,10 @@ export const setTeamData = team => {
   store.dispatch(actions.setTeamState(team.get('state')))
   store.dispatch(actions.setTeamRegion(team.get('region')))
 }
+
+export const validate = (val, id, model, i) => {
+  if (id === 'name') model = model.setIn([i, 'isValid'], val.length > 0)
+  else if (id === 'state') model = model.setIn([i, 'isValid'], val.length > 0)
+  else if (id === 'region') model = model.setIn([i, 'isValid'], val.length > 0)
+  store.dispatch(actions.setTeamData(model))
+}

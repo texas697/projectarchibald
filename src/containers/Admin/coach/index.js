@@ -101,6 +101,9 @@ class Coach extends Component {
     return (
       <View>
         <Card>
+          <CardItem style={mainStyles.alignItemsRight}>
+            <Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</Text>
+          </CardItem>
           <CardItem>
             <Button
               onPress={this._onPickImage}
@@ -116,7 +119,7 @@ class Coach extends Component {
           )}
           {model.map((item, i) => (
             <CardItem key={i} style={mainStyles.alignStretch}>
-              <Item stackedLabel>
+              <Item stackedLabel error={!item.get('isValid')}>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   value={item.get('value')}
@@ -124,8 +127,10 @@ class Coach extends Component {
                   returnKeyType={item.get('returnKeyType')}
                   keyboardType={item.get('keyboardType')}
                   placeholder={item.get('placeholder')}
+                  onBlur={() => utils.validate(item.get('value'), item.get('id'), model, i)}
                   onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                   onChangeText={val => this._onInputChange(val, i)} />
+                {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
               </Item>
             </CardItem>
           ))}

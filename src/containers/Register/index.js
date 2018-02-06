@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
+import forOwn from 'lodash/forOwn'
 import {Image, KeyboardAvoidingView} from 'react-native'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
@@ -20,6 +21,7 @@ import {resetPlayerData} from '../Admin/players/action'
 import {resetRosterData} from '../Admin/roster/action'
 import {resetStaffData} from '../Admin/staff/action'
 import * as teamUtils from '../Admin/team/utils'
+import isEmpty from 'lodash/isEmpty'
 
 const logo = require('../../../assets/basketball-logo.png')
 
@@ -65,7 +67,7 @@ class Register extends Component {
 
     const _passCheck = model.get('password') === model.get('confirmPassword')
     const _check = model.find(item => !item.get('value'))
-    if (_check && _passCheck) utils.fieldsRequired()
+    if (_check && _passCheck) utils.formNotValid()
     else if (_check && !_passCheck) utils.passNoMatch()
     else {
       this.props.setSpinner(true)
@@ -77,9 +79,18 @@ class Register extends Component {
         const _state = adminTeam.get('state')
         const _region = adminTeam.get('region')
         let _modelTeam = adminTeam.get('model')
+
         _modelTeam = teamUtils.buildModel(_modelTeam, _image, _state, _region)
-        this.props.setTeamId(_modelTeam.id)
-        this.props.addTeamRequest(_model)
+
+        let _checkTeam = true
+        forOwn(_modelTeam, (value, key) => {
+          if (isEmpty(value)) _checkTeam = false
+        })
+
+        if (_checkTeam) {
+          this.props.setTeamId(_modelTeam.id)
+          this.props.addTeamRequest(_model)
+        } else utils.formNotValid()
       }
     }
   }
@@ -118,20 +129,25 @@ class Register extends Component {
               <CardItem>
                 <Image source={logo} style={{height: 200, width: null, flex: 1}} />
               </CardItem>
+              <CardItem style={mainStyles.alignItemsRight}>
+                <Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</Text>
+              </CardItem>
               {model.map((item, i) => (
                 <CardItem key={i} style={mainStyles.alignStretch}>
-                  <Item stackedLabel>
+                  <Item stackedLabel error={!item.get('isValid')}>
                     <Label>{item.get('label')}</Label>
                     <Input
                       ref={item.get('id')}
                       autoCapitalize={item.get('autoCapitalize')}
                       secureTextEntry={item.get('secureTextEntry')}
                       value={item.get('value')}
+                      onBlur={() => localUtils.validate(item.get('value'), item.get('id'), model, i)}
                       placeholder={item.get('placeholder')}
                       keyboardType={item.get('keyboardType')}
                       returnKeyType={item.get('returnKeyType')}
                       onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                       onChangeText={val => this._onInputChange(val, i)} />
+                    {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
                   </Item>
                 </CardItem>
               ))}

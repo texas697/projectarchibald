@@ -59,7 +59,7 @@ class HighSchool extends Component {
     const id = adminHS.get('id')
     const model = adminHS.get('model')
     const _check = model.find(item => !item.get('value'))
-    if (_check) mainUtils.fieldsRequired()
+    if (_check) mainUtils.formNotValid()
     else {
       let _message = {}
       if (id) _message = messages.UPDATE_HS(model.get(0).value)
@@ -84,17 +84,22 @@ class HighSchool extends Component {
     return (
       <View>
         <Card>
+          <CardItem style={mainStyles.alignItemsRight}>
+            <Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</Text>
+          </CardItem>
           {model.map((item, i) => (
             <CardItem key={i} style={mainStyles.alignStretch}>
-              <Item stackedLabel>
+              <Item stackedLabel error={!item.get('isValid')}>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   placeholder={item.get('placeholder')}
                   value={item.get('value')}
                   keyboardType={item.get('keyboardType')}
                   returnKeyType={item.get('returnKeyType')}
+                  onBlur={() => utils.validate(item.get('value'), item.get('id'), model, i)}
                   onSubmitEditing={this._onSubmit}
                   onChangeText={val => this._onInputChange(val, i)} />
+                {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
               </Item>
             </CardItem>
           ))}

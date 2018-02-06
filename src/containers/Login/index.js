@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { NavigationActions } from 'react-navigation'
 import { bindActionCreators } from 'redux'
 import {Image, Dimensions, KeyboardAvoidingView} from 'react-native'
 import Modal from 'react-native-modal'
@@ -65,7 +66,13 @@ class Login extends Component {
 
   _goToHome () {
     this.props.setSpinner(false)
-    this.props.navigation.navigate('Home')
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({routeName: 'Home'})
+      ]
+    })
+    this.props.navigation.dispatch(resetAction)
   }
 
   _focusNext (nextField) {

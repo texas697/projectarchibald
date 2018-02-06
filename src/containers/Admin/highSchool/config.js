@@ -1,7 +1,9 @@
 export const INPUT_FIELDS = [{
-  label: 'High School',
+  label: 'High School*',
   value: '',
-  id: 'hsName',
+  id: 'name',
+  isValid: true,
+  error: 'required field',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
   nextId: 'go',

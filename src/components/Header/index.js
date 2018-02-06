@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import {NavigationActions} from 'react-navigation'
 import {
   Header,
   Title,
@@ -21,7 +22,15 @@ class CustomHeader extends Component {
 
     const isLoggingOut = login.get('isLoggingOut')
     const _isLoggingOut = prevProps.login.get('isLoggingOut')
-    if (isLoggingOut !== _isLoggingOut && !isLoggingOut) this.props.navigation.navigate('Login')
+    if (isLoggingOut !== _isLoggingOut && !isLoggingOut) {
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({routeName: 'Login'})
+        ]
+      })
+      this.props.navigation.dispatch(resetAction)
+    }
   }
 
   render () {
