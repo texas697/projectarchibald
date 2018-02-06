@@ -8,12 +8,6 @@ import {PATH_TEAM} from '../Admin/team/config'
 import {PATH_PLAYER} from '../Admin/players/config'
 import * as utils from '../../utils/index'
 
-//   teamFilter: '',
-//   ageGroupFilter: '',
-//   stateFilter: '',
-//   playerFilter: '',
-//   eventFilter: '',
-//   regionFilter: ''
 const _fetchTeamsByName = teamFilter => {
   return firebaseApp.database().ref(`${PATH_TEAM}`)
     .orderByChild('nameQuery').startAt(teamFilter)

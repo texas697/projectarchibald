@@ -4,13 +4,11 @@ import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
-import {
-  Container, Content, Card, CardItem, H3, Row, Text, Col
-} from 'native-base'
+import {Container, Content, Card, CardItem, H3, Row, Text, Col, ListItem, Icon, Button, List, Header, Left, Title, Body, Right, Text, Thumbnail, CardItem, Card} from 'native-base'
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import {logoutRequest} from '../Login/action'
-import CustomHeader from '../../components/Header/index'
+import * as utils from '../../utils/index'
 
 const InfoText = ({label, text}) => (
   <Text style={{fontSize: 10, marginBottom: 5}}>{label}: <Text style={{fontSize: 12, fontWeight: 'bold'}}>{text}</Text></Text>
@@ -23,47 +21,54 @@ InfoText.propTypes = {
 
 class Player extends Component {
   render () {
-    // const {dimensions} = this.props
-    // const visibleHeight = dimensions.get('visibleHeight')
-    // const visibleWidth = dimensions.get('visibleWidth')
+    const {player} = this.props
+
     return (
       <Container style={mainStyles.container}>
-        <CustomHeader title='Player Profile' {...this.props} />
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.navigate('PlayerList')}>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body><Title>&nbsp;</Title></Body>
+          <Right />
+        </Header>
         <Content>
           <Card>
             <CardItem>
               <Row>
                 <Col style={{width: 140}}>
-                  <Image source={{uri: 'http://via.placeholder.com/130x200'}} style={styles.playerImg} />
+                  <Image source={{uri: player.get('image')}} style={styles.playerImg} />
                 </Col>
                 <Col>
-                  <H3>DANNY TARKANIAN</H3>
-                  <InfoText label='GRAD YEAR' text='2019' />
-                  <InfoText label='HEIGHT' text={"6'4"} />
-                  <InfoText label='WEIGHT' text='172' />
-                  <InfoText label='PHONE' text='602-298-4745' />
-                  <InfoText label='PARENT' text='Sandy' />
-                  <InfoText label='PARENT PHONE' text='454-231-5449' />
-                </Col>
-              </Row>
-            </CardItem>
-            <CardItem>
-              <Row>
-                <Col>
-                  <InfoText label='TWITTER' text='danny.twitter.com' />
-                  <InfoText label='SNAPCHAT' text='danny.snapchat.com' />
-                  <InfoText label='INSTAGRAM' text='danny.instagram.com' />
-                  <InfoText label='EMAIL' text='danny@gmail.com' />
+                  <H3>{player.get('name')}</H3>
+                  <InfoText label='GRAD YEAR' text={player.get('grad')} />
+                  <InfoText label='HEIGHT' text={utils.formatHeight(player.get('height'))} />
+                  <InfoText label='WEIGHT' text={player.get('weight')} />
+                  <InfoText label='PHONE' text={utils.formatPhone(player.get('phone'))} />
+                  <InfoText label='PARENT' text={player.get('parent')} />
+                  <InfoText label='PARENT PHONE' text={utils.formatPhone(player.get('parentPhone'))} />
                 </Col>
               </Row>
             </CardItem>
             <CardItem>
               <Row>
                 <Col>
-                  <InfoText label='HIGH SCHOOL' text='Corona Del Sol HS' />
-                  <InfoText label='HIGH SCHOOL COACH' text='Fred Dukes' />
-                  <InfoText label='HIGH SCHOOL COACH PHONE' text='281-234-7839' />
-                  <InfoText label='EMAIL' text='fred.dukes@gmail.com' />
+                  <InfoText label='TWITTER' text={player.get('twitter')} />
+                  <InfoText label='SNAPCHAT' text={player.get('snapchat')} />
+                  <InfoText label='INSTAGRAM' text={player.get('instagram')} />
+                  <InfoText label='EMAIL' text={player.get('email')} />
+                </Col>
+              </Row>
+            </CardItem>
+            <CardItem>
+              <Row>
+                <Col>
+                  <InfoText label='HIGH SCHOOL' text={player.getIn(['hs', 'name'])} />
+                  <InfoText label='HIGH SCHOOL COACH' text={player.getIn(['coach', 'name'])} />
+                  <InfoText label='HIGH SCHOOL COACH PHONE' text={utils.formatPhone(player.getIn(['coach', 'phone']))} />
+                  <InfoText label='HIGH SCHOOL COACH EMAIL' text={player.getIn(['coach', 'email'])} />
                 </Col>
               </Row>
             </CardItem>
@@ -72,7 +77,7 @@ class Player extends Component {
                 <Col>
                   <Text style={{fontSize: 10, fontWeight: 'bold', marginBottom: 5}}>ACCOMPLISHMENTS</Text>
                   <Text style={{fontSize: 12}}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    {player.get('accomplishments')}
                   </Text>
                 </Col>
               </Row>
@@ -85,11 +90,11 @@ class Player extends Component {
 }
 
 Player.propTypes = {
-  dimensions: PropTypes.instanceOf(Immutable.Map)
+  player: PropTypes.instanceOf(Immutable.Map)
 }
 
 const mapStateToProps = state => ({
-  dimensions: state.dimensions
+  player: state.player
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

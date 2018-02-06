@@ -124,7 +124,8 @@ class Register extends Component {
                     <Label>{item.get('label')}</Label>
                     <Input
                       ref={item.get('id')}
-                      secureTextEntry={item.get('password') && item.get('confirmPassword')}
+                      autoCapitalize={item.get('autoCapitalize')}
+                      secureTextEntry={item.get('secureTextEntry')}
                       value={item.get('value')}
                       placeholder={item.get('placeholder')}
                       keyboardType={item.get('keyboardType')}

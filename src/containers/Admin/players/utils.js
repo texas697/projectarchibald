@@ -25,6 +25,7 @@ export const buildModel = (model, image, ageGroup) => {
   const _twitter = utils.formatTrim(model.getIn([10, 'value']))
   const _snapchat = utils.formatTrim(model.getIn([11, 'value']))
   const _instagram = utils.formatTrim(model.getIn([12, 'value']))
+  const _accomplishments = utils.formatTrim(model.getIn([13, 'value']))
   return {
     id: id || uuid.v4(),
     firstQuery: _firstQuery || '',
@@ -42,9 +43,12 @@ export const buildModel = (model, image, ageGroup) => {
     twitter: _twitter || '',
     snapchat: _snapchat || '',
     instagram: _instagram || '',
+    accomplishments: _accomplishments || '',
     image: isEmpty(image) ? config.PLACEHOLDER_IMAGE : image,
     ageGroup: isEmpty(ageGroup) ? '' : ageGroup,
     teamId: store.getState().adminTeam.get('id'),
+    coachId: store.getState().adminCoach.get('id'),
+    hsId: store.getState().adminHS.get('id'),
     date: firebaseTime.database.ServerValue.TIMESTAMP
   }
 }
@@ -63,6 +67,7 @@ export const setPlayerData = player => {
   _clone[10].value = player.get('twitter')
   _clone[11].value = player.get('snapchat')
   _clone[12].value = player.get('instagram')
+  _clone[13].value = player.get('accomplishments')
   store.dispatch(actions.setPlayerData(_clone))
   store.dispatch(actions.setPlayerId(player.get('id')))
   store.dispatch(actions.setPlayerImage(player.get('image')))

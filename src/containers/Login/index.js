@@ -103,6 +103,7 @@ class Login extends Component {
                   returnKeyType='next'
                   placeholder={'xxxxx@xxxxx.com'}
                   keyboardType='email-address'
+                  autoCapitalize={'none'}
                   value={email}
                   onChangeText={email => this.setState({ email })} />
               </Item>
@@ -113,6 +114,7 @@ class Login extends Component {
                 <Input
                   ref='passwordInput'
                   secureTextEntry
+                  autoCapitalize={'none'}
                   placeholder={'xxxxxxx'}
                   value={password}
                   returnKeyType='go'

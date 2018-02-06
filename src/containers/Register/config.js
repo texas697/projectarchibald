@@ -4,6 +4,8 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'name',
   keyboardType: 'default',
+  secureTextEntry: false,
+  autoCapitalize: 'words',
   placeholder: 'xxxxxxx',
   nextId: 'email',
   returnKeyType: 'next'
@@ -13,6 +15,8 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'email',
   keyboardType: 'email-address',
+  secureTextEntry: false,
+  autoCapitalize: 'none',
   placeholder: 'xxxxx@xxxxx.com',
   nextId: 'password',
   returnKeyType: 'next'
@@ -22,6 +26,8 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'password',
   keyboardType: 'default',
+  secureTextEntry: true,
+  autoCapitalize: 'none',
   placeholder: 'xxxxxxx',
   nextId: 'confirmPassword',
   returnKeyType: 'next'
@@ -31,6 +37,8 @@ export const INPUT_FIELDS = [{
   value: '',
   id: 'confirmPassword',
   keyboardType: 'default',
+  secureTextEntry: true,
+  autoCapitalize: 'none',
   placeholder: 'xxxxxxx',
   nextId: 'go',
   returnKeyType: 'go'

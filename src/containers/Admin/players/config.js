@@ -100,6 +100,14 @@ export const INPUT_FIELDS = [{
   id: 'instagram',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
+  nextId: 'accomplishments',
+  returnKeyType: 'next'
+}, {
+  label: 'Accomplishments',
+  value: '',
+  id: 'accomplishments',
+  keyboardType: 'default',
+  placeholder: 'xxxxxxx',
   nextId: 'go',
   returnKeyType: 'go'
 }]

@@ -174,6 +174,8 @@ class Player extends Component {
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   ref={item.get('id')}
+                  multiline={i === 13}
+                  autoGrow={i === 13}
                   value={item.get('value')}
                   placeholder={item.get('placeholder')}
                   keyboardType={item.get('keyboardType')}
