@@ -12,6 +12,17 @@ export default {
     backgroundColor: config.COLORS.orange,
     marginTop: getStatusBarHeight()
   },
+  errorText: {
+    color: 'red',
+    textAlign: 'left',
+    fontSize: 12,
+    marginTop: -15
+  },
+  helperText: {
+    alignSelf: 'flex-end',
+    fontSize: 12,
+    marginBottom: -10
+  },
   scrollContainer: {
     flex: 1,
     width: null,

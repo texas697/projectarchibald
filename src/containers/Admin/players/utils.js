@@ -1,5 +1,6 @@
 import uuid from 'uuid'
 import cloneDeep from 'lodash/cloneDeep'
+import forOwn from 'lodash/forOwn'
 import isEmpty from 'lodash/isEmpty'
 import firebaseTime from 'firebase'
 import store from '../../../redux/store'
@@ -72,4 +73,35 @@ export const setPlayerData = player => {
   store.dispatch(actions.setPlayerId(player.get('id')))
   store.dispatch(actions.setPlayerImage(player.get('image')))
   store.dispatch(actions.setPlayerAgeGroup(player.get('ageGroup')))
+}
+
+export const validate = (val, id, model, i) => {
+  if (id === 'email') model = model.setIn([i, 'isValid'], utils.validateEmail(val))
+  else if (id === 'grad') model = model.setIn([i, 'isValid'], val.length === 4)
+  else if (id === 'height') model = model.setIn([i, 'isValid'], val.length === 3)
+  else if (id === 'weight') model = model.setIn([i, 'isValid'], val.length === 3)
+  else if (id === 'age') model = model.setIn([i, 'isValid'], val.length === 2)
+  else if (id === 'phone') model = model.setIn([i, 'isValid'], val.length === 10)
+  else if (id === 'parentPhone') model = model.setIn([i, 'isValid'], val.length === 10)
+  store.dispatch(actions.setPlayerData(model))
+}
+
+export const checkValue = (model) => {
+  const _obj = {
+    firstName: model.getIn([0, 'value']),
+    lastName: model.getIn([1, 'value']),
+    email: model.getIn([2, 'value']),
+    grad: model.getIn([3, 'value']),
+    height: model.getIn([4, 'value']),
+    weight: model.getIn([5, 'value']),
+    phone: model.getIn([6, 'value']),
+    age: model.getIn([7, 'value']),
+    parent: model.getIn([8, 'value']),
+    parentPhone: model.getIn([9, 'value'])
+  }
+  let check = true
+  forOwn(_obj, (value, key) => {
+    if (isEmpty(value)) check = false
+  })
+  return check
 }

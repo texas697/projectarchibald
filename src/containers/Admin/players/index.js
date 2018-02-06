@@ -10,6 +10,7 @@ import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, Li
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import styles from './styles'
+import * as mainUtils from '../../../utils/index'
 import mainStyles from '../../../styles/index'
 import * as actions from './action'
 import * as config from '../../../config/index'
@@ -76,14 +77,15 @@ class Player extends Component {
     const {adminPlayer} = this.props
     const model = adminPlayer.get('model')
     const id = adminPlayer.get('id')
-    // const _check = model.find(item => !item.get('value'))
-    // if (_check) mainUtils.fieldsRequired()
-    // else {
-    let _message = {}
-    if (id) _message = messages.UPDATE_PLAYER(model.get(0).value)
-    else _message = messages.ADD_PLAYER(model.get(0).value)
-    Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
-    // }
+    const _check = model.find(item => !item.get('isValid'))
+    const _emptyFields = utils.checkValue(model)
+    if (_check || !_emptyFields) mainUtils.formNotValid()
+    else {
+      let _message = {}
+      if (id) _message = messages.UPDATE_PLAYER(model.get(0).value)
+      else _message = messages.ADD_PLAYER(model.get(0).value)
+      Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])
+    }
   }
 
   _onConfirmSubmit () {
@@ -138,6 +140,9 @@ class Player extends Component {
               </Button>
             </CardItem>
           )}
+          <CardItem style={mainStyles.alignItemsRight}>
+            <Text style={mainStyles.helperText}>* required fields</Text>
+          </CardItem>
           <CardItem>
             <Button
               onPress={this._onPickImage}
@@ -170,7 +175,7 @@ class Player extends Component {
           </CardItem>
           {model.map((item, i) => (
             <CardItem key={i} style={mainStyles.alignStretch}>
-              <Item stackedLabel>
+              <Item stackedLabel error={!item.get('isValid')}>
                 <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
                 <Input
                   ref={item.get('id')}
@@ -180,8 +185,10 @@ class Player extends Component {
                   placeholder={item.get('placeholder')}
                   keyboardType={item.get('keyboardType')}
                   returnKeyType={item.get('returnKeyType')}
+                  onBlur={() => utils.validate(item.get('value'), item.get('id'), model, i)}
                   onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                   onChangeText={val => this._onInputChange(val, i)} />
+                {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
               </Item>
             </CardItem>
           ))}

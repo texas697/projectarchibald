@@ -1,6 +1,6 @@
-export const ALL_FIELDS_REQUIRED = {
-  title: 'Required',
-  body: 'All Fields Required'
+export const FORM_NOT_VALID = {
+  title: 'Error',
+  body: 'Form is not valid. Check fields'
 }
 export const PASS_NO_MATCH = {
   title: 'Passwords',

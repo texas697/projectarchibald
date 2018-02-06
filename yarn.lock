@@ -4260,6 +4260,10 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
+latches@^1.0.2:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/latches/-/latches-1.0.9.tgz#fb6d1faa01945d86228d7735611170e662a294ed"
+
 lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
@@ -7099,6 +7103,12 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
+
+validation.js@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/validation.js/-/validation.js-1.0.3.tgz#d534e10fa854e243c6c3beec30278f809f6caff1"
+  dependencies:
+    latches "^1.0.2"
 
 vary@~1.0.1:
   version "1.0.1"

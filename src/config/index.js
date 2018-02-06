@@ -37,3 +37,5 @@ export const REGION_OPTIONS = [
   {value: 'Mountain', label: 'Mountain'},
   {value: 'Southwest', label: 'Southwest'},
   {value: 'Pacific Northwest', label: 'Pacific Northwest'}]
+
+export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

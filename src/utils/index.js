@@ -1,6 +1,7 @@
 
 import {Alert} from 'react-native'
 import * as messages from '../messages/index'
+import * as config from '../config/index'
 import store from '../redux/store'
 import {resetRegisterUserRequest} from '../containers/Register/action'
 import {addRolesRequest} from '../modules/Roles/action'
@@ -33,8 +34,8 @@ export const updateProfile = (user, name, isCoach) => {
   }
 }
 
-export const fieldsRequired = () => Alert.alert(messages.ALL_FIELDS_REQUIRED.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false })
-export const passNoMatch = () => Alert.alert(messages.PASS_NO_MATCH.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false })
+export const formNotValid = () => Alert.alert(messages.FORM_NOT_VALID.title, messages.FORM_NOT_VALID.body, [{text: 'OK', onPress: () => console.log('')}])
+export const passNoMatch = () => Alert.alert(messages.PASS_NO_MATCH.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('')}])
 
 export const formatPhone = string => string.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
 
@@ -47,3 +48,5 @@ export const formatHeight = string => {
   if (string) return `${string.slice(0, 1)}'${string.slice(1)}`
   else return ''
 }
+
+export const validateEmail = email => config.EMAIL_REGEX.test(email)
