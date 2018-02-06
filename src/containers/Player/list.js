@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import {Container, Content, ListItem, Icon, Button, List, Header, Left, Title, Body, Right, Text, Thumbnail, CardItem, Card} from 'native-base'
@@ -9,6 +8,12 @@ import * as actions from '../Player/redux'
 import * as config from '../../config/index'
 
 class PlayerList extends Component {
+  componentDidUpdate (prevProps) {
+    const data = this.props.player.get('data')
+    const _data = prevProps.player.get('data')
+    if (data !== _data) this.props.navigation.navigate('Player')
+  }
+
   render () {
     const {filters, dimensions} = this.props
     const dataList = filters.get('data')
@@ -36,10 +41,7 @@ class PlayerList extends Component {
                     <ListItem
                       key={i}
                       avatar
-                      onPress={() => {
-                        this.props.setPlayer(item)
-                        this.props.navigation.navigate('Player')
-                      }}>
+                      onPress={() => actions.setPlayer(item)}>
                       <Left>
                         <Thumbnail square small source={{ uri: config.IMAGE_64(item.get('image')) }} />
                       </Left>
@@ -57,22 +59,18 @@ class PlayerList extends Component {
 }
 
 PlayerList.propTypes = {
+  player: PropTypes.instanceOf(Immutable.Map),
   filters: PropTypes.instanceOf(Immutable.Map),
   navigation: PropTypes.object,
-  dimensions: PropTypes.instanceOf(Immutable.Map),
-  setPlayer: PropTypes.func
+  dimensions: PropTypes.instanceOf(Immutable.Map)
 }
 
 const mapStateToProps = state => ({
   filters: state.filters,
+  player: state.player,
   dimensions: state.dimensions
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  setPlayer: (player) => actions.setPlayer(player)
-}, dispatch)
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(PlayerList)

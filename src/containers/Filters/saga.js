@@ -71,10 +71,13 @@ function * _setData (action) {
 
     if (teamFilter) {
       data = yield call(_fetchTeamsByName, teamFilter)
+      yield put(actions.toggleTeamModal())
     } else if (ageGroupFilter) {
       data = yield call(_fetchPlayersByAgeGroup, ageGroupFilter)
+      yield put(actions.toggleAgeGroupModal())
     } else if (stateFilter) {
       data = yield call(_fetchTeamsByState, stateFilter)
+      yield put(actions.toggleStateModal())
     } else if (playerFirstFilter || playerLastFilter) {
       data = yield call(_fetchPlayersByFirstName, playerFirstFilter)
 
@@ -83,8 +86,10 @@ function * _setData (action) {
       if (!isEmpty(data) && !isEmpty(result)) data = data.concat(result)
       else if (isEmpty(data) && !isEmpty(result)) data = result
       data = uniqBy(data, 'id')
+      yield put(actions.togglePlayerModal())
     } else if (regionFilter) {
       data = yield call(_fetchTeamsByRegion, regionFilter)
+      yield put(actions.toggleStateModal())
     }
 
     yield put(actions.setFilteredDataSuccess(data))

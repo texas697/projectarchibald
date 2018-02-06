@@ -43,4 +43,7 @@ export const formatQuery = string => string.trim().toLowerCase().replace("'", ''
 export const formatNumbers = string => parseInt(string.trim().replace("'", '').replace('-', '').replace(/\D/g, ''))
 export const formatTrim = string => string.trim().toLowerCase()
 
-export const formatHeight = string => `${string.slice(0, 1)}'${string.slice(1)}`
+export const formatHeight = string => {
+  if (string) return `${string.slice(0, 1)}'${string.slice(1)}`
+  else return ''
+}

@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
+import promise from 'redux-promise'
 import * as firebase from 'firebase'
 import rootReducer from './reducers'
 import rootSaga from './sagas'
@@ -12,7 +13,8 @@ const sagaMiddleware = createSagaMiddleware()
 const initialState = {}
 const enhancers = []
 const middleware = [
-  sagaMiddleware
+  sagaMiddleware,
+  promise
 ]
 
 const composedEnhancers = compose(

@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
-import {Container, Content, Card, CardItem, H3, Row, Text, Col, ListItem, Icon, Button, List, Header, Left, Title, Body, Right, Text, Thumbnail, CardItem, Card} from 'native-base'
+import {Container, Content, Card, CardItem, H3, Row, Text, Col, Icon, Button, Header, Left, Title, Body, Right} from 'native-base'
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import {logoutRequest} from '../Login/action'
 import * as utils from '../../utils/index'
+import * as config from '../../config'
 
 const InfoText = ({label, text}) => (
   <Text style={{fontSize: 10, marginBottom: 5}}>{label}: <Text style={{fontSize: 12, fontWeight: 'bold'}}>{text}</Text></Text>
@@ -22,6 +23,7 @@ InfoText.propTypes = {
 class Player extends Component {
   render () {
     const {player} = this.props
+    const data = player.get('data').toJS()
 
     return (
       <Container style={mainStyles.container}>
@@ -39,36 +41,36 @@ class Player extends Component {
             <CardItem>
               <Row>
                 <Col style={{width: 140}}>
-                  <Image source={{uri: player.get('image')}} style={styles.playerImg} />
+                  <Image source={{uri: config.IMAGE_64(data.image)}} style={styles.playerImg} />
                 </Col>
                 <Col>
-                  <H3>{player.get('name')}</H3>
-                  <InfoText label='GRAD YEAR' text={player.get('grad')} />
-                  <InfoText label='HEIGHT' text={utils.formatHeight(player.get('height'))} />
-                  <InfoText label='WEIGHT' text={player.get('weight')} />
-                  <InfoText label='PHONE' text={utils.formatPhone(player.get('phone'))} />
-                  <InfoText label='PARENT' text={player.get('parent')} />
-                  <InfoText label='PARENT PHONE' text={utils.formatPhone(player.get('parentPhone'))} />
-                </Col>
-              </Row>
-            </CardItem>
-            <CardItem>
-              <Row>
-                <Col>
-                  <InfoText label='TWITTER' text={player.get('twitter')} />
-                  <InfoText label='SNAPCHAT' text={player.get('snapchat')} />
-                  <InfoText label='INSTAGRAM' text={player.get('instagram')} />
-                  <InfoText label='EMAIL' text={player.get('email')} />
+                  <H3>{data.name}</H3>
+                  <InfoText label='GRAD YEAR' text={data.grad.toString()} />
+                  <InfoText label='HEIGHT' text={utils.formatHeight(data.height.toString())} />
+                  <InfoText label='WEIGHT' text={data.weight.toString()} />
+                  <InfoText label='PHONE' text={utils.formatPhone(data.phone.toString())} />
+                  <InfoText label='PARENT' text={data.parent} />
+                  <InfoText label='PARENT PHONE' text={utils.formatPhone(data.parentPhone.toString())} />
                 </Col>
               </Row>
             </CardItem>
             <CardItem>
               <Row>
                 <Col>
-                  <InfoText label='HIGH SCHOOL' text={player.getIn(['hs', 'name'])} />
-                  <InfoText label='HIGH SCHOOL COACH' text={player.getIn(['coach', 'name'])} />
-                  <InfoText label='HIGH SCHOOL COACH PHONE' text={utils.formatPhone(player.getIn(['coach', 'phone']))} />
-                  <InfoText label='HIGH SCHOOL COACH EMAIL' text={player.getIn(['coach', 'email'])} />
+                  <InfoText label='TWITTER' text={data.twitter} />
+                  <InfoText label='SNAPCHAT' text={data.snapchat} />
+                  <InfoText label='INSTAGRAM' text={data.instagram} />
+                  <InfoText label='EMAIL' text={data.email} />
+                </Col>
+              </Row>
+            </CardItem>
+            <CardItem>
+              <Row>
+                <Col>
+                  <InfoText label='HIGH SCHOOL' text={data.hs.name} />
+                  <InfoText label='HIGH SCHOOL COACH' text={data.coach.name} />
+                  <InfoText label='HIGH SCHOOL COACH PHONE' text={utils.formatPhone(data.coach.phone.toString())} />
+                  <InfoText label='HIGH SCHOOL COACH EMAIL' text={data.coach.email} />
                 </Col>
               </Row>
             </CardItem>
@@ -77,7 +79,7 @@ class Player extends Component {
                 <Col>
                   <Text style={{fontSize: 10, fontWeight: 'bold', marginBottom: 5}}>ACCOMPLISHMENTS</Text>
                   <Text style={{fontSize: 12}}>
-                    {player.get('accomplishments')}
+                    {data.accomplishments}
                   </Text>
                 </Col>
               </Row>
@@ -90,7 +92,8 @@ class Player extends Component {
 }
 
 Player.propTypes = {
-  player: PropTypes.instanceOf(Immutable.Map)
+  player: PropTypes.instanceOf(Immutable.Map),
+  navigation: PropTypes.object
 }
 
 const mapStateToProps = state => ({
