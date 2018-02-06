@@ -41,6 +41,20 @@ FilterCol.propTypes = {
 }
 
 class Home extends Component {
+  componentDidUpdate (prevProps) {
+    const {filters} = this.props
+    const isFiltering = filters.get('isFiltering')
+    const _isFiltering = prevProps.filters.get('isFiltering')
+    if (isFiltering !== _isFiltering && !isFiltering) {
+      const ageGroupFilter = filters.get('ageGroupFilter')
+      const playerFirstFilter = filters.get('playerFirstFilter')
+      const playerLastFilter = filters.get('playerLastFilter')
+      let path = 'TeamList'
+      if (ageGroupFilter || playerFirstFilter || playerLastFilter) path = 'PlayerList'
+      this.props.navigation.navigate(path)
+    }
+  }
+
   render () {
     const {filters} = this.props
     const visibleAgeGroup = filters.get('visibleAgeGroup')
@@ -109,7 +123,8 @@ Home.propTypes = {
   toggleAgeGroupModal: PropTypes.func,
   toggleEventModal: PropTypes.func,
   toggleStateModal: PropTypes.func,
-  togglePlayerModal: PropTypes.func
+  togglePlayerModal: PropTypes.func,
+  navigation: PropTypes.object
 }
 
 const mapStateToProps = state => ({

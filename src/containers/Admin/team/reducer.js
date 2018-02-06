@@ -10,6 +10,7 @@ export const INIT_STATE = {
   image: '',
   id: '',
   state: '',
+  region: '',
   isFetching: false,
   isAdding: true,
   isDeleting: true,
@@ -87,6 +88,10 @@ export default (state = initialState, action) => {
       return state
         .set('state', action.state)
 
+    case types.SET_TEAM_REGION:
+      return state
+        .set('region', action.region)
+
     case types.SET_TEAM_ID:
       return state
         .set('id', action.id)
@@ -95,6 +100,8 @@ export default (state = initialState, action) => {
       return state
         .set('id', '')
         .set('image', '')
+        .set('state', '')
+        .set('region', '')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)

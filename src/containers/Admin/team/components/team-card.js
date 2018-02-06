@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
-import {Image, Platform} from 'react-native'
+import {Image} from 'react-native'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Item, Label, Input, Button, Text, Picker } from 'native-base'
@@ -12,7 +12,6 @@ import * as actions from '../action'
 import * as config from '../../../../config/index'
 import styles from '../../players/styles'
 
-const platform = Platform.OS
 class TeamCard extends Component {
   constructor (props) {
     super(props)
@@ -37,10 +36,8 @@ class TeamCard extends Component {
     const model = adminTeam.get('model')
     const image = adminTeam.get('image')
     const state = adminTeam.get('state')
+    const region = adminTeam.get('region')
     const options = states.get('data').toJS()
-    if (platform !== 'ios') {
-      options.unshift(config.EMPTY_OPTION)
-    }
 
     return (
       <Card>
@@ -74,6 +71,23 @@ class TeamCard extends Component {
             ))}
           </Picker>
         </CardItem>
+        <CardItem style={[styles.alignItemsCenter]}>
+          <Label style={mainStyles.selectLabel}>Region</Label>
+        </CardItem>
+        <CardItem style={mainStyles.alignStretch}>
+          <Picker
+            placeholder='-Select-'
+            textStyle={{color: '#000'}}
+            iosHeader='Select one'
+            mode='dropdown'
+            selectedValue={region}
+            onValueChange={this.props.setTeamRegion}
+          >
+            {config.REGION_OPTIONS.map((item, i) => (
+              <Picker.Item key={i} label={item.label} value={item.label} />
+            ))}
+          </Picker>
+        </CardItem>
         {model.map((item, i) => (
           <CardItem key={i} style={mainStyles.alignStretch}>
             <Item stackedLabel>
@@ -98,6 +112,7 @@ TeamCard.propTypes = {
   setTeamData: PropTypes.func,
   setTeamImage: PropTypes.func,
   setTeamState: PropTypes.func,
+  setTeamRegion: PropTypes.func,
   onSubmit: PropTypes.func
 }
 
@@ -109,7 +124,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   setTeamData: model => actions.setTeamData(model),
   setTeamImage: image => actions.setTeamImage(image),
-  setTeamState: state => actions.setTeamState(state)
+  setTeamState: state => actions.setTeamState(state),
+  setTeamRegion: region => actions.setTeamRegion(region)
 }, dispatch)
 
 export default connect(

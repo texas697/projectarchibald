@@ -36,6 +36,7 @@ export default (state = initialState, action) => {
 
     case types.LOGOUT_SUCCESS:
       return state
+        .set('isAuthenticating', false)
         .set('isAuthenticated', false)
         .set('isLoggingOut', false)
 

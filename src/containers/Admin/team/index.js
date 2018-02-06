@@ -64,7 +64,8 @@ class Team extends Component {
     const model = adminTeam.get('model')
     const image = adminTeam.get('image')
     const state = adminTeam.get('state')
-    const _model = utils.buildModel(model, image, state)
+    const region = adminTeam.get('region')
+    const _model = utils.buildModel(model, image, state, region)
     this.props.setTeamId(_model.id)
     this.props.addTeamRequest(_model)
   }

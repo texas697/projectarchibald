@@ -114,3 +114,10 @@ export const setTeamState = state => {
     state
   }
 }
+
+export const setTeamRegion = region => {
+  return {
+    type: types.SET_TEAM_REGION,
+    region
+  }
+}

@@ -15,7 +15,7 @@ export const statesFetchRequest = () => {
       })
     }
   })
-  // data.unshift(config.EMPTY_OPTION)
+  data.unshift(config.EMPTY_OPTION)
   return {
     type: types.STATES_FETCH_REQUEST,
     data

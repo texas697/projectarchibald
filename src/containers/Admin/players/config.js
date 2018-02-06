@@ -1,7 +1,15 @@
 export const INPUT_FIELDS = [{
-  label: 'Player Name',
+  label: 'First Name',
   value: '',
-  id: 'playerName',
+  id: 'firstName',
+  keyboardType: 'default',
+  placeholder: 'xxxxxxx',
+  nextId: 'lastName',
+  returnKeyType: 'next'
+}, {
+  label: 'Last Name',
+  value: '',
+  id: 'lastName',
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
   nextId: 'email',

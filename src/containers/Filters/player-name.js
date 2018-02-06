@@ -21,14 +21,24 @@ class PlayerName extends Component {
                   <Icon name='ios-close-circle' />
                 </Right>
               </ListItem>
-              <ListItem>
+              <ListItem style={mainStyles.alignStretch}>
                 <Item stackedLabel>
-                  <Label>Player Name</Label>
+                  <Label>First Name</Label>
+                  <Input
+                    returnKeyType='next'
+                    keyboardType='default'
+                    value={this.props.filters.get('playerFirstFilter')}
+                    onChangeText={this.props.setPlayerFirstFilter} />
+                </Item>
+              </ListItem>
+              <ListItem style={mainStyles.alignStretch}>
+                <Item stackedLabel>
+                  <Label>Last Name</Label>
                   <Input
                     returnKeyType='go'
-                    keyboardType='email-address'
-                    value={this.props.filters.get('playerFilter')}
-                    onChangeText={this.props.setPlayerFilter} />
+                    keyboardType='default'
+                    value={this.props.filters.get('playerLastFilter')}
+                    onChangeText={this.props.setPlayerLastFilter} />
                 </Item>
               </ListItem>
               <ListItem style={mainStyles.alignStretch}>
@@ -51,7 +61,8 @@ PlayerName.propTypes = {
   filters: PropTypes.instanceOf(Immutable.Map),
   togglePlayerModal: PropTypes.func,
   setFilteredDataRequest: PropTypes.func,
-  setPlayerFilter: PropTypes.func
+  setPlayerFirstFilter: PropTypes.func,
+  setPlayerLastFilter: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -60,7 +71,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   togglePlayerModal: () => actions.togglePlayerModal(),
-  setPlayerFilter: playerFilter => actions.setPlayerFilter(playerFilter),
+  setPlayerFirstFilter: playerFirstFilter => actions.setPlayerFirstFilter(playerFirstFilter),
+  setPlayerLastFilter: playerLastFilter => actions.setPlayerLastFilter(playerLastFilter),
   setFilteredDataRequest: () => actions.setFilteredDataRequest()
 }, dispatch)
 

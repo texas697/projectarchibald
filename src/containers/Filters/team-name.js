@@ -21,7 +21,7 @@ class TeamName extends Component {
                   <Icon name='ios-close-circle' />
                 </Right>
               </ListItem>
-              <ListItem>
+              <ListItem style={mainStyles.alignStretch}>
                 <Item stackedLabel>
                   <Label>Team Name</Label>
                   <Input

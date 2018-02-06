@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Image, ListView, Alert, Platform} from 'react-native'
+import {Image, ListView, Alert} from 'react-native'
 import isEmpty from 'lodash/isEmpty'
 import cloneDeep from 'lodash/cloneDeep'
 import ReactTimeout from 'react-timeout'
@@ -19,7 +19,6 @@ import {INPUT_FIELDS} from './config'
 import CustomSpinner from '../../../components/Spinner'
 import {setSpinner} from '../../../modules/Spinner/action'
 
-const platform = Platform.OS
 class Player extends Component {
   constructor (props) {
     super(props)
@@ -127,7 +126,7 @@ class Player extends Component {
     const ageGroup = adminPlayer.get('ageGroup')
     const data = adminPlayer.get('data')
     const id = adminPlayer.get('id')
-    if (platform !== 'ios') config.AGE_GROUP_OPTIONS.unshift(config.EMPTY_OPTION)
+
     return (
       <View>
         <Card>

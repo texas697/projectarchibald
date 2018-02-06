@@ -6,14 +6,17 @@ import store from '../../../redux/store'
 import {INPUT_FIELDS} from './config'
 import * as actions from './action'
 import * as config from '../../../config/index'
+import * as utils from '../../../utils/index'
 
-export const buildModel = (model, image, state) => {
+export const buildModel = (model, image, state, region) => {
   const id = store.getState().adminTeam.get('id')
   return {
     id: id || uuid.v4(),
     name: model.getIn([0, 'value']),
+    nameQuery: utils.formatQuery(model.getIn([0, 'value'])),
     image: isEmpty(image) ? config.PLACEHOLDER_IMAGE : image,
     state: isEmpty(state) ? '' : state,
+    region: isEmpty(region) ? '' : region,
     date: firebaseTime.database.ServerValue.TIMESTAMP
   }
 }
@@ -24,4 +27,5 @@ export const setTeamData = team => {
   store.dispatch(actions.setTeamData(_clone))
   store.dispatch(actions.setTeamImage(team.get('image')))
   store.dispatch(actions.setTeamState(team.get('state')))
+  store.dispatch(actions.setTeamRegion(team.get('region')))
 }

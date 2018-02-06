@@ -10,7 +10,8 @@ const initialState = Immutable.Map({
   teamFilter: '',
   ageGroupFilter: '',
   stateFilter: '',
-  playerFilter: '',
+  playerFirstFilter: '',
+  playerLastFilter: '',
   eventFilter: '',
   regionFilter: '',
   data: Immutable.fromJS([]),
@@ -43,26 +44,69 @@ export default (state = initialState, action) => {
     case types.SET_TEAM_FILTER:
       return state
         .set('teamFilter', action.teamFilter)
+        .set('ageGroupFilter', '')
+        .set('stateFilter', '')
+        .set('playerFirstFilter', '')
+        .set('eventFilter', '')
+        .set('regionFilter', '')
 
     case types.SET_AGE_GROUP_FILTER:
       return state
         .set('ageGroupFilter', action.ageGroupFilter)
+        .set('stateFilter', '')
+        .set('playerFirstFilter', '')
+        .set('playerLastFilter', '')
+        .set('eventFilter', '')
+        .set('regionFilter', '')
+        .set('teamFilter', '')
 
     case types.SET_STATE_FILTER:
       return state
         .set('stateFilter', action.stateFilter)
+        .set('ageGroupFilter', '')
+        .set('playerFirstFilter', '')
+        .set('playerLastFilter', '')
+        .set('eventFilter', '')
+        .set('regionFilter', '')
+        .set('teamFilter', '')
 
-    case types.SET_PLAYER_FILTER:
+    case types.SET_PLAYER_FIRST_FILTER:
       return state
-        .set('playerFilter', action.playerFilter)
+        .set('playerFirstFilter', action.playerFirstFilter)
+        .set('ageGroupFilter', '')
+        .set('stateFilter', '')
+        .set('eventFilter', '')
+        .set('regionFilter', '')
+        .set('teamFilter', '')
+
+    case types.SET_PLAYER_LAST_FILTER:
+      return state
+        .set('playerLastFilter', action.playerLastFilter)
+        .set('ageGroupFilter', '')
+        .set('stateFilter', '')
+        .set('eventFilter', '')
+        .set('regionFilter', '')
+        .set('teamFilter', '')
 
     case types.SET_EVENT_FILTER:
       return state
         .set('eventFilter', action.eventFilter)
+        .set('ageGroupFilter', '')
+        .set('stateFilter', '')
+        .set('playerFirstFilter', '')
+        .set('playerLastFilter', '')
+        .set('regionFilter', '')
+        .set('teamFilter', '')
 
     case types.SET_REGION_FILTER:
       return state
         .set('regionFilter', action.regionFilter)
+        .set('ageGroupFilter', '')
+        .set('stateFilter', '')
+        .set('playerFirstFilter', '')
+        .set('playerLastFilter', '')
+        .set('eventFilter', '')
+        .set('teamFilter', '')
 
     case types.SET_FILTERED_DATA_REQUEST:
       return state

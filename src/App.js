@@ -7,7 +7,9 @@ import Login from './containers/Login/index'
 import Register from './containers/Register/index'
 import Home from './containers/Home/index'
 import Player from './containers/Player/index'
+import PlayerList from './containers/Player/index-list'
 import Team from './containers/Team/index'
+import TeamList from './containers/Team/index-list'
 import SideBar from './containers/Sidebar/index'
 import store, {firebaseApp} from './redux/store'
 import {loginSuccess, logoutSuccess} from './containers/Login/action'
@@ -19,9 +21,11 @@ const Drawer = DrawerNavigator(
   {
     Login: { screen: Login },
     Register: { screen: Register },
-    Home: { screen: Home },
-    Player: { screen: Player },
     Team: { screen: Team },
+    TeamList: { screen: TeamList },
+    Player: { screen: Player },
+    PlayerList: { screen: PlayerList },
+    Home: { screen: Home },
     Admin: { screen: Admin }
   },
   {
@@ -41,6 +45,8 @@ const AppNavigator = StackNavigator(
     Home: {screen: Home},
     Player: {screen: Player},
     Team: {screen: Team},
+    PlayerList: {screen: PlayerList},
+    TeamList: {screen: TeamList},
     Admin: {screen: Admin}
   },
   {

@@ -29,3 +29,11 @@ export const AGE_GROUP_OPTIONS = [
   {value: '15', label: '15-Under'},
   {value: '14', label: '14-Under'},
   {value: '13', label: '13-Under'}]
+
+export const REGION_OPTIONS = [
+  {value: 'Northwest', label: 'Northwest'},
+  {value: 'Southeast', label: 'Southeast'},
+  {value: 'Midwest', label: 'Midwest'},
+  {value: 'Mountain', label: 'Mountain'},
+  {value: 'Southwest', label: 'Southwest'},
+  {value: 'Pacific Northwest', label: 'Pacific Northwest'}]

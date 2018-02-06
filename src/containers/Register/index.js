@@ -75,8 +75,9 @@ class Register extends Component {
       if (isCoach) {
         const _image = adminTeam.get('image')
         const _state = adminTeam.get('state')
+        const _region = adminTeam.get('region')
         let _modelTeam = adminTeam.get('model')
-        _modelTeam = teamUtils.buildModel(_modelTeam, _image, _state)
+        _modelTeam = teamUtils.buildModel(_modelTeam, _image, _state, _region)
         this.props.setTeamId(_modelTeam.id)
         this.props.addTeamRequest(_model)
       }

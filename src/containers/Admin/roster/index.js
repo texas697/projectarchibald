@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Alert, ListView, Platform} from 'react-native'
+import {Alert, ListView} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { Card, CardItem, Button, Text, Toast, Picker, List, ListItem, Thumbnail, Left, Icon, H3, View, Label } from 'native-base'
 import Immutable from 'immutable'
@@ -14,7 +14,6 @@ import styles from '../players/styles'
 import CustomSpinner from '../../../components/Spinner'
 import {setSpinner} from '../../../modules/Spinner/action'
 
-const platform = Platform.OS
 const Item = Picker.Item
 class Roster extends Component {
   constructor (props) {
@@ -109,10 +108,7 @@ class Roster extends Component {
     const player = adminRoster.get('player')
     const staff = adminRoster.get('staff')
     const id = adminRoster.get('id')
-    if (platform !== 'ios') {
-      staffOptions.unshift(config.EMPTY_OPTION)
-      playerOptions.unshift(config.EMPTY_OPTION)
-    }
+
     return (
       <View>
         <Card>

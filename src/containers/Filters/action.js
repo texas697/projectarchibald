@@ -65,10 +65,17 @@ export const setEventFilter = eventFilter => {
   }
 }
 
-export const setPlayerFilter = playerFilter => {
+export const setPlayerFirstFilter = playerFirstFilter => {
   return {
-    type: types.SET_PLAYER_FILTER,
-    playerFilter
+    type: types.SET_PLAYER_FIRST_FILTER,
+    playerFirstFilter
+  }
+}
+
+export const setPlayerLastFilter = playerLastFilter => {
+  return {
+    type: types.SET_PLAYER_LAST_FILTER,
+    playerLastFilter
   }
 }
 
