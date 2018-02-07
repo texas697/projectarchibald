@@ -25,18 +25,6 @@ const datas = [
     bg: '#C5F442'
   },
   {
-    name: 'Player',
-    route: 'Player',
-    icon: 'phone-portrait',
-    bg: '#C5F442'
-  },
-  {
-    name: 'Team',
-    route: 'Team',
-    icon: 'phone-portrait',
-    bg: '#C5F442'
-  },
-  {
     name: 'Admin',
     route: 'Admin',
     icon: 'ios-hammer',

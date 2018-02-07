@@ -66,13 +66,14 @@ class Login extends Component {
 
   _goToHome () {
     this.props.setSpinner(false)
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({routeName: 'Home'})
-      ]
-    })
-    this.props.navigation.dispatch(resetAction)
+    this.props.navigation.navigate('Home')
+    // const resetAction = NavigationActions.reset({
+    //   index: 0,
+    //   actions: [
+    //     NavigationActions.navigate({routeName: 'Home'})
+    //   ]
+    // })
+    // this.props.navigation.dispatch(resetAction)
   }
 
   _focusNext (nextField) {

@@ -24,6 +24,7 @@ export const TOAST_ERROR = error => {
 export const IMAGE_64 = base64String => `data:image/jpg;base64,${base64String}`
 
 export const AGE_GROUP_OPTIONS = [
+  {value: 'undefined', label: '-Select-'},
   {value: '17', label: '17-Under'},
   {value: '16', label: '16-Under'},
   {value: '15', label: '15-Under'},
@@ -31,6 +32,7 @@ export const AGE_GROUP_OPTIONS = [
   {value: '13', label: '13-Under'}]
 
 export const REGION_OPTIONS = [
+  {value: 'undefined', label: '-Select-'},
   {value: 'Northwest', label: 'Northwest'},
   {value: 'Southeast', label: 'Southeast'},
   {value: 'Midwest', label: 'Midwest'},
