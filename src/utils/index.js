@@ -14,7 +14,7 @@ export const buildOptions = data => {
   return data.map(x => {
     return {
       value: x.id,
-      label: x.name
+      label: x.firstName ? `${x.firstName} ${x.lastName}` : x.name
     }
   })
 }

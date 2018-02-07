@@ -41,6 +41,7 @@ function * _addRequest (action) {
     yield put(actions.addStaffSuccess(res))
     const _model = yield teamsUtils.buildModel()
     yield put(addTeamsRequest(_model))
+    yield put(actions.fetchStaffRequest(action.model.teamId))
   } catch (error) {
     yield put(actions.addStaffFailure(error))
   }

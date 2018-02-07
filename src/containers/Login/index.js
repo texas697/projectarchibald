@@ -43,7 +43,7 @@ class Login extends Component {
     const error = login.get('error')
     const _error = prevProps.login.get('error')
     if (error !== _error) this._onError(error)
-    if (isAuthenticated !== _isAuthenticated && isAuthenticated) this._goToHome()
+    if (isAuthenticated) this._goToHome()
     if (isReseting !== _isReseting && !isReseting) this._onSuccessReset()
   }
 

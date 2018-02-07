@@ -34,6 +34,7 @@ const createChannel = () => {
 
 function * _addRequest (action) {
   try {
+    console.log(action.model, 'highschool')
     const _model = yield teamsUtils.buildModel()
     yield put(addTeamsRequest(_model))
     const res = yield call(_post, action.model)

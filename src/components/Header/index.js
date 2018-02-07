@@ -23,13 +23,14 @@ class CustomHeader extends Component {
     const isLoggingOut = login.get('isLoggingOut')
     const _isLoggingOut = prevProps.login.get('isLoggingOut')
     if (isLoggingOut !== _isLoggingOut && !isLoggingOut) {
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({routeName: 'Login'})
-        ]
-      })
-      this.props.navigation.dispatch(resetAction)
+      this.props.navigation.navigate('Login')
+      // const resetAction = NavigationActions.reset({
+      //   index: 0,
+      //   actions: [
+      //     NavigationActions.navigate({routeName: 'Login'})
+      //   ]
+      // })
+      // this.props.navigation.dispatch(resetAction)
     }
   }
 
