@@ -1,5 +1,6 @@
 import React from 'react'
 import { Root } from 'native-base'
+import {AsyncStorage} from 'react-native'
 import { StackNavigator, DrawerNavigator } from 'react-navigation'
 import { Provider } from 'react-redux'
 import Admin from './containers/Admin/index'
@@ -73,5 +74,12 @@ firebaseApp.auth().onAuthStateChanged(data => {
     const user = {name: _user.displayName || _name, email: _user.email, uid: _user.uid}
     store.dispatch(loginSuccess(user))
     store.dispatch(statesFetchRequest())
-  } else store.dispatch(logoutSuccess())
+  } else {
+    store.dispatch(logoutSuccess())
+    try {
+      AsyncStorage.clear()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 })
