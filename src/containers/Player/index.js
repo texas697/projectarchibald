@@ -12,7 +12,7 @@ import * as utils from '../../utils/index'
 import * as config from '../../config'
 
 const InfoText = ({label, text}) => (
-  <Text style={{fontSize: 10, marginBottom: 5}}>{label}: <Text style={{fontSize: 12, fontWeight: 'bold'}}>{text}</Text></Text>
+  <Text style={styles.infoTextLabel}>{label}: <Text style={styles.infoText}>{text}</Text></Text>
 )
 
 InfoText.propTypes = {
@@ -22,14 +22,14 @@ InfoText.propTypes = {
 
 class Player extends Component {
   render () {
-    const {player} = this.props
+    const {player, team} = this.props
     const data = player.get('data').toJS()
-
+    const route = team.get('route')
     return (
       <Container style={mainStyles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('PlayerList')}>
+            <Button transparent onPress={() => this.props.navigation.navigate(route)}>
               <Icon name='arrow-back' />
             </Button>
           </Left>
@@ -44,7 +44,7 @@ class Player extends Component {
                   <Image source={{uri: config.IMAGE_64(data.image)}} style={styles.playerImg} />
                 </Col>
                 <Col>
-                  <H3>{data.name}</H3>
+                  <H3>{`${data.firstName} ${data.lastName}`}</H3>
                   <InfoText label='GRAD YEAR' text={data.grad.toString()} />
                   <InfoText label='HEIGHT' text={utils.formatHeight(data.height.toString())} />
                   <InfoText label='WEIGHT' text={data.weight.toString()} />
@@ -77,8 +77,8 @@ class Player extends Component {
             <CardItem>
               <Row>
                 <Col>
-                  <Text style={{fontSize: 10, fontWeight: 'bold', marginBottom: 5}}>ACCOMPLISHMENTS</Text>
-                  <Text style={{fontSize: 12}}>
+                  <Text style={styles.header}>ACCOMPLISHMENTS</Text>
+                  <Text style={mainStyles.font12}>
                     {data.accomplishments}
                   </Text>
                 </Col>
@@ -92,12 +92,14 @@ class Player extends Component {
 }
 
 Player.propTypes = {
+  team: PropTypes.instanceOf(Immutable.Map),
   player: PropTypes.instanceOf(Immutable.Map),
   navigation: PropTypes.object
 }
 
 const mapStateToProps = state => ({
-  player: state.player
+  player: state.player,
+  team: state.team
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

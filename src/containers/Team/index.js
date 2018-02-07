@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Immutable from 'immutable'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
 import {Container, Content, Card, CardItem, Thumbnail, List, ListItem, Row, Text, Col, Icon, Button, Header, Left, Title, Body, Right} from 'native-base'
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import * as config from '../../config'
-
+import {setPlayer} from '../Player/redux'
+import {setTeamRoute} from './redux'
 const InfoText = ({label, text}) => (
   <Text style={{fontSize: 10, marginBottom: 5}}>{label}
     <Text style={{fontSize: 12, fontWeight: 'bold'}}>{text}</Text>
@@ -20,6 +22,18 @@ InfoText.propTypes = {
 }
 
 class Team extends Component {
+  componentDidMount () {
+  this.props.setTeamRoute('PlayerList')
+  }
+
+  componentDidUpdate (prevProps) {
+    const data = this.props.player.get('data')
+    const _data = prevProps.player.get('data')
+    if (data !== _data) {
+      this.props.navigation.navigate('Player')
+      this.props.setTeamRoute('Team')
+    }
+  }
   render () {
     const {team} = this.props
     const data = team.get('data').toJS()
@@ -41,7 +55,7 @@ class Team extends Component {
                 <Col>
                   <Text style={styles.header}>HEAD COACH</Text>
                   <Image source={{uri: config.IMAGE_64(data.coach.image)}} style={styles.teamImg} />
-                  <Text style={{fontSize: 12}}>{data.coach.name}</Text>
+                  <Text style={mainStyles.font12}>{data.coach.name}</Text>
                 </Col>
                 <Col>
                   <Text style={[styles.header, mainStyles.ml15]}>STAFF</Text>
@@ -51,8 +65,8 @@ class Team extends Component {
                         <ListItem key={i}>
                           <Thumbnail square small source={{ uri: config.IMAGE_64(item.image) }} />
                           <Body>
-                            <Text style={{fontSize: 10}}>{item.name}</Text>
-                            <Text style={{fontSize: 10}} note>{item.title}</Text>
+                            <Text style={mainStyles.font10}>{item.name}</Text>
+                            <Text style={mainStyles.font10} note>{item.title}</Text>
                           </Body>
                         </ListItem>
                       ))}
@@ -67,24 +81,26 @@ class Team extends Component {
                   <Text style={[styles.header, mainStyles.ml15]}>ROSTER</Text>
                   <List>
                     {data.players.map((item, i) => (
-                      <ListItem key={i}>
+                      <ListItem
+                        onPress={() => setPlayer(Immutable.fromJS(item))}
+                        key={i}>
                         <Thumbnail square small source={{ uri: config.IMAGE_64(item.image) }} />
                         <Row>
-                          <Col style={{width: 45, marginLeft: 10}}>
-                            <Text style={{fontSize: 10, alignSelf: 'flex-start'}} note># / #</Text>
-                            <Text style={{fontSize: 12, alignSelf: 'flex-start'}}>{item.numbers}</Text>
+                          <Col style={[mainStyles.ml10, styles.colWidth]}>
+                            <Text style={styles.rosterLabel} note># / #</Text>
+                            <Text style={styles.rosterValue}>{item.numbers}</Text>
                           </Col>
                           <Col style={styles.colWidth}>
-                            <Text style={{fontSize: 10, alignSelf: 'flex-start'}} note>Height</Text>
-                            <Text style={{fontSize: 12, alignSelf: 'flex-start'}}>{item.height}</Text>
+                            <Text style={styles.rosterLabel} note>Height</Text>
+                            <Text style={styles.rosterValue}>{item.height}</Text>
                           </Col>
                           <Col style={styles.colWidth}>
-                            <Text style={{fontSize: 10, alignSelf: 'flex-start'}} note>Year</Text>
-                            <Text style={{fontSize: 12, alignSelf: 'flex-start'}}>{item.grad}</Text>
+                            <Text style={styles.rosterLabel} note>Year</Text>
+                            <Text style={styles.rosterValue}>{item.grad}</Text>
                           </Col>
                           <Col>
-                            <Text style={{fontSize: 10, alignSelf: 'flex-start'}} note>Name</Text>
-                            <Text style={{fontSize: 12, alignSelf: 'flex-start'}}>{item.name}</Text>
+                            <Text style={styles.rosterLabel} note>Name</Text>
+                            <Text style={styles.rosterValue}>{`${item.firstName} ${item.lastName}`}</Text>
                           </Col>
                         </Row>
                       </ListItem>
@@ -101,14 +117,22 @@ class Team extends Component {
 }
 
 Team.propTypes = {
+  player: PropTypes.instanceOf(Immutable.Map),
   team: PropTypes.instanceOf(Immutable.Map),
-  navigation: PropTypes.object
+  navigation: PropTypes.object,
+  setTeamRoute: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  team: state.team
+  team: state.team,
+  player: state.player
 })
 
+const mapDispatchToProps = dispatch => bindActionCreators({
+  setTeamRoute: route => setTeamRoute(route)
+}, dispatch)
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Team)

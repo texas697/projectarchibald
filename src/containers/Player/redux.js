@@ -5,15 +5,29 @@ import store, {firebaseApp} from '../../redux/store'
 import {PATH_TEAM} from '../Admin/team/config'
 import {PATH_HS} from '../Admin/highSchool/config'
 import {PATH_COACH} from '../Admin/coach/config'
+import {Toast} from 'native-base'
+import * as config from '../../config'
 
 const _fetchTeam = id => {
-  return firebaseApp.database().ref(`${PATH_TEAM}/${id}`).once('value').then(snapshot => snapshot.val())
+  return firebaseApp.database().ref(`${PATH_TEAM}/${id}`)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return snapshot.val()
+      else Toast.show(config.TOAST_ERROR(config.TOAST_ERROR))
+    })
 }
 const _fetchHs = id => {
-  return firebaseApp.database().ref(`${PATH_HS}/${id}`).once('value').then(snapshot => snapshot.val())
+  return firebaseApp.database().ref(`${PATH_HS}/${id}`)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return snapshot.val()
+      else Toast.show(config.TOAST_ERROR(config.TOAST_ERROR))
+    })
 }
 const _fetchCoach = id => {
-  return firebaseApp.database().ref(`${PATH_COACH}/${id}`).once('value').then(snapshot => snapshot.val())
+  return firebaseApp.database().ref(`${PATH_COACH}/${id}`)
+    .once('value').then(snapshot => {
+      if (snapshot.val()) return snapshot.val()
+      else Toast.show(config.TOAST_ERROR(config.TOAST_ERROR))
+    })
 }
 
 export async function setPlayer (data) {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
-import {Platform} from 'react-native'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import {Container, Content, Text, Card, List, ListItem, Right, Icon, Button, Picker, Label} from 'native-base'
@@ -10,11 +9,9 @@ import * as actions from './action'
 import * as config from '../../config/index'
 import styles from '../Home/styles'
 
-const platform = Platform.OS
 const Item = Picker.Item
 class AgeGroup extends Component {
   render () {
-    if (platform !== 'ios') config.AGE_GROUP_OPTIONS.unshift(config.EMPTY_OPTION)
     return (
       <Container>
         <Content>

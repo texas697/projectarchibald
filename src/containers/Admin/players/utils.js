@@ -27,7 +27,7 @@ export const buildModel = (model, image, ageGroup) => {
   const _snapchat = utils.formatTrim(model.getIn([11, 'value']))
   const _instagram = utils.formatTrim(model.getIn([12, 'value']))
   const _numbers = model.getIn([13, 'value']).trim()
-  const _accomplishments = utils.formatTrim(model.getIn([13, 'value']))
+  const _accomplishments = utils.formatTrim(model.getIn([14, 'value']))
   return {
     id: id || uuid.v4(),
     firstQuery: _firstQuery || '',

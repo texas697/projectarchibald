@@ -44,27 +44,19 @@ class Roster extends Component {
   _onSelectStaff (val) {
     const {adminRoster, adminStaff} = this.props
     let staff = adminRoster.get('staff')
-    const _check = staff.find(x => x.get('name') === val)
-    if (_check) Alert.alert(messages.ROSTER_IN_LIST.title, '', [{text: 'OK', onPress: () => console.log('')}])
-    else {
       const data = adminStaff.get('data')
       const _obj = data.find(x => x.get('name') === val)
       staff = staff.push(_obj)
       this.props.setRosterStaff(staff)
-    }
   }
 
   _onSelectPlayer (val) {
     const {adminRoster, adminPlayer} = this.props
     let player = adminRoster.get('player')
-    const _check = player.find(x => x.get('name') === val)
-    if (_check) Alert.alert(messages.ROSTER_IN_LIST.title, '', [{text: 'OK', onPress: () => console.log('')}])
-    else {
-      const data = adminPlayer.get('data')
-      const _obj = data.find(x => x.get('name') === val)
-      player = player.push(_obj)
-      this.props.setRosterPlayer(player)
-    }
+    const data = adminPlayer.get('data')
+    const _obj = data.find(x => `${x.get('firstName')} ${x.get('lastName')}` === val)
+    player = player.push(_obj)
+    this.props.setRosterPlayer(player)
   }
 
   _onSubmit () {
@@ -191,7 +183,7 @@ class Roster extends Component {
                   <Left>
                     <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
                   </Left>
-                  <Text style={mainStyles.ml15}>{data.get('name')}</Text>
+                  <Text style={mainStyles.ml15}>{`${data.get('firstName')} ${data.get('lastName')}`}</Text>
                 </ListItem>}
               renderRightHiddenRow={data =>
                 <Button

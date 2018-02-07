@@ -181,6 +181,7 @@ class Player extends Component {
                   ref={item.get('id')}
                   multiline={i === 13}
                   autoGrow={i === 13}
+                  autoCapitalize='words'
                   value={item.get('value')}
                   placeholder={item.get('placeholder')}
                   keyboardType={item.get('keyboardType')}
@@ -217,7 +218,7 @@ class Player extends Component {
                   <Left>
                     <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
                   </Left>
-                  <Text style={mainStyles.ml15}>{data.get('name')}</Text>
+                  <Text style={mainStyles.ml15}>{`${data.get('firstName')} ${data.get('lastName')}`}</Text>
                 </ListItem>}
               renderRightHiddenRow={data =>
                 <Button

@@ -18,6 +18,12 @@ export default {
     fontSize: 12,
     marginTop: -15
   },
+  font12: {
+    fontSize: 12
+  },
+  font10: {
+    fontSize: 10
+  },
   helperText: {
     alignSelf: 'flex-end',
     fontSize: 12,
