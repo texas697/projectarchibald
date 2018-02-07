@@ -7,6 +7,7 @@ import adminCoach from '../containers/Admin/coach/reducer'
 import adminTeam from '../containers/Admin/team/reducer'
 import adminPlayer from '../containers/Admin/players/reducer'
 import player from '../containers/Player/redux'
+import team from '../containers/Team/redux'
 import home from '../containers/Home/reducer'
 import login from '../containers/Login/reducer'
 import filters from '../containers/Filters/reducer'
@@ -27,6 +28,7 @@ export default combineReducers({
   spinner,
   adminPlayer,
   player,
+  team,
   adminTeam,
   adminCoach,
   adminStaff,

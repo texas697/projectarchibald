@@ -26,6 +26,7 @@ export const buildModel = (model, image, ageGroup) => {
   const _twitter = utils.formatTrim(model.getIn([10, 'value']))
   const _snapchat = utils.formatTrim(model.getIn([11, 'value']))
   const _instagram = utils.formatTrim(model.getIn([12, 'value']))
+  const _numbers = model.getIn([13, 'value']).trim()
   const _accomplishments = utils.formatTrim(model.getIn([13, 'value']))
   return {
     id: id || uuid.v4(),
@@ -44,6 +45,7 @@ export const buildModel = (model, image, ageGroup) => {
     twitter: _twitter || '',
     snapchat: _snapchat || '',
     instagram: _instagram || '',
+    numbers: _numbers || '',
     accomplishments: _accomplishments || '',
     image: isEmpty(image) ? config.PLACEHOLDER_IMAGE : image,
     ageGroup: isEmpty(ageGroup) ? '' : ageGroup,
@@ -68,7 +70,8 @@ export const setPlayerData = player => {
   _clone[10].value = player.get('twitter')
   _clone[11].value = player.get('snapchat')
   _clone[12].value = player.get('instagram')
-  _clone[13].value = player.get('accomplishments')
+  _clone[13].value = player.get('numbers')
+  _clone[14].value = player.get('accomplishments')
   store.dispatch(actions.setPlayerData(_clone))
   store.dispatch(actions.setPlayerId(player.get('id')))
   store.dispatch(actions.setPlayerImage(player.get('image')))
@@ -83,6 +86,7 @@ export const validate = (val, id, model, i) => {
   else if (id === 'age') model = model.setIn([i, 'isValid'], val.length === 2)
   else if (id === 'phone') model = model.setIn([i, 'isValid'], val.length === 10)
   else if (id === 'parentPhone') model = model.setIn([i, 'isValid'], val.length === 10)
+  else if (id === 'numbers') model = model.setIn([i, 'isValid'], utils.validateNumbers(val))
   store.dispatch(actions.setPlayerData(model))
 }
 
@@ -97,7 +101,8 @@ export const checkValue = (model) => {
     phone: model.getIn([6, 'value']),
     age: model.getIn([7, 'value']),
     parent: model.getIn([8, 'value']),
-    parentPhone: model.getIn([9, 'value'])
+    parentPhone: model.getIn([9, 'value']),
+    numbers: model.getIn([13, 'value'])
   }
   let check = true
   forOwn(_obj, (value, key) => {

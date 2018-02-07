@@ -1,9 +1,7 @@
 export default {
-  header: {
-    fontSize: 12,
-    fontWeight: 'bold'
-  },
-  colWidth: {
-    width: 45
+  teamImg: {
+    height: 200,
+    width: 130,
+    flex: 1
   }
 }

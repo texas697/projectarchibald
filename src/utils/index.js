@@ -50,3 +50,15 @@ export const formatHeight = string => {
 }
 
 export const validateEmail = email => config.EMAIL_REGEX.test(email)
+export const validateNumbers = numbers => {
+  if (!numbers) return false
+  let isValid = true
+  if (!numbers.includes('/')) isValid = false
+  if (isNaN(parseInt(numbers.charAt(0)))) isValid = false
+  if (isNaN(parseInt(numbers.charAt(1)))) isValid = false
+  if (isNaN(parseInt(numbers.charAt(3)))) isValid = false
+  if (isNaN(parseInt(numbers.charAt(4)))) isValid = false
+  if (numbers.length !== 5) isValid = false
+
+  return isValid
+}

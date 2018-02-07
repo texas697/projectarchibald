@@ -1,80 +1,76 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
-import {KeyboardAvoidingView, ListView} from 'react-native'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import {Container, Content, ListItem, Icon, Button, List, Header, Left, Title, Body, Right, Text, Thumbnail, CardItem, Card} from 'native-base'
-import * as utils from '../../utils/index'
 import mainStyles from '../../styles/index'
-import * as actions from '../Filters/action'
+import * as actions from './redux'
 import * as config from '../../config/index'
-import CustomSpinner from '../../components/Spinner'
 
 class TeamList extends Component {
-  constructor (props) {
-    super(props)
-    this._onSelectTeam = this._onSelectTeam.bind(this)
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)})
-  }
-
-  _onSelectTeam (data) {
+  componentDidUpdate (prevProps) {
+    const data = this.props.team.get('data')
+    const _data = prevProps.team.get('data')
+    if (data !== _data) this.props.navigation.navigate('Team')
   }
 
   render () {
-    const {filters} = this.props
-    const data = filters.get('data')
+    const {filters, dimensions} = this.props
+    const dataList = filters.get('data')
+    const visibleHeight = dimensions.get('visibleHeight')
     return (
       <Container style={mainStyles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={() => this.props.navigation.navigate('Home')}>
               <Icon name='arrow-back' />
             </Button>
           </Left>
           <Body><Title>&nbsp;</Title></Body>
           <Right />
         </Header>
-        <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
-          <Content>
-            <Card>
-              <CardItem>
-                <List
-                  enableEmptySections
-                  dataSource={this.ds.cloneWithRows(data.toArray())}
-                  renderRow={data =>
+        <Content>
+          <Card style={{height: visibleHeight - 90}}>
+            <CardItem header style={mainStyles.alignItemsCenter}>
+              <Text>Search Results</Text>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <List>
+                  {dataList.map((item, i) => (
                     <ListItem
+                      key={i}
                       avatar
-                      onPress={() => this._onSelectTeam(data)}>
+                      onPress={() => actions.setTeam(item)}>
                       <Left>
-                        <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
+                        <Thumbnail square small source={{ uri: config.IMAGE_64(item.get('image')) }} />
                       </Left>
-                      <Text style={mainStyles.ml15}>{data.get('name')}</Text>
-                    </ListItem>}
-                />
-              </CardItem>
-            </Card>
-          </Content>
-        </KeyboardAvoidingView>
-        <CustomSpinner />
+                      <Text style={mainStyles.ml15}>{item.get('name')}</Text>
+                    </ListItem>
+                  ))}
+                </List>
+              </Body>
+            </CardItem>
+          </Card>
+        </Content>
       </Container>
     )
   }
 }
 
 TeamList.propTypes = {
+  team: PropTypes.instanceOf(Immutable.Map),
   filters: PropTypes.instanceOf(Immutable.Map),
-  navigation: PropTypes.object
+  navigation: PropTypes.object,
+  dimensions: PropTypes.instanceOf(Immutable.Map)
 }
 
 const mapStateToProps = state => ({
-  filters: state.filters
+  filters: state.filters,
+  team: state.team,
+  dimensions: state.dimensions
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-}, dispatch)
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(TeamList)

@@ -29,7 +29,7 @@ const Drawer = DrawerNavigator(
     Admin: { screen: Admin }
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Home',
     contentOptions: {
       activeTintColor: '#e91e63'
     },

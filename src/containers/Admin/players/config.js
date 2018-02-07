@@ -123,6 +123,16 @@ export const INPUT_FIELDS = [{
   isValid: true,
   keyboardType: 'default',
   placeholder: 'xxxxxxx',
+  nextId: 'numbers',
+  returnKeyType: 'next'
+}, {
+  label: 'Numbers*',
+  value: '',
+  id: 'numbers',
+  isValid: true,
+  error: 'must be 99/99',
+  keyboardType: 'default',
+  placeholder: '99/99',
   nextId: 'accomplishments',
   returnKeyType: 'next'
 }, {
