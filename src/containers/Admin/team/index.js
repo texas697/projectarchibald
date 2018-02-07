@@ -51,7 +51,7 @@ class Team extends Component {
     const {adminTeam} = this.props
     const model = adminTeam.get('model')
     const _check = model.find(item => !item.get('value'))
-    if (_check) mainUtils.fieldsRequired()
+    if (_check) mainUtils.formNotValid()
     else {
       const _message = messages.UPDATE_TEAM(model.get(0).value)
       Alert.alert(_message.title, _message.body, [{text: 'Cancel', onPress: () => console.log(''), style: 'cancel'}, {text: 'OK', onPress: () => this._onConfirmSubmit()}])

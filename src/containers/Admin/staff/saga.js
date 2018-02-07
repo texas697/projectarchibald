@@ -7,6 +7,7 @@ import {firebaseApp} from '../../../redux/store'
 import {PATH_STAFF} from './config'
 import * as teamsUtils from '../../../modules/Teams/utils'
 import {addTeamsRequest} from '../../../modules/Teams/action'
+import * as config from '../../../config'
 
 const _post = model => firebaseApp.database().ref().child(`${PATH_STAFF}/${model.id}`).update(model)
 
@@ -52,6 +53,7 @@ function * _fetchRequest (action) {
       let data = yield take(channel)
       data = Object.values(data)
       const options = utils.buildOptions(data)
+      options.unshift(config.EMPTY_OPTION)
       yield put(actions.fetchStaffSuccess(data, options))
     } catch (error) {
       yield put(actions.fetchStaffFailure(error))

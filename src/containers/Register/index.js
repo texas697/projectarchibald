@@ -14,7 +14,7 @@ import * as config from '../../config/index'
 import CustomSpinner from '../../components/Spinner'
 import TeamCard from '../Admin/team/components/team-card'
 import * as localUtils from './utils'
-import {setTeamId, resetTeamData, addTeamRequest} from '../Admin/team/action'
+import {setTeamId, resetTeamData, addTeamRequest, fetchTeamByIdSuccess} from '../Admin/team/action'
 import {resetCoachData} from '../Admin/coach/action'
 import {resetHsData} from '../Admin/highSchool/action'
 import {resetPlayerData} from '../Admin/players/action'
@@ -88,8 +88,9 @@ class Register extends Component {
         })
 
         if (_checkTeam) {
+          this.props.fetchTeamByIdSuccess(_modelTeam)
           this.props.setTeamId(_modelTeam.id)
-          this.props.addTeamRequest(_model)
+          this.props.addTeamRequest(_modelTeam)
         } else utils.formNotValid()
       }
     }
@@ -190,6 +191,7 @@ Register.propTypes = {
   resetPlayerData: PropTypes.func,
   resetRosterData: PropTypes.func,
   resetStaffData: PropTypes.func,
+  fetchTeamByIdSuccess: PropTypes.func,
   addTeamRequest: PropTypes.func,
   setTeamId: PropTypes.func,
   navigation: PropTypes.object,
@@ -214,7 +216,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   resetPlayerData: () => resetPlayerData(),
   resetRosterData: () => resetRosterData(),
   resetStaffData: () => resetStaffData(),
-  addTeamRequest: model => addTeamRequest(model)
+  addTeamRequest: model => addTeamRequest(model),
+  fetchTeamByIdSuccess: team => fetchTeamByIdSuccess(team)
 }, dispatch)
 
 export default connect(

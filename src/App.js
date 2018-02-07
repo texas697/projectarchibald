@@ -73,7 +73,6 @@ firebaseApp.auth().onAuthStateChanged(data => {
     else if (_isCoach) store.dispatch(fetchTeamsByCoachIdRequest(_user.uid))
     const user = {name: _user.displayName || _name, email: _user.email, uid: _user.uid}
     store.dispatch(loginSuccess(user))
-    store.dispatch(statesFetchRequest())
   } else {
     store.dispatch(logoutSuccess())
     try {
@@ -83,3 +82,7 @@ firebaseApp.auth().onAuthStateChanged(data => {
     }
   }
 })
+
+const _getStates = () => store.dispatch(statesFetchRequest())
+
+_getStates()

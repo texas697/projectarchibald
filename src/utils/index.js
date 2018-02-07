@@ -8,6 +8,7 @@ import {addRolesRequest} from '../modules/Roles/action'
 import {addTeamRequest} from '../containers/Admin/team/action'
 import {addTeamsRequest} from '../modules/Teams/action'
 import * as teamsUtils from '../modules/Teams/utils'
+import firebaseTime from "firebase"
 
 export const buildOptions = data => {
   return data.map(x => {
@@ -25,10 +26,15 @@ export const updateProfile = (user, name, isCoach) => {
     }).catch(error => console.log(error))
   store.dispatch(addRolesRequest({uid: user.uid, isCoach: isCoach}))
   if (isCoach) {
+    const _adminTeam = store.getState().adminTeam
     store.dispatch(addTeamRequest({
-      id: store.getState().adminTeam.get('id'),
-      image: store.getState().adminTeam.get('image'),
-      name: store.getState().adminTeam.getIn(['model', 0, 'value'])
+      id: _adminTeam.get('id'),
+      image: _adminTeam.get('image') || config.PLACEHOLDER_IMAGE,
+      name: _adminTeam.getIn(['model', 0, 'value']) || '',
+      nameQuery: formatQuery(_adminTeam.getIn(['model', 0, 'value'])) || '',
+      state: _adminTeam.getIn(['team', 'state']) || '',
+      region: _adminTeam.getIn(['team', 'region']) || '',
+      date: firebaseTime.database.ServerValue.TIMESTAMP
     }))
     teamsUtils.buildModel().then(model => store.dispatch(addTeamsRequest(model)))
   }
