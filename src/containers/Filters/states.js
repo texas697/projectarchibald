@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
-import {Platform} from 'react-native'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import {Container, Content, Text, Card, List, ListItem, Right, Icon, Button, Picker, H3, Col, Label} from 'native-base'
@@ -9,8 +8,6 @@ import mainStyles from '../../styles/index'
 import * as actions from './action'
 import * as config from '../../config/index'
 import styles from '../Home/styles'
-const platform = Platform.OS
-const Item = Picker.Item
 
 const RegionCol = ({onSelect, label, region}) => (
   <Col style={styles.thumbCol}>
@@ -31,9 +28,6 @@ class States extends Component {
   render () {
     const {states, filters} = this.props
     const options = states.get('data').toJS()
-    if (platform !== 'ios') {
-      options.unshift(config.EMPTY_OPTION)
-    }
     return (
       <Container>
         <Content>
@@ -59,7 +53,7 @@ class States extends Component {
                   onValueChange={this.props.setStateFilter}
                 >
                   {options.map((item, i) => (
-                    <Item key={i} label={item.label} value={item.label} />
+                    <Picker.Item key={i} label={item.label} value={item.label} />
                   ))}
                 </Picker>
               </ListItem>
