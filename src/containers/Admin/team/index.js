@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {Alert} from 'react-native'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Button, Text, Toast, View } from 'native-base'
+import NB from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
@@ -37,11 +37,11 @@ class Team extends Component {
     const _error = prevProps.adminTeam.get('error')
     if (error !== _error) {
       this.props.setSpinner(false)
-      Toast.show(config.TOAST_ERROR(error))
+      NB.Toast.show(config.TOAST_ERROR(error))
     }
     if (isAdding !== _isAdding && !isAdding) {
       this.props.setSpinner(false)
-      Toast.show(config.TOAST_SUCCESS)
+      NB.Toast.show(config.TOAST_SUCCESS)
     }
     const team = adminTeam.get('team')
     if (isFetching !== _isFetching && !isFetching) utils.setTeamData(team)
@@ -72,20 +72,20 @@ class Team extends Component {
 
   render () {
     return (
-      <View>
+      <NB.View>
         <TeamCard onSubmit={this._onSubmit} />
-        <Card>
-          <CardItem style={mainStyles.alignStretch}>
-            <Button
+        <NB.Card>
+          <NB.CardItem style={mainStyles.alignStretch}>
+            <NB.Button
               onPress={this._onSubmit}
               dark
               block>
-              <Text>Update</Text>
-            </Button>
-          </CardItem>
-        </Card>
+              <NB.Text>Update</NB.Text>
+            </NB.Button>
+          </NB.CardItem>
+        </NB.Card>
         <CustomSpinner />
-      </View>
+      </NB.View>
     )
   }
 }

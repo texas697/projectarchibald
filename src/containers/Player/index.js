@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
-import {Container, Content, Card, CardItem, H3, Row, Text, Col, Icon, Button, Header, Left, Title, Body, Right} from 'native-base'
+import NB from 'native-base'
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import {logoutRequest} from '../Login/action'
@@ -12,7 +12,7 @@ import * as utils from '../../utils/index'
 import * as config from '../../config'
 
 const InfoText = ({label, text}) => (
-  <Text style={styles.infoTextLabel}>{label}: <Text style={styles.infoText}>{text}</Text></Text>
+  <NB.Text style={styles.infoTextLabel}>{label}: <NB.Text style={styles.infoText}>{text}</NB.Text></NB.Text>
 )
 
 InfoText.propTypes = {
@@ -26,67 +26,67 @@ class Player extends Component {
     const data = player.get('data').toJS()
     const route = team.get('route')
     return (
-      <Container style={mainStyles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate(route)}>
-              <Icon name='arrow-back' />
-            </Button>
-          </Left>
-          <Body><Title>&nbsp;</Title></Body>
-          <Right />
-        </Header>
-        <Content>
-          <Card>
-            <CardItem>
-              <Row>
-                <Col style={{width: 140}}>
+      <NB.Container style={mainStyles.container}>
+        <NB.Header>
+          <NB.Left>
+            <NB.Button transparent onPress={() => this.props.navigation.navigate(route)}>
+              <NB.Icon name='arrow-back' />
+            </NB.Button>
+          </NB.Left>
+          <NB.Body><NB.Title>&nbsp;</NB.Title></NB.Body>
+          <NB.Right />
+        </NB.Header>
+        <NB.Content>
+          <NB.Card>
+            <NB.CardItem>
+              <NB.Row>
+                <NB.Col style={{width: 140}}>
                   <Image source={{uri: config.IMAGE_64(data.image)}} style={styles.playerImg} />
-                </Col>
-                <Col>
-                  <H3>{`${data.firstName} ${data.lastName}`}</H3>
+                </NB.Col>
+                <NB.Col>
+                  <NB.H3>{`${data.firstName} ${data.lastName}`}</NB.H3>
                   <InfoText label='GRAD YEAR' text={data.grad.toString()} />
                   <InfoText label='HEIGHT' text={utils.formatHeight(data.height.toString())} />
                   <InfoText label='WEIGHT' text={data.weight.toString()} />
                   <InfoText label='PHONE' text={utils.formatPhone(data.phone.toString())} />
                   <InfoText label='PARENT' text={data.parent} />
                   <InfoText label='PARENT PHONE' text={utils.formatPhone(data.parentPhone.toString())} />
-                </Col>
-              </Row>
-            </CardItem>
-            <CardItem>
-              <Row>
-                <Col>
+                </NB.Col>
+              </NB.Row>
+            </NB.CardItem>
+            <NB.CardItem>
+              <NB.Row>
+                <NB.Col>
                   <InfoText label='TWITTER' text={data.twitter} />
                   <InfoText label='SNAPCHAT' text={data.snapchat} />
                   <InfoText label='INSTAGRAM' text={data.instagram} />
                   <InfoText label='EMAIL' text={data.email} />
-                </Col>
-              </Row>
-            </CardItem>
-            <CardItem>
-              <Row>
-                <Col>
+                </NB.Col>
+              </NB.Row>
+            </NB.CardItem>
+            <NB.CardItem>
+              <NB.Row>
+                <NB.Col>
                   <InfoText label='HIGH SCHOOL' text={data.hs.name} />
                   <InfoText label='HIGH SCHOOL COACH' text={data.coach.name} />
                   <InfoText label='HIGH SCHOOL COACH PHONE' text={utils.formatPhone(data.coach.phone.toString())} />
                   <InfoText label='HIGH SCHOOL COACH EMAIL' text={data.coach.email} />
-                </Col>
-              </Row>
-            </CardItem>
-            <CardItem>
-              <Row>
-                <Col>
-                  <Text style={styles.header}>ACCOMPLISHMENTS</Text>
-                  <Text style={mainStyles.font12}>
+                </NB.Col>
+              </NB.Row>
+            </NB.CardItem>
+            <NB.CardItem>
+              <NB.Row>
+                <NB.Col>
+                  <NB.Text style={styles.header}>ACCOMPLISHMENTS</NB.Text>
+                  <NB.Text style={mainStyles.font12}>
                     {data.accomplishments}
-                  </Text>
-                </Col>
-              </Row>
-            </CardItem>
-          </Card>
-        </Content>
-      </Container>
+                  </NB.Text>
+                </NB.Col>
+              </NB.Row>
+            </NB.CardItem>
+          </NB.Card>
+        </NB.Content>
+      </NB.Container>
     )
   }
 }

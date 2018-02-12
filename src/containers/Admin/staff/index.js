@@ -5,7 +5,7 @@ import {Image, ListView, Alert} from 'react-native'
 import {ImagePicker} from 'expo'
 import {bindActionCreators} from 'redux'
 import ReactTimeout from 'react-timeout'
-import {Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3, Thumbnail, Left} from 'native-base'
+import NB from 'native-base'
 import Immutable from 'immutable'
 import cloneDeep from 'lodash/cloneDeep'
 import {connect} from 'react-redux'
@@ -49,11 +49,11 @@ class Staff extends Component {
     const _error = prevProps.adminStaff.get('error')
     if (error !== _error) {
       this.props.setSpinner(false)
-      Toast.show(config.TOAST_ERROR(error))
+      NB.Toast.show(config.TOAST_ERROR(error))
     }
     if (isAdding !== _isAdding && !isAdding) {
       this.props.setSpinner(false)
-      Toast.show(config.TOAST_SUCCESS)
+      NB.Toast.show(config.TOAST_SUCCESS)
     }
     const staff = adminStaff.get('staff')
     if (isFetching !== _isFetching && !isFetching) utils.setStaffData(staff)
@@ -125,32 +125,32 @@ class Staff extends Component {
     const id = adminStaff.get('id')
 
     return (
-      <View>
-        <Card>
+      <NB.View>
+        <NB.Card>
           {id !== '' && (
-            <CardItem style={mainStyles.alignItemsRight}>
-              <Button small danger iconLeft onPress={this._onClearFields}>
-                <Icon name='ios-close-circle' />
-                <Text>Clear Fields</Text>
-              </Button>
-            </CardItem>
+            <NB.CardItem style={mainStyles.alignItemsRight}>
+              <NB.Button small danger iconLeft onPress={this._onClearFields}>
+                <NB.Icon name='ios-close-circle' />
+                <NB.Text>Clear Fields</NB.Text>
+              </NB.Button>
+            </NB.CardItem>
           )}
-          <CardItem style={mainStyles.alignItemsRight}>
-            <Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</Text>
-          </CardItem>
-          <CardItem>
-            <Button onPress={this._onPickImage} block transparent><Text>Select Staff Image</Text></Button>
-          </CardItem>
+          <NB.CardItem style={mainStyles.alignItemsRight}>
+            <NB.Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</NB.Text>
+          </NB.CardItem>
+          <NB.CardItem>
+            <NB.Button onPress={this._onPickImage} block transparent><NB.Text>Select Staff Image</NB.Text></NB.Button>
+          </NB.CardItem>
           {!isEmpty(image) && (
-            <CardItem style={mainStyles.alignItemsCenter}>
+            <NB.CardItem style={mainStyles.alignItemsCenter}>
               <Image source={{uri: config.IMAGE_64(image)}} style={mainStyles.imagePick} />
-            </CardItem>
+            </NB.CardItem>
           )}
           {model.map((item, i) => (
-            <CardItem key={i} style={mainStyles.alignStretch}>
-              <Item stackedLabel error={!item.get('isValid')}>
-                <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
-                <Input
+            <NB.CardItem key={i} style={mainStyles.alignStretch}>
+              <NB.Item stackedLabel error={!item.get('isValid')}>
+                <NB.Label style={mainStyles.labelHeight}>{item.get('label')}</NB.Label>
+                <NB.Input
                   placeholder={item.get('placeholder')}
                   keyboardType={item.get('keyboardType')}
                   ref={item.get('id')}
@@ -159,47 +159,47 @@ class Staff extends Component {
                   returnKeyType={item.get('returnKeyType')}
                   onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                   onChangeText={val => this._onInputChange(val, i)} />
-                {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
-              </Item>
-            </CardItem>
+                {!item.get('isValid') && (<NB.Text style={mainStyles.errorText}>{item.get('error')}</NB.Text>)}
+              </NB.Item>
+            </NB.CardItem>
           ))}
-          <CardItem style={mainStyles.alignStretch}>
-            <Button
+          <NB.CardItem style={mainStyles.alignStretch}>
+            <NB.Button
               onPress={this._onSubmit}
               block
               dark>
-              <Text>{id ? 'Update' : 'Add'}</Text>
-            </Button>
-          </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            <H3>Master Staff List</H3>
-          </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            <Text style={styles.subtitle}>Select to Edit / Swipe to Delete</Text>
-          </CardItem>
-          <CardItem>
-            <List
+              <NB.Text>{id ? 'Update' : 'Add'}</NB.Text>
+            </NB.Button>
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignItemsCenter}>
+            <NB.H3>Master Staff List</NB.H3>
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignItemsCenter}>
+            <NB.Text style={styles.subtitle}>Select to Edit / Swipe to Delete</NB.Text>
+          </NB.CardItem>
+          <NB.CardItem>
+            <NB.List
               enableEmptySections
               dataSource={this.ds.cloneWithRows(data.toArray())}
               renderRow={data =>
-                <ListItem
+                <NB.ListItem
                   avatar
                   onPress={() => this._onSelectStaff(data)}>
-                  <Left>
-                    <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
-                  </Left>
-                  <Text style={mainStyles.ml15}>{data.get('name')}</Text>
-                </ListItem>}
+                  <NB.Left>
+                    <NB.Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
+                  </NB.Left>
+                  <NB.Text style={mainStyles.ml15}>{data.get('name')}</NB.Text>
+                </NB.ListItem>}
               renderRightHiddenRow={data =>
-                <Button full danger onPress={_ => this._onDeleteStaff(data)} style={mainStyles.deleteSlideBtn}>
-                  <Icon active name='trash' />
-                </Button>}
+                <NB.Button full danger onPress={_ => this._onDeleteStaff(data)} style={mainStyles.deleteSlideBtn}>
+                  <NB.Icon active name='trash' />
+                </NB.Button>}
               rightOpenValue={-75}
             />
-          </CardItem>
-        </Card>
+          </NB.CardItem>
+        </NB.Card>
         <CustomSpinner />
-      </View>
+      </NB.View>
     )
   }
 }

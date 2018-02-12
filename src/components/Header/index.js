@@ -3,17 +3,7 @@ import PropTypes from 'prop-types'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import {NavigationActions} from 'react-navigation'
-import {
-  Header,
-  Title,
-  Button,
-  Icon,
-  Left,
-  Right,
-  Body
-} from 'native-base'
-// import styles from './style'
+import NB from 'native-base'
 import {logoutRequest} from '../../containers/Login/action'
 
 class CustomHeader extends Component {
@@ -24,37 +14,30 @@ class CustomHeader extends Component {
     const _isLoggingOut = prevProps.login.get('isLoggingOut')
     if (isLoggingOut !== _isLoggingOut && !isLoggingOut) {
       this.props.navigation.navigate('Login')
-      // const resetAction = NavigationActions.reset({
-      //   index: 0,
-      //   actions: [
-      //     NavigationActions.navigate({routeName: 'Login'})
-      //   ]
-      // })
-      // this.props.navigation.dispatch(resetAction)
     }
   }
 
   render () {
     return (
-      <Header
+      <NB.Header
         hasTabs={this.props.hasTabs}
         androidStatusBarColor='#e65d09'
         iosBarStyle='light-content'
       >
-        <Left>
-          <Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-            <Icon name='menu' />
-          </Button>
-        </Left>
-        <Body>
-          <Title>{this.props.title}</Title>
-        </Body>
-        <Right>
-          <Button transparent onPress={() => this.props.logoutRequest()}>
-            <Icon name='ios-exit' />
-          </Button>
-        </Right>
-      </Header>
+        <NB.Left>
+          <NB.Button transparent onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+            <NB.Icon name='menu' />
+          </NB.Button>
+        </NB.Left>
+        <NB.Body>
+          <NB.Title>{this.props.title}</NB.Title>
+        </NB.Body>
+        <NB.Right>
+          <NB.Button transparent onPress={() => this.props.logoutRequest()}>
+            <NB.Icon name='ios-exit' />
+          </NB.Button>
+        </NB.Right>
+      </NB.Header>
     )
   }
 }

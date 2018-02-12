@@ -3,32 +3,32 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import {Container, Content, Text, Card, List, ListItem, Right, Icon, Button, Picker, Label} from 'native-base'
+import NB from 'native-base'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
 import * as config from '../../config/index'
 import styles from '../Home/styles'
 
-const Item = Picker.Item
+const Item = NB.Picker.Item
 class AgeGroup extends Component {
   render () {
     return (
-      <Container>
-        <Content>
-          <Card>
-            <List>
-              <ListItem
+      <NB.Container>
+        <NB.Content>
+          <NB.Card>
+            <NB.List>
+              <NB.ListItem
                 icon onPress={() => this.props.toggleAgeGroupModal()}
                 style={[mainStyles.alignItemsRight, mainStyles.modalHeader, mainStyles.pl0, mainStyles.ml0]}>
-                <Right>
-                  <Icon name='ios-close-circle' />
-                </Right>
-              </ListItem>
-              <ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
-                <Label style={mainStyles.selectLabel}>Select Age Group</Label>
-              </ListItem>
-              <ListItem style={mainStyles.alignStretch}>
-                <Picker
+                <NB.Right>
+                  <NB.Icon name='ios-close-circle' />
+                </NB.Right>
+              </NB.ListItem>
+              <NB.ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
+                <NB.Label style={mainStyles.selectLabel}>Select Age Group</NB.Label>
+              </NB.ListItem>
+              <NB.ListItem style={mainStyles.alignStretch}>
+                <NB.Picker
                   placeholder='-Select-'
                   textStyle={{color: '#000'}}
                   iosHeader='Select one'
@@ -39,20 +39,20 @@ class AgeGroup extends Component {
                   {config.AGE_GROUP_OPTIONS.map((item, i) => (
                     <Item key={i} label={item.label} value={item.label} />
                   ))}
-                </Picker>
-              </ListItem>
-              <ListItem style={mainStyles.alignStretch}>
-                <Button
+                </NB.Picker>
+              </NB.ListItem>
+              <NB.ListItem style={mainStyles.alignStretch}>
+                <NB.Button
                   onPress={this.props.setFilteredDataRequest}
                   block
                   warning>
-                  <Text>Submit</Text>
-                </Button>
-              </ListItem>
-            </List>
-          </Card>
-        </Content>
-      </Container>
+                  <NB.Text>Submit</NB.Text>
+                </NB.Button>
+              </NB.ListItem>
+            </NB.List>
+          </NB.Card>
+        </NB.Content>
+      </NB.Container>
     )
   }
 }

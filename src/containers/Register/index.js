@@ -6,7 +6,7 @@ import {Image, KeyboardAvoidingView} from 'react-native'
 import Immutable from 'immutable'
 import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
-import {Container, Content, Input, Icon, Button, Item, Label, Toast, Header, Left, Title, Body, Right, Text, CardItem, Card} from 'native-base'
+import NB from 'native-base'
 import * as utils from '../../utils/index'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
@@ -53,7 +53,7 @@ class Register extends Component {
 
   _onError (error) {
     this.props.setSpinner(false)
-    Toast.show(config.TOAST_ERROR(error))
+    NB.Toast.show(config.TOAST_ERROR(error))
   }
 
   _focusNext (nextField) {
@@ -122,7 +122,7 @@ class Register extends Component {
   }
 
   _success () {
-    Toast.show(config.TOAST_SUCCESS)
+    NB.Toast.show(config.TOAST_SUCCESS)
     this.props.navigation.navigate('Home')
     this.props.setSpinner(false)
   }
@@ -136,30 +136,30 @@ class Register extends Component {
     const isCoordinator = register.get('isCoordinator')
     const model = register.get('model')
     return (
-      <Container style={mainStyles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name='arrow-back' />
-            </Button>
-          </Left>
-          <Body><Title>&nbsp;</Title></Body>
-          <Right />
-        </Header>
+      <NB.Container style={mainStyles.container}>
+        <NB.Header>
+          <NB.Left>
+            <NB.Button transparent onPress={() => this.props.navigation.goBack()}>
+              <NB.Icon name='arrow-back' />
+            </NB.Button>
+          </NB.Left>
+          <NB.Body><NB.Title>&nbsp;</NB.Title></NB.Body>
+          <NB.Right />
+        </NB.Header>
         <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
-          <Content>
-            <Card>
-              <CardItem>
+          <NB.Content>
+            <NB.Card>
+              <NB.CardItem>
                 <Image source={logo} style={{height: 200, width: null, flex: 1}} />
-              </CardItem>
-              <CardItem style={mainStyles.alignItemsRight}>
-                <Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</Text>
-              </CardItem>
+              </NB.CardItem>
+              <NB.CardItem style={mainStyles.alignItemsRight}>
+                <NB.Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</NB.Text>
+              </NB.CardItem>
               {model.map((item, i) => (
-                <CardItem key={i} style={mainStyles.alignStretch}>
-                  <Item stackedLabel error={!item.get('isValid')}>
-                    <Label>{item.get('label')}</Label>
-                    <Input
+                <NB.CardItem key={i} style={mainStyles.alignStretch}>
+                  <NB.Item stackedLabel error={!item.get('isValid')}>
+                    <NB.Label>{item.get('label')}</NB.Label>
+                    <NB.Input
                       ref={item.get('id')}
                       autoCapitalize={item.get('autoCapitalize')}
                       secureTextEntry={item.get('secureTextEntry')}
@@ -170,56 +170,56 @@ class Register extends Component {
                       returnKeyType={item.get('returnKeyType')}
                       onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                       onChangeText={val => this._onInputChange(val, i)} />
-                    {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
-                  </Item>
-                </CardItem>
+                    {!item.get('isValid') && (<NB.Text style={mainStyles.errorText}>{item.get('error')}</NB.Text>)}
+                  </NB.Item>
+                </NB.CardItem>
               ))}
-              {isCoach && (<CardItem style={mainStyles.alignStretch}><TeamCard onSubmit={this._onSubmit} /></CardItem>)}
-              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
-              <CardItem><Label>I am (select one)</Label></CardItem>
+              {isCoach && (<NB.CardItem style={mainStyles.alignStretch}><TeamCard onSubmit={this._onSubmit} /></NB.CardItem>)}
+              <NB.CardItem><NB.Text style={{color: 'white'}}>SPACER</NB.Text></NB.CardItem>
+              <NB.CardItem><NB.Label>I am (select one)</NB.Label></NB.CardItem>
               <CheckBoxItem
                 label='Summer Team Coach/Administrator'
                 checked={isCoach}
                 onPress={() => this.props.setIsCoach()}
               />
-              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <NB.CardItem><NB.Text style={{color: 'white'}}>SPACER</NB.Text></NB.CardItem>
               <CheckBoxItem
                 label='College Recruiter'
                 checked={isRecruiter}
                 onPress={() => this.props.setIsRecruiter()}
               />
-              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <NB.CardItem><NB.Text style={{color: 'white'}}>SPACER</NB.Text></NB.CardItem>
               <CheckBoxItem
                 label='Player'
                 checked={isPlayer}
                 onPress={() => this.props.setIsPlayer()}
               />
-              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <NB.CardItem><NB.Text style={{color: 'white'}}>SPACER</NB.Text></NB.CardItem>
               <CheckBoxItem
                 label='Parent'
                 checked={isParent}
                 onPress={() => this.props.setIsParent()}
               />
-              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <NB.CardItem><NB.Text style={{color: 'white'}}>SPACER</NB.Text></NB.CardItem>
               <CheckBoxItem
                 label='Event Coordinator'
                 checked={isCoordinator}
                 onPress={() => this.props.setIsCoordinator()}
               />
-              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
-              <CardItem style={mainStyles.alignStretch}>
-                <Button
+              <NB.CardItem><NB.Text style={{color: 'white'}}>SPACER</NB.Text></NB.CardItem>
+              <NB.CardItem style={mainStyles.alignStretch}>
+                <NB.Button
                   onPress={this._onSubmit}
                   block
                   dark>
-                  <Text>Register</Text>
-                </Button>
-              </CardItem>
-            </Card>
-          </Content>
+                  <NB.Text>Register</NB.Text>
+                </NB.Button>
+              </NB.CardItem>
+            </NB.Card>
+          </NB.Content>
         </KeyboardAvoidingView>
         <CustomSpinner />
-      </Container>
+      </NB.Container>
     )
   }
 }

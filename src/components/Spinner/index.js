@@ -3,10 +3,7 @@ import { StyleSheet } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Immutable from 'immutable'
-import {
-  Spinner,
-  View
-} from 'native-base'
+import NB from 'native-base'
 import * as config from '../../config'
 
 const spinnerStyles = StyleSheet.create({
@@ -31,9 +28,9 @@ class CustomSpinner extends Component {
     const isSpinner = spinner.get('isSpinner')
     if (isSpinner) {
       return (
-        <View style={spinnerStyles.spinnerContainer}>
-          <Spinner color={color || config.COLORS.orange} style={spinnerStyles.spinner} />
-        </View>
+        <NB.View style={spinnerStyles.spinnerContainer}>
+          <NB.Spinner color={color || config.COLORS.orange} style={spinnerStyles.spinner} />
+        </NB.View>
       )
     } else return false
   }

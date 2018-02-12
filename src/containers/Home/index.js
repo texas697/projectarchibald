@@ -5,17 +5,7 @@ import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import {ImageBackground} from 'react-native'
 import Modal from 'react-native-modal'
-import {
-  Container,
-  Content,
-  Text,
-  List,
-  ListItem,
-  Col,
-  H3,
-  CardItem,
-  Card
-} from 'native-base'
+import NB from 'native-base'
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import CustomHeader from '../../components/Header/index'
@@ -28,11 +18,11 @@ import PlayerName from '../Filters/player-name'
 const basketball = require('../../../assets/home-ball.png')
 
 const FilterCol = ({onPress, label}) => (
-  <Col style={styles.thumbCol}>
+  <NB.Col style={styles.thumbCol}>
     <ImageBackground style={styles.thumbImage} source={basketball}>
-      <Text onPress={onPress} style={styles.thumbText}>{label}</Text>
+      <NB.Text onPress={onPress} style={styles.thumbText}>{label}</NB.Text>
     </ImageBackground>
-  </Col>
+  </NB.Col>
 )
 
 FilterCol.propTypes = {
@@ -63,38 +53,38 @@ class Home extends Component {
     const visiblePlayer = filters.get('visiblePlayer')
     const visibleTeamName = filters.get('visibleTeamName')
     return (
-      <Container style={mainStyles.container}>
+      <NB.Container style={mainStyles.container}>
         <CustomHeader title='Home' {...this.props} />
-        <Content>
-          <Card>
-            <CardItem>
-              <List>
-                <ListItem style={styles.noBorder}>
-                  <Text>
+        <NB.Content>
+          <NB.Card>
+            <NB.CardItem>
+              <NB.List>
+                <NB.ListItem style={styles.noBorder}>
+                  <NB.Text>
                     Welcome to the High Major the one stop shop for all summer basketball recruiting events.
                     Every AAU, traveling, summer, all-star team in on this app. Where College basketball coaches save
                     money by purchasing one app, instead of 10 tournament
-                  </Text>
-                </ListItem>
-                <ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
-                  <H3>Search By</H3>
-                </ListItem>
-                <ListItem style={styles.noBorder}>
+                  </NB.Text>
+                </NB.ListItem>
+                <NB.ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
+                  <NB.H3>Search By</NB.H3>
+                </NB.ListItem>
+                <NB.ListItem style={styles.noBorder}>
                   <FilterCol label='Team Name' onPress={() => this.props.toggleTeamModal()} />
                   <FilterCol label='Player Name' onPress={() => this.props.togglePlayerModal()} />
-                </ListItem>
-                <ListItem style={styles.noBorder}>
+                </NB.ListItem>
+                <NB.ListItem style={styles.noBorder}>
                   <FilterCol label='Age Group' onPress={() => this.props.toggleAgeGroupModal()} />
                   <FilterCol label='State/Region' onPress={() => this.props.toggleStateModal()} />
-                </ListItem>
-                <ListItem style={styles.noBorder}>
+                </NB.ListItem>
+                <NB.ListItem style={styles.noBorder}>
                   <FilterCol label='Event' onPress={() => this.props.toggleEventModal()} />
                   <FilterCol label='Tournament' onPress={() => this.props.toggleEventModal()} />
-                </ListItem>
-              </List>
-            </CardItem>
-          </Card>
-        </Content>
+                </NB.ListItem>
+              </NB.List>
+            </NB.CardItem>
+          </NB.Card>
+        </NB.Content>
         <Modal
           isVisible={visibleAgeGroup}>
           <AgeGroup />
@@ -111,7 +101,7 @@ class Home extends Component {
           isVisible={visibleTeamName}>
           <TeamName />
         </Modal>
-      </Container>
+      </NB.Container>
     )
   }
 }

@@ -6,7 +6,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import ReactTimeout from 'react-timeout'
 import { ImagePicker } from 'expo'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Item, Label, Input, Button, Text, Toast, View, List, ListItem, Icon, H3, Thumbnail, Left, Picker } from 'native-base'
+import NB from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import styles from './styles'
@@ -49,11 +49,11 @@ class Player extends Component {
     const _error = prevProps.adminPlayer.get('error')
     if (error !== _error) {
       this.props.setSpinner(false)
-      Toast.show(config.TOAST_ERROR(error))
+      NB.Toast.show(config.TOAST_ERROR(error))
     }
     if (isAdding !== _isAdding && !isAdding) {
       this.props.setSpinner(false)
-      Toast.show(config.TOAST_SUCCESS)
+      NB.Toast.show(config.TOAST_SUCCESS)
     }
     const player = adminPlayer.get('player')
     if (isFetching !== _isFetching && !isFetching) utils.setPlayerData(player)
@@ -130,37 +130,37 @@ class Player extends Component {
     const id = adminPlayer.get('id')
 
     return (
-      <View>
-        <Card>
+      <NB.View>
+        <NB.Card>
           {id !== '' && (
-            <CardItem style={mainStyles.alignItemsRight}>
-              <Button small danger iconLeft onPress={this._onClearFields}>
-                <Icon name='ios-close-circle' />
-                <Text>Clear Fields</Text>
-              </Button>
-            </CardItem>
+            <NB.CardItem style={mainStyles.alignItemsRight}>
+              <NB.Button small danger iconLeft onPress={this._onClearFields}>
+                <NB.Icon name='ios-close-circle' />
+                <NB.Text>Clear Fields</NB.Text>
+              </NB.Button>
+            </NB.CardItem>
           )}
-          <CardItem style={mainStyles.alignItemsRight}>
-            <Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</Text>
-          </CardItem>
-          <CardItem>
-            <Button
+          <NB.CardItem style={mainStyles.alignItemsRight}>
+            <NB.Text style={mainStyles.helperText}>{config.REQUIRED_LABEL}</NB.Text>
+          </NB.CardItem>
+          <NB.CardItem>
+            <NB.Button
               onPress={this._onPickImage}
               block
               transparent>
-              <Text>Select Player Image</Text>
-            </Button>
-          </CardItem>
+              <NB.Text>Select Player Image</NB.Text>
+            </NB.Button>
+          </NB.CardItem>
           {!isEmpty(image) && (
-            <CardItem style={mainStyles.alignItemsCenter}>
+            <NB.CardItem style={mainStyles.alignItemsCenter}>
               <Image source={{ uri: config.IMAGE_64(image) }} style={mainStyles.imagePick} />
-            </CardItem>
+            </NB.CardItem>
           )}
-          <CardItem style={[styles.alignItemsCenter]}>
-            <Label style={mainStyles.selectLabel}>Age Group</Label>
-          </CardItem>
-          <CardItem style={mainStyles.alignStretch}>
-            <Picker
+          <NB.CardItem style={[styles.alignItemsCenter]}>
+            <NB.Label style={mainStyles.selectLabel}>Age Group</NB.Label>
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignStretch}>
+            <NB.Picker
               placeholder='-Select-'
               textStyle={{color: '#000'}}
               iosHeader='Select one'
@@ -169,15 +169,15 @@ class Player extends Component {
               onValueChange={this.props.setPlayerAgeGroup}
             >
               {config.AGE_GROUP_OPTIONS.map((item, i) => (
-                <Picker.Item key={i} label={item.label} value={item.label} />
+                <NB.Picker.Item key={i} label={item.label} value={item.label} />
               ))}
-            </Picker>
-          </CardItem>
+            </NB.Picker>
+          </NB.CardItem>
           {model.map((item, i) => (
-            <CardItem key={i} style={mainStyles.alignStretch}>
-              <Item stackedLabel error={!item.get('isValid')}>
-                <Label style={mainStyles.labelHeight}>{item.get('label')}</Label>
-                <Input
+            <NB.CardItem key={i} style={mainStyles.alignStretch}>
+              <NB.Item stackedLabel error={!item.get('isValid')}>
+                <NB.Label style={mainStyles.labelHeight}>{item.get('label')}</NB.Label>
+                <NB.Input
                   ref={item.get('id')}
                   multiline={i === 13}
                   autoGrow={i === 13}
@@ -189,51 +189,51 @@ class Player extends Component {
                   onBlur={() => utils.validate(item.get('value'), item.get('id'), model, i)}
                   onSubmitEditing={() => this._focusNext(item.get('nextId'))}
                   onChangeText={val => this._onInputChange(val, i)} />
-                {!item.get('isValid') && (<Text style={mainStyles.errorText}>{item.get('error')}</Text>)}
-              </Item>
-            </CardItem>
+                {!item.get('isValid') && (<NB.Text style={mainStyles.errorText}>{item.get('error')}</NB.Text>)}
+              </NB.Item>
+            </NB.CardItem>
           ))}
-          <CardItem style={mainStyles.alignStretch}>
-            <Button
+          <NB.CardItem style={mainStyles.alignStretch}>
+            <NB.Button
               onPress={this._onSubmit}
               block
               dark>
-              <Text>{id ? 'Update' : 'Add'}</Text>
-            </Button>
-          </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            <H3>Master Player List</H3>
-          </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            <Text style={styles.subtitle}>Select to Edit / Swipe to Delete</Text>
-          </CardItem>
-          <CardItem>
-            <List
+              <NB.Text>{id ? 'Update' : 'Add'}</NB.Text>
+            </NB.Button>
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignItemsCenter}>
+            <NB.H3>Master Player List</NB.H3>
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignItemsCenter}>
+            <NB.Text style={styles.subtitle}>Select to Edit / Swipe to Delete</NB.Text>
+          </NB.CardItem>
+          <NB.CardItem>
+            <NB.List
               enableEmptySections
               dataSource={this.ds.cloneWithRows(data.toArray())}
               renderRow={data =>
-                <ListItem
+                <NB.ListItem
                   avatar
                   onPress={() => this._onSelectPlayer(data)}>
-                  <Left>
-                    <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
-                  </Left>
-                  <Text style={mainStyles.ml15}>{`${data.get('firstName')} ${data.get('lastName')}`}</Text>
-                </ListItem>}
+                  <NB.Left>
+                    <NB.Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
+                  </NB.Left>
+                  <NB.Text style={mainStyles.ml15}>{`${data.get('firstName')} ${data.get('lastName')}`}</NB.Text>
+                </NB.ListItem>}
               renderRightHiddenRow={data =>
-                <Button
+                <NB.Button
                   full
                   danger
                   onPress={_ => this._onDeletePlayer(data)}
                   style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                  <Icon active name='trash' />
-                </Button>}
+                  <NB.Icon active name='trash' />
+                </NB.Button>}
               rightOpenValue={-75}
             />
-          </CardItem>
-        </Card>
+          </NB.CardItem>
+        </NB.Card>
         <CustomSpinner />
-      </View>
+      </NB.View>
     )
   }
 }

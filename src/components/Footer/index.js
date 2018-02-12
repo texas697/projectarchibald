@@ -2,12 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {
-  Button,
-  Footer,
-  FooterTab,
-  Icon
-} from 'native-base'
+import NB from 'native-base'
 
 import {toggleUserModal} from '../../containers/Home/action'
 
@@ -56,22 +51,22 @@ class CustomFooter extends Component {
   }
   render () {
     return (
-      <Footer>
-        <FooterTab>
-          <Button active={this.state.tab1} onPress={() => this.toggleTab1()}>
-            <Icon active={this.state.tab1} name='ios-funnel' />
-          </Button>
-          <Button active={this.state.tab2} onPress={() => this.toggleTab2()}>
-            <Icon active={this.state.tab2} name='camera' />
-          </Button>
-          <Button active={this.state.tab3} onPress={() => this.toggleTab3()}>
-            <Icon active={this.state.tab3} name='compass' />
-          </Button>
-          <Button active={this.state.tab4} onPress={() => this.toggleTab4()}>
-            <Icon active={this.state.tab4} name='contact' />
-          </Button>
-        </FooterTab>
-      </Footer>
+      <NB.Footer>
+        <NB.FooterTab>
+          <NB.Button active={this.state.tab1} onPress={() => this.toggleTab1()}>
+            <NB.Icon active={this.state.tab1} name='ios-funnel' />
+          </NB.Button>
+          <NB.Button active={this.state.tab2} onPress={() => this.toggleTab2()}>
+            <NB.Icon active={this.state.tab2} name='camera' />
+          </NB.Button>
+          <NB.Button active={this.state.tab3} onPress={() => this.toggleTab3()}>
+            <NB.Icon active={this.state.tab3} name='compass' />
+          </NB.Button>
+          <NB.Button active={this.state.tab4} onPress={() => this.toggleTab4()}>
+            <NB.Icon active={this.state.tab4} name='contact' />
+          </NB.Button>
+        </NB.FooterTab>
+      </NB.Footer>
     )
   }
 }

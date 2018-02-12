@@ -12,10 +12,16 @@ import {fetchRosterRequest} from '../../containers/Admin/roster/action'
 
 const PATH = 'teams'
 
-const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.teamId}`).update(model)
+const _post = model => {
+  const newKey = firebaseApp.database().ref().child(PATH).push().key
+  const updates = {}
+  updates[`/${PATH}/${newKey}`] = model
+  return firebaseApp.database().ref().update(updates)
+}
 
 const _fetchById = id => {
-  return firebaseApp.database().ref(`${PATH}/${id}`)
+  return firebaseApp.database().ref(`${PATH}`)
+    .orderByChild('id').equalTo(id)
     .once('value').then(snapshot => {
       if (snapshot.val()) return Object.values(snapshot.val())
       else return {}

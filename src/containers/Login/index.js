@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { NavigationActions } from 'react-navigation'
 import { bindActionCreators } from 'redux'
 import {Image, Dimensions, KeyboardAvoidingView} from 'react-native'
 import Modal from 'react-native-modal'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import {Content, Text, Label, Input, Item, CardItem, Card, Button, Toast, Col} from 'native-base'
+import NB from 'native-base'
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
@@ -37,7 +36,6 @@ class Login extends Component {
   componentDidUpdate (prevProps) {
     const {login} = this.props
     const isAuthenticated = login.get('isAuthenticated')
-    const _isAuthenticated = prevProps.login.get('isAuthenticated')
     const isReseting = login.get('isReseting')
     const _isReseting = prevProps.login.get('isReseting')
     const error = login.get('error')
@@ -61,19 +59,12 @@ class Login extends Component {
 
   _onError (error) {
     this.props.setSpinner(false)
-    Toast.show(config.TOAST_ERROR(error))
+    NB.Toast.show(config.TOAST_ERROR(error))
   }
 
   _goToHome () {
     this.props.setSpinner(false)
     this.props.navigation.navigate('Home')
-    // const resetAction = NavigationActions.reset({
-    //   index: 0,
-    //   actions: [
-    //     NavigationActions.navigate({routeName: 'Home'})
-    //   ]
-    // })
-    // this.props.navigation.dispatch(resetAction)
   }
 
   _focusNext (nextField) {
@@ -97,15 +88,15 @@ class Login extends Component {
     const visibleForgotModal = login.get('visibleForgotModal')
     return (
       <KeyboardAvoidingView style={mainStyles.scrollContainer} behavior='padding'>
-        <Content>
-          <Card>
-            <CardItem>
+        <NB.Content>
+          <NB.Card>
+            <NB.CardItem>
               <Image source={logo} style={styles.logo} />
-            </CardItem>
-            <CardItem style={[{marginTop: visibleHeight / 17}, mainStyles.alignStretch]}>
-              <Item stackedLabel>
-                <Label style={mainStyles.labelHeight}>Email</Label>
-                <Input
+            </NB.CardItem>
+            <NB.CardItem style={[{marginTop: visibleHeight / 17}, mainStyles.alignStretch]}>
+              <NB.Item stackedLabel>
+                <NB.Label style={mainStyles.labelHeight}>Email</NB.Label>
+                <NB.Input
                   ref='email'
                   onSubmitEditing={() => this._focusNext('passwordInput')}
                   returnKeyType='next'
@@ -114,12 +105,12 @@ class Login extends Component {
                   autoCapitalize={'none'}
                   value={email}
                   onChangeText={email => this.setState({ email })} />
-              </Item>
-            </CardItem>
-            <CardItem style={mainStyles.alignStretch}>
-              <Item stackedLabel>
-                <Label style={mainStyles.labelHeight}>Password</Label>
-                <Input
+              </NB.Item>
+            </NB.CardItem>
+            <NB.CardItem style={mainStyles.alignStretch}>
+              <NB.Item stackedLabel>
+                <NB.Label style={mainStyles.labelHeight}>Password</NB.Label>
+                <NB.Input
                   ref='passwordInput'
                   secureTextEntry
                   autoCapitalize={'none'}
@@ -129,33 +120,33 @@ class Login extends Component {
                   onSubmitEditing={this._onSubmit}
                   onChangeText={password => this.setState({ password })}
                 />
-              </Item>
-            </CardItem>
-            <CardItem style={mainStyles.alignStretch}>
-              <Button
+              </NB.Item>
+            </NB.CardItem>
+            <NB.CardItem style={mainStyles.alignStretch}>
+              <NB.Button
                 onPress={this._onSubmit}
                 block
                 dark>
-                <Text>Login</Text>
-              </Button>
-              <Button transparent style={styles.forgotBtn} onPress={() => this.props.toggleForgotPass()}>
-                <Text style={[styles.forgotFont]}>Forgot Password</Text>
-              </Button>
-            </CardItem>
-            <CardItem transparent style={mainStyles.pt0}>
-              <Col>
-                <Button transparent style={styles.contactBtn} onPress={() => this.props.toggleContactUs()}>
-                  <Text style={styles.smFont}>Contact Us</Text>
-                </Button>
-              </Col>
-              <Col>
-                <Button transparent style={styles.registerBtn} onPress={() => this.props.navigation.navigate('Register')}>
-                  <Text style={styles.smFont}>Register</Text>
-                </Button>
-              </Col>
-            </CardItem>
-          </Card>
-        </Content>
+                <NB.Text>Login</NB.Text>
+              </NB.Button>
+              <NB.Button transparent style={styles.forgotBtn} onPress={() => this.props.toggleForgotPass()}>
+                <NB.Text style={[styles.forgotFont]}>Forgot Password</NB.Text>
+              </NB.Button>
+            </NB.CardItem>
+            <NB.CardItem transparent style={mainStyles.pt0}>
+              <NB.Col>
+                <NB.Button transparent style={styles.contactBtn} onPress={() => this.props.toggleContactUs()}>
+                  <NB.Text style={styles.smFont}>Contact Us</NB.Text>
+                </NB.Button>
+              </NB.Col>
+              <NB.Col>
+                <NB.Button transparent style={styles.registerBtn} onPress={() => this.props.navigation.navigate('Register')}>
+                  <NB.Text style={styles.smFont}>Register</NB.Text>
+                </NB.Button>
+              </NB.Col>
+            </NB.CardItem>
+          </NB.Card>
+        </NB.Content>
         <CustomSpinner />
         <Modal
           swipeDirection={'right'}

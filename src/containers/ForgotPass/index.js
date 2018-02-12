@@ -2,46 +2,46 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {Container, Content, Text, Card, List, ListItem, Item, Label, Right, Icon, Input, Button} from 'native-base'
+import NB from 'native-base'
 import mainStyles from '../../styles/index'
 import * as actions from '../Login/action'
 
 class ForgotPassword extends Component {
   render () {
     return (
-      <Container>
-        <Content>
-          <Card>
-            <List>
-              <ListItem
+      <NB.Container>
+        <NB.Content>
+          <NB.Card>
+            <NB.List>
+              <NB.ListItem
                 icon onPress={() => this.props.toggleForgotPass()}
                 style={[mainStyles.alignItemsRight, mainStyles.modalHeader, mainStyles.pl0, mainStyles.ml0]}>
-                <Right>
-                  <Icon name='ios-close-circle' />
-                </Right>
-              </ListItem>
-              <ListItem>
-                <Item stackedLabel>
-                  <Label>Email</Label>
-                  <Input
+                <NB.Right>
+                  <NB.Icon name='ios-close-circle' />
+                </NB.Right>
+              </NB.ListItem>
+              <NB.ListItem>
+                <NB.Item stackedLabel>
+                  <NB.Label>Email</NB.Label>
+                  <NB.Input
                     returnKeyType='go'
                     keyboardType='email-address'
                     value={this.props.resetEmail}
                     onChangeText={resetEmail => this.props.onChange(resetEmail)} />
-                </Item>
-              </ListItem>
-              <ListItem style={mainStyles.alignStretch}>
-                <Button
+                </NB.Item>
+              </NB.ListItem>
+              <NB.ListItem style={mainStyles.alignStretch}>
+                <NB.Button
                   onPress={this.props.onSubmit}
                   block
                   warning>
-                  <Text>Submit</Text>
-                </Button>
-              </ListItem>
-            </List>
-          </Card>
-        </Content>
-      </Container>
+                  <NB.Text>Submit</NB.Text>
+                </NB.Button>
+              </NB.ListItem>
+            </NB.List>
+          </NB.Card>
+        </NB.Content>
+      </NB.Container>
     )
   }
 }

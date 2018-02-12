@@ -3,19 +3,19 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import {Container, Content, Text, Card, List, ListItem, Right, Icon, Button, Picker, H3, Col, Label} from 'native-base'
+import NB from 'native-base'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
 import * as config from '../../config/index'
 import styles from '../Home/styles'
 
 const RegionCol = ({onSelect, label, region}) => (
-  <Col style={styles.thumbCol}>
-    <Text
+  <NB.Col style={styles.thumbCol}>
+    <NB.Text
       onPress={onSelect}
       style={[mainStyles.textCenter, {color: region === label ? config.COLORS.orange : '#000'}]}>{label}
-    </Text>
-  </Col>
+    </NB.Text>
+  </NB.Col>
 )
 
 RegionCol.propTypes = {
@@ -29,22 +29,22 @@ class States extends Component {
     const {states, filters} = this.props
     const options = states.get('data').toJS()
     return (
-      <Container>
-        <Content>
-          <Card>
-            <List>
-              <ListItem
+      <NB.Container>
+        <NB.Content>
+          <NB.Card>
+            <NB.List>
+              <NB.ListItem
                 icon onPress={() => this.props.toggleStateModal()}
                 style={[mainStyles.alignItemsRight, mainStyles.modalHeader, mainStyles.pl0, mainStyles.ml0]}>
-                <Right>
-                  <Icon name='ios-close-circle' />
-                </Right>
-              </ListItem>
-              <ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
-                <Label style={mainStyles.selectLabel}>Select Age State</Label>
-              </ListItem>
-              <ListItem style={mainStyles.alignStretch}>
-                <Picker
+                <NB.Right>
+                  <NB.Icon name='ios-close-circle' />
+                </NB.Right>
+              </NB.ListItem>
+              <NB.ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
+                <NB.Label style={mainStyles.selectLabel}>Select Age State</NB.Label>
+              </NB.ListItem>
+              <NB.ListItem style={mainStyles.alignStretch}>
+                <NB.Picker
                   placeholder='-Select-'
                   textStyle={{color: '#000'}}
                   iosHeader='Select one'
@@ -53,37 +53,37 @@ class States extends Component {
                   onValueChange={this.props.setStateFilter}
                 >
                   {options.map((item, i) => (
-                    <Picker.Item key={i} label={item.label} value={item.label} />
+                    <NB.Picker.Item key={i} label={item.label} value={item.label} />
                   ))}
-                </Picker>
-              </ListItem>
-              <ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
-                <H3>Select a Region</H3>
-              </ListItem>
-              <ListItem style={styles.noBorder}>
+                </NB.Picker>
+              </NB.ListItem>
+              <NB.ListItem style={[styles.alignItemsCenter, styles.noBorder]}>
+                <NB.H3>Select a Region</NB.H3>
+              </NB.ListItem>
+              <NB.ListItem style={styles.noBorder}>
                 <RegionCol label='Northwest' region={filters.get('regionFilter')} onSelect={() => this.props.setRegionFilter('Northwest')} />
                 <RegionCol label='Southeast' region={filters.get('regionFilter')} onSelect={() => this.props.setRegionFilter('Southeast')} />
-              </ListItem>
-              <ListItem style={styles.noBorder}>
+              </NB.ListItem>
+              <NB.ListItem style={styles.noBorder}>
                 <RegionCol label='Midwest' region={filters.get('regionFilter')} onSelect={() => this.props.setRegionFilter('Midwest')} />
                 <RegionCol label='Mountain' region={filters.get('regionFilter')} onSelect={() => this.props.setRegionFilter('Mountain')} />
-              </ListItem>
-              <ListItem style={styles.noBorder}>
+              </NB.ListItem>
+              <NB.ListItem style={styles.noBorder}>
                 <RegionCol label='Southwest' region={filters.get('regionFilter')} onSelect={() => this.props.setRegionFilter('Southwest')} />
                 <RegionCol label='Pacific Northwest' region={filters.get('regionFilter')} onSelect={() => this.props.setRegionFilter('Pacific Northwest')} />
-              </ListItem>
-              <ListItem style={mainStyles.alignStretch}>
-                <Button
+              </NB.ListItem>
+              <NB.ListItem style={mainStyles.alignStretch}>
+                <NB.Button
                   onPress={this.props.setFilteredDataRequest}
                   block
                   warning>
-                  <Text>Submit</Text>
-                </Button>
-              </ListItem>
-            </List>
-          </Card>
-        </Content>
-      </Container>
+                  <NB.Text>Submit</NB.Text>
+                </NB.Button>
+              </NB.ListItem>
+            </NB.List>
+          </NB.Card>
+        </NB.Content>
+      </NB.Container>
     )
   }
 }

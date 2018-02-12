@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
-import {Container, Content, ListItem, Icon, Button, List, Header, Left, Title, Body, Right, Text, Thumbnail, CardItem, Card} from 'native-base'
+import NB from 'native-base'
 import mainStyles from '../../styles/index'
 import * as actions from '../Player/redux'
 import * as config from '../../config/index'
@@ -11,8 +11,9 @@ import {setTeamRoute} from '../Team/redux'
 
 class PlayerList extends Component {
   componentDidMount () {
-  this.props.setTeamRoute('PlayerList')
+    this.props.setTeamRoute('PlayerList')
   }
+
   componentDidUpdate (prevProps) {
     const data = this.props.player.get('data')
     const _data = prevProps.player.get('data')
@@ -24,41 +25,41 @@ class PlayerList extends Component {
     const dataList = filters.get('data')
     const visibleHeight = dimensions.get('visibleHeight')
     return (
-      <Container style={mainStyles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('Home')}>
-              <Icon name='arrow-back' />
-            </Button>
-          </Left>
-          <Body><Title>&nbsp;</Title></Body>
-          <Right />
-        </Header>
-        <Content>
-          <Card style={{height: visibleHeight - 90}}>
-            <CardItem header style={mainStyles.alignItemsCenter}>
-              <Text>Search Results</Text>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <List>
+      <NB.Container style={mainStyles.container}>
+        <NB.Header>
+          <NB.Left>
+            <NB.Button transparent onPress={() => this.props.navigation.navigate('Home')}>
+              <NB.Icon name='arrow-back' />
+            </NB.Button>
+          </NB.Left>
+          <NB.Body><NB.Title>&nbsp;</NB.Title></NB.Body>
+          <NB.Right />
+        </NB.Header>
+        <NB.Content>
+          <NB.Card style={{height: visibleHeight - 90}}>
+            <NB.CardItem header style={mainStyles.alignItemsCenter}>
+              <NB.Text>Search Results</NB.Text>
+            </NB.CardItem>
+            <NB.CardItem>
+              <NB.Body>
+                <NB.List>
                   {dataList.map((item, i) => (
-                    <ListItem
+                    <NB.ListItem
                       key={i}
                       avatar
                       onPress={() => actions.setPlayer(item)}>
-                      <Left>
-                        <Thumbnail square small source={{ uri: config.IMAGE_64(item.get('image')) }} />
-                      </Left>
-                      <Text style={mainStyles.ml15}>{`${item.get('firstName')} ${item.get('lastName')}`}</Text>
-                    </ListItem>
+                      <NB.Left>
+                        <NB.Thumbnail square small source={{ uri: config.IMAGE_64(item.get('image')) }} />
+                      </NB.Left>
+                      <NB.Text style={mainStyles.ml15}>{`${item.get('firstName')} ${item.get('lastName')}`}</NB.Text>
+                    </NB.ListItem>
                   ))}
-                </List>
-              </Body>
-            </CardItem>
-          </Card>
-        </Content>
-      </Container>
+                </NB.List>
+              </NB.Body>
+            </NB.CardItem>
+          </NB.Card>
+        </NB.Content>
+      </NB.Container>
     )
   }
 }

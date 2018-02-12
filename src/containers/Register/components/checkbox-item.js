@@ -1,17 +1,17 @@
 import React from 'react'
-import {Left, Right, Text, CardItem, CheckBox} from 'native-base'
+import NB from 'native-base'
 import PropTypes from 'prop-types'
 import mainStyles from '../../../styles'
 
 const CheckBoxItem = props => (
-  <CardItem>
-    <Left>
-      <Text>{props.label}</Text>
-    </Left>
-    <Right style={mainStyles.pr15}>
-      <CheckBox onPress={props.onPress} checked={props.checked} />
-    </Right>
-  </CardItem>
+  <NB.CardItem>
+    <NB.Left>
+      <NB.Text>{props.label}</NB.Text>
+    </NB.Left>
+    <NB.Right style={mainStyles.pr15}>
+      <NB.CheckBox onPress={props.onPress} checked={props.checked} />
+    </NB.Right>
+  </NB.CardItem>
 )
 
 CheckBoxItem.propTypes = {

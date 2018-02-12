@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {Alert, ListView} from 'react-native'
 import { bindActionCreators } from 'redux'
-import { Card, CardItem, Button, Text, Toast, Picker, List, ListItem, Thumbnail, Left, Icon, H3, View, Label } from 'native-base'
+import NB from 'native-base'
 import Immutable from 'immutable'
 import { connect } from 'react-redux'
 import mainStyles from '../../../styles/index'
@@ -14,7 +14,7 @@ import styles from '../players/styles'
 import CustomSpinner from '../../../components/Spinner'
 import {setSpinner} from '../../../modules/Spinner/action'
 
-const Item = Picker.Item
+const Item = NB.Picker.Item
 class Roster extends Component {
   constructor (props) {
     super(props)
@@ -33,21 +33,21 @@ class Roster extends Component {
     const _error = prevProps.adminRoster.get('error')
     if (error !== _error) {
       this.props.setSpinner(false)
-      Toast.show(config.TOAST_ERROR(error))
+      NB.Toast.show(config.TOAST_ERROR(error))
     }
     if (isAdding !== _isAdding && !isAdding) {
       this.props.setSpinner(false)
-      Toast.show(config.TOAST_SUCCESS)
+      NB.Toast.show(config.TOAST_SUCCESS)
     }
   }
 
   _onSelectStaff (val) {
     const {adminRoster, adminStaff} = this.props
     let staff = adminRoster.get('staff')
-      const data = adminStaff.get('data')
-      const _obj = data.find(x => x.get('name') === val)
-      staff = staff.push(_obj)
-      this.props.setRosterStaff(staff)
+    const data = adminStaff.get('data')
+    const _obj = data.find(x => x.get('name') === val)
+    staff = staff.push(_obj)
+    this.props.setRosterStaff(staff)
   }
 
   _onSelectPlayer (val) {
@@ -102,13 +102,13 @@ class Roster extends Component {
     const id = adminRoster.get('id')
 
     return (
-      <View>
-        <Card>
-          <CardItem style={[styles.alignItemsCenter]}>
-            <Label style={mainStyles.selectLabel}>Select Staff</Label>
-          </CardItem>
-          <CardItem style={mainStyles.alignStretch}>
-            <Picker
+      <NB.View>
+        <NB.Card>
+          <NB.CardItem style={[styles.alignItemsCenter]}>
+            <NB.Label style={mainStyles.selectLabel}>Select Staff</NB.Label>
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignStretch}>
+            <NB.Picker
               placeholder='-Select-'
               textStyle={{color: '#000'}}
               iosHeader='Select one'
@@ -119,13 +119,13 @@ class Roster extends Component {
               {staffOptions.map((item, i) => (
                 <Item key={i} label={item.label} value={item.label} />
               ))}
-            </Picker>
-          </CardItem>
-          <CardItem style={[styles.alignItemsCenter]}>
-            <Label style={mainStyles.selectLabel}>Select Player</Label>
-          </CardItem>
-          <CardItem style={mainStyles.alignStretch}>
-            <Picker
+            </NB.Picker>
+          </NB.CardItem>
+          <NB.CardItem style={[styles.alignItemsCenter]}>
+            <NB.Label style={mainStyles.selectLabel}>Select Player</NB.Label>
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignStretch}>
+            <NB.Picker
               placeholder='-Select-'
               textStyle={{color: '#000'}}
               iosHeader='Select one'
@@ -136,77 +136,77 @@ class Roster extends Component {
               {playerOptions.map((item, i) => (
                 <Item key={i} label={item.label} value={item.label} />
               ))}
-            </Picker>
-          </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            {staff.size > 0 && (<H3>Roster Staff List</H3>)}
-          </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            {staff.size > 0 && (<Text style={styles.subtitle}>Swipe to Remove</Text>)}
-          </CardItem>
-          <CardItem>
-            <List
+            </NB.Picker>
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignItemsCenter}>
+            {staff.size > 0 && (<NB.H3>Roster Staff List</NB.H3>)}
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignItemsCenter}>
+            {staff.size > 0 && (<NB.Text style={styles.subtitle}>Swipe to Remove</NB.Text>)}
+          </NB.CardItem>
+          <NB.CardItem>
+            <NB.List
               enableEmptySections
               dataSource={this.ds0.cloneWithRows(staff.toArray())}
               renderRow={data =>
-                <ListItem
+                <NB.ListItem
                   avatar>
-                  <Left>
-                    <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
-                  </Left>
-                  <Text style={mainStyles.ml15}>{data.get('name')}</Text>
-                </ListItem>}
+                  <NB.Left>
+                    <NB.Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
+                  </NB.Left>
+                  <NB.Text style={mainStyles.ml15}>{data.get('name')}</NB.Text>
+                </NB.ListItem>}
               renderRightHiddenRow={data =>
-                <Button
+                <NB.Button
                   full
                   danger
                   onPress={_ => this._onRemoveStaff(data)}
                   style={mainStyles.deleteSlideBtn}>
-                  <Icon active name='trash' />
-                </Button>}
+                  <NB.Icon active name='trash' />
+                </NB.Button>}
               rightOpenValue={-75}
             />
-          </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            {player.size > 0 && (<H3>Roster Player List</H3>)}
-          </CardItem>
-          <CardItem style={mainStyles.alignItemsCenter}>
-            {player.size > 0 && (<Text style={styles.subtitle}>Swipe to Remove</Text>)}
-          </CardItem>
-          <CardItem>
-            <List
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignItemsCenter}>
+            {player.size > 0 && (<NB.H3>Roster Player List</NB.H3>)}
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignItemsCenter}>
+            {player.size > 0 && (<NB.Text style={styles.subtitle}>Swipe to Remove</NB.Text>)}
+          </NB.CardItem>
+          <NB.CardItem>
+            <NB.List
               enableEmptySections
               dataSource={this.ds1.cloneWithRows(player.toArray())}
               renderRow={data =>
-                <ListItem
+                <NB.ListItem
                   avatar>
-                  <Left>
-                    <Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
-                  </Left>
-                  <Text style={mainStyles.ml15}>{`${data.get('firstName')} ${data.get('lastName')}`}</Text>
-                </ListItem>}
+                  <NB.Left>
+                    <NB.Thumbnail square small source={{ uri: config.IMAGE_64(data.get('image')) }} />
+                  </NB.Left>
+                  <NB.Text style={mainStyles.ml15}>{`${data.get('firstName')} ${data.get('lastName')}`}</NB.Text>
+                </NB.ListItem>}
               renderRightHiddenRow={data =>
-                <Button
+                <NB.Button
                   full
                   danger
                   onPress={_ => this._onRemovePlayer(data)}
                   style={mainStyles.deleteSlideBtn}>
-                  <Icon active name='trash' />
-                </Button>}
+                  <NB.Icon active name='trash' />
+                </NB.Button>}
               rightOpenValue={-75}
             />
-          </CardItem>
-          <CardItem style={mainStyles.alignStretch}>
-            <Button
+          </NB.CardItem>
+          <NB.CardItem style={mainStyles.alignStretch}>
+            <NB.Button
               onPress={this._onSubmit}
               block
               dark>
-              <Text>{id ? 'Update' : 'Add'}</Text>
-            </Button>
-          </CardItem>
-        </Card>
+              <NB.Text>{id ? 'Update' : 'Add'}</NB.Text>
+            </NB.Button>
+          </NB.CardItem>
+        </NB.Card>
         <CustomSpinner />
-      </View>
+      </NB.View>
     )
   }
 }

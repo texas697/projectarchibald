@@ -4,16 +4,17 @@ import Immutable from 'immutable'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Image } from 'react-native'
-import {Container, Content, Card, CardItem, Thumbnail, List, ListItem, Row, Text, Col, Icon, Button, Header, Left, Title, Body, Right} from 'native-base'
+import NB from 'native-base'
 import styles from './styles'
 import mainStyles from '../../styles/index'
 import * as config from '../../config'
 import {setPlayer} from '../Player/redux'
 import {setTeamRoute} from './redux'
+
 const InfoText = ({label, text}) => (
-  <Text style={{fontSize: 10, marginBottom: 5}}>{label}
-    <Text style={{fontSize: 12, fontWeight: 'bold'}}>{text}</Text>
-  </Text>
+  <NB.Text style={{fontSize: 10, marginBottom: 5}}>{label}
+    <NB.Text style={{fontSize: 12, fontWeight: 'bold'}}>{text}</NB.Text>
+  </NB.Text>
 )
 
 InfoText.propTypes = {
@@ -23,7 +24,7 @@ InfoText.propTypes = {
 
 class Team extends Component {
   componentDidMount () {
-  this.props.setTeamRoute('PlayerList')
+    this.props.setTeamRoute('PlayerList')
   }
 
   componentDidUpdate (prevProps) {
@@ -34,84 +35,85 @@ class Team extends Component {
       this.props.setTeamRoute('Team')
     }
   }
+
   render () {
     const {team} = this.props
     const data = team.get('data').toJS()
     return (
-      <Container style={mainStyles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate('TeamList')}>
-              <Icon name='arrow-back' />
-            </Button>
-          </Left>
-          <Body><Title>&nbsp;</Title></Body>
-          <Right />
-        </Header>
-        <Content>
-          <Card>
-            <CardItem>
-              <Row>
-                <Col>
-                  <Text style={styles.header}>HEAD COACH</Text>
+      <NB.Container style={mainStyles.container}>
+        <NB.Header>
+          <NB.Left>
+            <NB.Button transparent onPress={() => this.props.navigation.navigate('TeamList')}>
+              <NB.Icon name='arrow-back' />
+            </NB.Button>
+          </NB.Left>
+          <NB.Body><NB.Title>&nbsp;</NB.Title></NB.Body>
+          <NB.Right />
+        </NB.Header>
+        <NB.Content>
+          <NB.Card>
+            <NB.CardItem>
+              <NB.Row>
+                <NB.Col>
+                  <NB.Text style={styles.header}>HEAD COACH</NB.Text>
                   <Image source={{uri: config.IMAGE_64(data.coach.image)}} style={styles.teamImg} />
-                  <Text style={mainStyles.font12}>{data.coach.name}</Text>
-                </Col>
-                <Col>
-                  <Text style={[styles.header, mainStyles.ml15]}>STAFF</Text>
-                  <Content style={{height: 200}}>
-                    <List>
+                  <NB.Text style={mainStyles.font12}>{data.coach.name}</NB.Text>
+                </NB.Col>
+                <NB.Col>
+                  <NB.Text style={[styles.header, mainStyles.ml15]}>STAFF</NB.Text>
+                  <NB.Content style={{height: 200}}>
+                    <NB.List>
                       {data.staff.map((item, i) => (
-                        <ListItem key={i}>
-                          <Thumbnail square small source={{ uri: config.IMAGE_64(item.image) }} />
-                          <Body>
-                            <Text style={mainStyles.font10}>{item.name}</Text>
-                            <Text style={mainStyles.font10} note>{item.title}</Text>
-                          </Body>
-                        </ListItem>
+                        <NB.ListItem key={i}>
+                          <NB.Thumbnail square small source={{ uri: config.IMAGE_64(item.image) }} />
+                          <NB.Body>
+                            <NB.Text style={mainStyles.font10}>{item.name}</NB.Text>
+                            <NB.Text style={mainStyles.font10} note>{item.title}</NB.Text>
+                          </NB.Body>
+                        </NB.ListItem>
                       ))}
-                    </List>
-                  </Content>
-                </Col>
-              </Row>
-            </CardItem>
-            <CardItem>
-              <Row>
-                <Col>
-                  <Text style={[styles.header, mainStyles.ml15]}>ROSTER</Text>
-                  <List>
+                    </NB.List>
+                  </NB.Content>
+                </NB.Col>
+              </NB.Row>
+            </NB.CardItem>
+            <NB.CardItem>
+              <NB.Row>
+                <NB.Col>
+                  <NB.Text style={[styles.header, mainStyles.ml15]}>ROSTER</NB.Text>
+                  <NB.List>
                     {data.players.map((item, i) => (
-                      <ListItem
+                      <NB.ListItem
                         onPress={() => setPlayer(Immutable.fromJS(item))}
                         key={i}>
-                        <Thumbnail square small source={{ uri: config.IMAGE_64(item.image) }} />
-                        <Row>
-                          <Col style={[mainStyles.ml10, styles.colWidth]}>
-                            <Text style={styles.rosterLabel} note># / #</Text>
-                            <Text style={styles.rosterValue}>{item.numbers}</Text>
-                          </Col>
-                          <Col style={styles.colWidth}>
-                            <Text style={styles.rosterLabel} note>Height</Text>
-                            <Text style={styles.rosterValue}>{item.height}</Text>
-                          </Col>
-                          <Col style={styles.colWidth}>
-                            <Text style={styles.rosterLabel} note>Year</Text>
-                            <Text style={styles.rosterValue}>{item.grad}</Text>
-                          </Col>
-                          <Col>
-                            <Text style={styles.rosterLabel} note>Name</Text>
-                            <Text style={styles.rosterValue}>{`${item.firstName} ${item.lastName}`}</Text>
-                          </Col>
-                        </Row>
-                      </ListItem>
+                        <NB.Thumbnail square small source={{ uri: config.IMAGE_64(item.image) }} />
+                        <NB.Row>
+                          <NB.Col style={[mainStyles.ml10, styles.colWidth]}>
+                            <NB.Text style={styles.rosterLabel} note># / #</NB.Text>
+                            <NB.Text style={styles.rosterValue}>{item.numbers}</NB.Text>
+                          </NB.Col>
+                          <NB.Col style={styles.colWidth}>
+                            <NB.Text style={styles.rosterLabel} note>Height</NB.Text>
+                            <NB.Text style={styles.rosterValue}>{item.height}</NB.Text>
+                          </NB.Col>
+                          <NB.Col style={styles.colWidth}>
+                            <NB.Text style={styles.rosterLabel} note>Year</NB.Text>
+                            <NB.Text style={styles.rosterValue}>{item.grad}</NB.Text>
+                          </NB.Col>
+                          <NB.Col>
+                            <NB.Text style={styles.rosterLabel} note>Name</NB.Text>
+                            <NB.Text style={styles.rosterValue}>{`${item.firstName} ${item.lastName}`}</NB.Text>
+                          </NB.Col>
+                        </NB.Row>
+                      </NB.ListItem>
                     ))}
-                  </List>
-                </Col>
-              </Row>
-            </CardItem>
-          </Card>
-        </Content>
-      </Container>
+                  </NB.List>
+                </NB.Col>
+              </NB.Row>
+            </NB.CardItem>
+          </NB.Card>
+        </NB.Content>
+      </NB.Container>
     )
   }
 }
