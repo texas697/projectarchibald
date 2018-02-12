@@ -5,7 +5,11 @@ import {INPUT_FIELDS} from './config'
 const initialState = Immutable.Map({
   error: {},
   name: '',
-  isCoach: true,
+  isCoach: false,
+  isRecruiter: false,
+  isPlayer: false,
+  isParent: false,
+  isCoordinator: false,
   isRegistering: false,
   model: Immutable.fromJS(INPUT_FIELDS)
 })
@@ -39,6 +43,42 @@ export default (state = initialState, action) => {
     case types.SET_REGISTER_IS_COACH:
       return state
         .set('isCoach', !state.get('isCoach'))
+        .set('isRecruiter', false)
+        .set('isPlayer', false)
+        .set('isParent', false)
+        .set('isCoordinator', false)
+
+    case types.SET_REGISTER_IS_RECRUITER:
+      return state
+        .set('isRecruiter', !state.get('isRecruiter'))
+        .set('isCoach', false)
+        .set('isPlayer', false)
+        .set('isParent', false)
+        .set('isCoordinator', false)
+
+    case types.SET_REGISTER_IS_PLAYER:
+      return state
+        .set('isPlayer', !state.get('isPlayer'))
+        .set('isCoach', false)
+        .set('isRecruiter', false)
+        .set('isParent', false)
+        .set('isCoordinator', false)
+
+    case types.SET_REGISTER_IS_PARENT:
+      return state
+        .set('isParent', !state.get('isParent'))
+        .set('isCoach', false)
+        .set('isRecruiter', false)
+        .set('isPlayer', false)
+        .set('isCoordinator', false)
+
+    case types.SET_REGISTER_IS_COORDINATOR:
+      return state
+        .set('isCoordinator', !state.get('isCoordinator'))
+        .set('isCoach', false)
+        .set('isRecruiter', false)
+        .set('isPlayer', false)
+        .set('isParent', false)
 
     default:
       return state

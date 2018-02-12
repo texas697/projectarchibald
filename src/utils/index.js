@@ -1,4 +1,5 @@
 
+import firebaseTime from 'firebase'
 import {Alert} from 'react-native'
 import * as messages from '../messages/index'
 import * as config from '../config/index'
@@ -8,7 +9,6 @@ import {addRolesRequest} from '../modules/Roles/action'
 import {addTeamRequest} from '../containers/Admin/team/action'
 import {addTeamsRequest} from '../modules/Teams/action'
 import * as teamsUtils from '../modules/Teams/utils'
-import firebaseTime from "firebase"
 
 export const buildOptions = data => {
   return data.map(x => {
@@ -19,13 +19,13 @@ export const buildOptions = data => {
   })
 }
 
-export const updateProfile = (user, name, isCoach) => {
+export const updateProfile = (user, name, _roles) => {
   user.updateProfile({displayName: name})
     .then(() => {
       store.dispatch(resetRegisterUserRequest())
     }).catch(error => console.log(error))
-  store.dispatch(addRolesRequest({uid: user.uid, isCoach: isCoach}))
-  if (isCoach) {
+  store.dispatch(addRolesRequest({uid: user.uid, roles: _roles}))
+  if (_roles.isCoach) {
     const _adminTeam = store.getState().adminTeam
     store.dispatch(addTeamRequest({
       id: _adminTeam.get('id'),
@@ -42,6 +42,7 @@ export const updateProfile = (user, name, isCoach) => {
 
 export const formNotValid = () => Alert.alert(messages.FORM_NOT_VALID.title, messages.FORM_NOT_VALID.body, [{text: 'OK', onPress: () => console.log('')}])
 export const passNoMatch = () => Alert.alert(messages.PASS_NO_MATCH.title, messages.ALL_FIELDS_REQUIRED.body, [{text: 'OK', onPress: () => console.log('')}])
+export const noRoleSelected = () => Alert.alert(messages.NO_ROLES_SELECTED.title, messages.NO_ROLES_SELECTED.body, [{text: 'OK', onPress: () => console.log('')}])
 
 export const formatPhone = string => string.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
 

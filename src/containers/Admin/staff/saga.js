@@ -9,12 +9,18 @@ import * as teamsUtils from '../../../modules/Teams/utils'
 import {addTeamsRequest} from '../../../modules/Teams/action'
 import * as config from '../../../config'
 
-const _post = model => firebaseApp.database().ref().child(`${PATH_STAFF}/${model.id}`).update(model)
+const _delete = id => firebaseApp.database().ref().child(`${PATH_STAFF}`).orderByChild('id').equalTo(id).set(null)
 
-const _delete = id => firebaseApp.database().ref().child(`${PATH_STAFF}/${id}`).set(null)
+const _post = model => {
+  const newKey = firebaseApp.database().ref().child(PATH_STAFF).push().key
+  const updates = {}
+  updates[`/${PATH_STAFF}/${newKey}`] = model
+  return firebaseApp.database().ref().update(updates)
+}
 
 const _fetchById = id => {
-  return firebaseApp.database().ref(`${PATH_STAFF}/${id}`)
+  return firebaseApp.database().ref(`${PATH_STAFF}`)
+    .orderByChild('id').equalTo(id)
     .once('value').then(snapshot => {
       if (snapshot.val()) return snapshot.val()
       else return {}

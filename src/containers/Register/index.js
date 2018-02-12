@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux'
 import forOwn from 'lodash/forOwn'
 import {Image, KeyboardAvoidingView} from 'react-native'
 import Immutable from 'immutable'
+import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
-import {Container, Content, Input, Icon, Button, Item, Label, Toast, Header, Left, Title, Body, Right, Text, CardItem, Card, CheckBox, Radio, List} from 'native-base'
+import {Container, Content, Input, Icon, Button, Item, Label, Toast, Header, Left, Title, Body, Right, Text, CardItem, Card} from 'native-base'
 import * as utils from '../../utils/index'
 import mainStyles from '../../styles/index'
 import * as actions from './action'
@@ -21,7 +22,7 @@ import {resetPlayerData} from '../Admin/players/action'
 import {resetRosterData} from '../Admin/roster/action'
 import {resetStaffData} from '../Admin/staff/action'
 import * as teamUtils from '../Admin/team/utils'
-import isEmpty from 'lodash/isEmpty'
+import CheckBoxItem from './components/checkbox-item'
 
 const logo = require('../../../assets/basketball-logo.png')
 
@@ -61,39 +62,56 @@ class Register extends Component {
   }
 
   _onSubmit () {
-    const {register, adminTeam} = this.props
-    const isCoach = register.get('isCoach')
+    const {register} = this.props
     const model = register.get('model')
+    const _roles = {
+      isCoach: register.get('isCoach'),
+      isRecruiter: register.get('isRecruiter'),
+      isPlayer: register.get('isPlayer'),
+      isParent: register.get('isParent'),
+      isCoordinator: register.get('isCoordinator')
+    }
+
+    let _checkRoles = true
+    forOwn(_roles, value => {
+      if (!value) _checkRoles = false
+    })
 
     const _passCheck = model.get('password') === model.get('confirmPassword')
     const _check = model.find(item => !item.get('value'))
     if (_check && _passCheck) utils.formNotValid()
     else if (_check && !_passCheck) utils.passNoMatch()
+    else if (!_checkRoles) utils.noRoleSelected()
     else {
       this.props.setSpinner(true)
       const _model = localUtils.buildmodel(model)
       const credentials = {email: _model.email.toLowerCase().trim(), password: _model.password}
-      this.props.registerUserRequest(credentials, _model.name)
-      if (isCoach) {
-        const _image = adminTeam.get('image')
-        const _state = adminTeam.get('state')
-        const _region = adminTeam.get('region')
-        let _modelTeam = adminTeam.get('model')
 
-        _modelTeam = teamUtils.buildModel(_modelTeam, _image, _state, _region)
-
-        let _checkTeam = true
-        forOwn(_modelTeam, (value, key) => {
-          if (isEmpty(value)) _checkTeam = false
-        })
-
-        if (_checkTeam) {
-          this.props.fetchTeamByIdSuccess(_modelTeam)
-          this.props.setTeamId(_modelTeam.id)
-          this.props.addTeamRequest(_modelTeam)
-        } else utils.formNotValid()
-      }
+      if (_roles.isCoach) this._isCoach(credentials, _model)
+      else this.props.registerUserRequest(credentials, _model.name)
     }
+  }
+
+  _isCoach (credentials, _model) {
+    const {adminTeam} = this.props
+    const _image = adminTeam.get('image')
+    const _state = adminTeam.get('state')
+    const _region = adminTeam.get('region')
+    let _modelTeam = adminTeam.get('model')
+
+    _modelTeam = teamUtils.buildModel(_modelTeam, _image, _state, _region)
+
+    let _checkTeam = true
+    forOwn(_modelTeam, value => {
+      if (isEmpty(value)) _checkTeam = false
+    })
+
+    if (_checkTeam) {
+      this.props.registerUserRequest(credentials, _model.name)
+      this.props.fetchTeamByIdSuccess(_modelTeam)
+      this.props.setTeamId(_modelTeam.id)
+      this.props.addTeamRequest(_modelTeam)
+    } else utils.formNotValid()
   }
 
   _onInputChange (val, i) {
@@ -105,13 +123,17 @@ class Register extends Component {
 
   _success () {
     Toast.show(config.TOAST_SUCCESS)
-    this.props.navigation.goBack()
+    this.props.navigation.navigate('Home')
     this.props.setSpinner(false)
   }
 
   render () {
     const {register} = this.props
     const isCoach = register.get('isCoach')
+    const isRecruiter = register.get('isRecruiter')
+    const isPlayer = register.get('isPlayer')
+    const isParent = register.get('isParent')
+    const isCoordinator = register.get('isCoordinator')
     const model = register.get('model')
     return (
       <Container style={mainStyles.container}>
@@ -154,14 +176,36 @@ class Register extends Component {
               ))}
               {isCoach && (<CardItem style={mainStyles.alignStretch}><TeamCard onSubmit={this._onSubmit} /></CardItem>)}
               <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
-              <CardItem>
-                <Left>
-                  <Text>Coach?</Text>
-                </Left>
-                <Right style={mainStyles.pr15}>
-                  <CheckBox onPress={() => this.props.setIsCoach()} checked={isCoach} />
-                </Right>
-              </CardItem>
+              <CardItem><Label>I am (select one)</Label></CardItem>
+              <CheckBoxItem
+                label='Summer Team Coach/Administrator'
+                checked={isCoach}
+                onPress={() => this.props.setIsCoach()}
+              />
+              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <CheckBoxItem
+                label='College Recruiter'
+                checked={isRecruiter}
+                onPress={() => this.props.setIsRecruiter()}
+              />
+              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <CheckBoxItem
+                label='Player'
+                checked={isPlayer}
+                onPress={() => this.props.setIsPlayer()}
+              />
+              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <CheckBoxItem
+                label='Parent'
+                checked={isParent}
+                onPress={() => this.props.setIsParent()}
+              />
+              <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
+              <CheckBoxItem
+                label='Event Coordinator'
+                checked={isCoordinator}
+                onPress={() => this.props.setIsCoordinator()}
+              />
               <CardItem><Text style={{color: 'white'}}>SPACER</Text></CardItem>
               <CardItem style={mainStyles.alignStretch}>
                 <Button
@@ -184,6 +228,10 @@ Register.propTypes = {
   setRegisterData: PropTypes.func,
   registerUserRequest: PropTypes.func,
   setIsCoach: PropTypes.func,
+  setIsRecruiter: PropTypes.func,
+  setIsPlayer: PropTypes.func,
+  setIsParent: PropTypes.func,
+  setIsCoordinator: PropTypes.func,
   setSpinner: PropTypes.func,
   resetTeamData: PropTypes.func,
   resetCoachData: PropTypes.func,
@@ -209,6 +257,10 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setSpinner: isSpinner => setSpinner(isSpinner),
   setRegisterData: model => actions.setRegisterData(model),
   setIsCoach: () => actions.setIsCoach(),
+  setIsRecruiter: () => actions.setIsRecruiter(),
+  setIsPlayer: () => actions.setIsPlayer(),
+  setIsParent: () => actions.setIsParent(),
+  setIsCoordinator: () => actions.setIsCoordinator(),
   setTeamId: id => setTeamId(id),
   resetTeamData: () => resetTeamData(),
   resetCoachData: () => resetCoachData(),

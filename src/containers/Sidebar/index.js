@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Image, Platform} from 'react-native'
 import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 import {
   Content,
   Text,
@@ -8,9 +9,7 @@ import {
   ListItem,
   Icon,
   Container,
-  Left,
-  Right,
-  Badge
+  Left
 } from 'native-base'
 import styles from './style'
 import mainStyles from '../../styles/index'
@@ -34,20 +33,12 @@ const datas = [
 
 const platform = Platform.OS
 class SideBar extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      shadowOffsetWidth: 1,
-      shadowRadius: 4
-    }
-  }
-
   render () {
     return (
       <Container style={platform === 'ios' ? mainStyles.scrollContainer : mainStyles.container}>
         <Content
           bounces={false}
-          style={{ flex: 1, backgroundColor: '#fff', top: -1 }}
+          style={styles.background}
         >
           <Image source={drawerCover} style={styles.drawerCover} />
 
@@ -63,27 +54,12 @@ class SideBar extends Component {
                   <Icon
                     active
                     name={data.icon}
-                    style={{ color: '#777', fontSize: 26, width: 30 }}
+                    style={styles.icon}
                   />
                   <Text style={styles.text}>
                     {data.name}
                   </Text>
                 </Left>
-                {data.types &&
-                <Right style={{ flex: 1 }}>
-                  <Badge
-                    style={{
-                      borderRadius: 3,
-                      height: 25,
-                      width: 72,
-                      backgroundColor: data.bg
-                    }}
-                  >
-                    <Text
-                      style={styles.badgeText}
-                    >{`${data.types} Types`}</Text>
-                  </Badge>
-                </Right>}
               </ListItem>}
           />
         </Content>
@@ -95,4 +71,11 @@ class SideBar extends Component {
 SideBar.propTypes = {
   navigation: PropTypes.object
 }
-export default SideBar
+
+const mapStateToProps = state => ({
+  roles: state.roles
+})
+
+export default connect(
+  mapStateToProps
+)(SideBar)

@@ -40,3 +40,27 @@ export const setIsCoach = () => {
     type: types.SET_REGISTER_IS_COACH
   }
 }
+
+export const setIsRecruiter = () => {
+  return {
+    type: types.SET_REGISTER_IS_RECRUITER
+  }
+}
+
+export const setIsPlayer = () => {
+  return {
+    type: types.SET_REGISTER_IS_PLAYER
+  }
+}
+
+export const setIsParent = () => {
+  return {
+    type: types.SET_REGISTER_IS_PARENT
+  }
+}
+
+export const setIsCoordinator = () => {
+  return {
+    type: types.SET_REGISTER_IS_COORDINATOR
+  }
+}

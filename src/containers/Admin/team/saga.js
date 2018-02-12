@@ -9,12 +9,18 @@ import {PATH_TEAM} from './config'
 import * as teamsUtils from '../../../modules/Teams/utils'
 import {addTeamsRequest} from '../../../modules/Teams/action'
 
-const _post = model => firebaseApp.database().ref().child(`${PATH_TEAM}/${model.id}`).update(model)
+const _delete = id => firebaseApp.database().ref().child(`${PATH_TEAM}`).orderByChild('id').equalTo(id).set(null)
 
-const _delete = id => firebaseApp.database().ref().child(`${PATH_TEAM}/${id}`).set(null)
+const _post = model => {
+  const newKey = firebaseApp.database().ref().child(PATH_TEAM).push().key
+  const updates = {}
+  updates[`/${PATH_TEAM}/${newKey}`] = model
+  return firebaseApp.database().ref().update(updates)
+}
 
 const _fetchById = id => {
-  return firebaseApp.database().ref(`${PATH_TEAM}/${id}`)
+  return firebaseApp.database().ref(`${PATH_TEAM}`)
+    .orderByChild('id').equalTo(id)
     .once('value').then(snapshot => {
       if (snapshot.val()) return snapshot.val()
       else return {}

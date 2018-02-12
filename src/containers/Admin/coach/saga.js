@@ -9,11 +9,18 @@ import {PATH_COACH} from './config'
 import * as teamsUtils from '../../../modules/Teams/utils'
 import {addTeamsRequest} from '../../../modules/Teams/action'
 
-const _post = model => firebaseApp.database().ref().child(`${PATH_COACH}/${model.id}`).update(model)
-const _delete = id => firebaseApp.database().ref().child(`${PATH_COACH}/${id}`).set(null)
+const _delete = id => firebaseApp.database().ref().child(`${PATH_COACH}`).orderByChild('id').equalTo(id).set(null)
+
+const _post = model => {
+  const newKey = firebaseApp.database().ref().child(PATH_COACH).push().key
+  const updates = {}
+  updates[`/${PATH_COACH}/${newKey}`] = model
+  return firebaseApp.database().ref().update(updates)
+}
 
 const _fetchById = id => {
-  return firebaseApp.database().ref(`${PATH_COACH}/${id}`)
+  return firebaseApp.database().ref(`${PATH_COACH}`)
+    .orderByChild('id').equalTo(id)
     .once('value').then(snapshot => {
       if (snapshot.val()) return snapshot.val()
       else return {}

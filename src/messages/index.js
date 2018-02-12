@@ -6,6 +6,10 @@ export const PASS_NO_MATCH = {
   title: 'Passwords',
   body: 'Do not Match'
 }
+export const NO_ROLES_SELECTED = {
+  title: 'I am (select one)',
+  body: 'Type of account required'
+}
 export const ADD_STAFF = name => {
   return {
     title: 'Add New Staff to Master List?',

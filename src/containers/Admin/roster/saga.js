@@ -6,9 +6,14 @@ import {firebaseApp} from '../../../redux/store'
 
 const PATH = 'roster'
 
-const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.teamId}`).update(model)
+const _post = model => {
+  const newKey = firebaseApp.database().ref().child(PATH).push().key
+  const updates = {}
+  updates[`/${PATH}/${newKey}`] = model
+  return firebaseApp.database().ref().update(updates)
+}
 
-const _delete = teamId => firebaseApp.database().ref().child(`${PATH}/${teamId}`).set(null)
+const _delete = teamId => firebaseApp.database().ref().child(`${PATH}`).orderByChild('teamId').equalTo(teamId).set(null)
 
 const createChannel = (teamId) => {
   const listener = eventChannel(

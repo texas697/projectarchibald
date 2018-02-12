@@ -6,14 +6,21 @@ import {firebaseApp} from '../../redux/store'
 
 const PATH = 'roles'
 
-const _post = model => firebaseApp.database().ref().child(`${PATH}/${model.uid}`).update(model)
+const _post = model => {
+  const newKey = firebaseApp.database().ref().child(PATH).push().key
+  const updates = {}
+  updates[`/${PATH}/${newKey}`] = model
+  return firebaseApp.database().ref().update(updates)
+}
 
 const createChannel = uid => {
   const listener = eventChannel(
     emit => {
-      firebaseApp.database().ref(`${PATH}/${uid}`).once('value', snapshot => {
-        emit(snapshot.val() || {})
-      })
+      firebaseApp.database().ref(`${PATH}`)
+        .orderByChild('uid').equalTo(uid)
+        .once('value', snapshot => {
+          emit(snapshot.val() || {})
+        })
       return () => firebaseApp.database().ref(`${PATH}`).off(listener)
     }
   )

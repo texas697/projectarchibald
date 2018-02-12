@@ -25,10 +25,14 @@ export default {
     fontSize: 16,
     marginLeft: 20
   },
-  badgeText: {
-    fontSize: Platform.OS === 'ios' ? 13 : 11,
-    fontWeight: '400',
-    textAlign: 'center',
-    marginTop: Platform.OS === 'android' ? -3 : undefined
+  icon: {
+    color: '#777',
+    fontSize: 26,
+    width: 30
+  },
+  background: {
+    flex: 1,
+    backgroundColor: '#fff',
+    top: -1
   }
 }

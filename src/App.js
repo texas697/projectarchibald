@@ -15,6 +15,7 @@ import SideBar from './containers/Sidebar/index'
 import store, {firebaseApp} from './redux/store'
 import {loginSuccess, logoutSuccess} from './containers/Login/action'
 import {fetchTeamsByCoachIdRequest} from './modules/Teams/action'
+import {fetchRolesRequest} from './modules/Roles/action'
 import {statesFetchRequest} from './modules/States/index'
 import * as utils from './utils/index'
 
@@ -65,14 +66,22 @@ export default () =>
 
 firebaseApp.auth().onAuthStateChanged(data => {
   if (data) {
-    const _name = store.getState().register.get('name')
-    const _isCoach = store.getState().register.get('isCoach')
+    const _state = store.getState()
+    const _name = _state.register.get('name')
+    const _roles = {
+      isCoach: _state.register.get('isCoach'),
+      isRecruiter: _state.register.get('isRecruiter'),
+      isPlayer: _state.register.get('isPlayer'),
+      isParent: _state.register.get('isParent'),
+      isCoordinator: _state.register.get('isCoordinator')
+    }
     const _user = firebaseApp.auth().currentUser
 
-    if (_name) utils.updateProfile(_user, _name, _isCoach)
-    else if (_isCoach) store.dispatch(fetchTeamsByCoachIdRequest(_user.uid))
+    if (_name) utils.updateProfile(_user, _name, _roles)
+    else if (_roles.isCoach) store.dispatch(fetchTeamsByCoachIdRequest(_user.uid))
     const user = {name: _user.displayName || _name, email: _user.email, uid: _user.uid}
     store.dispatch(loginSuccess(user))
+    store.dispatch(fetchRolesRequest(_user.uid))
   } else {
     store.dispatch(logoutSuccess())
     try {
