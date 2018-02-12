@@ -91,6 +91,7 @@ export default (state = initialState, action) => {
       return state
         .set('id', '')
         .set('image', '')
+        .set('ageGroup', '')
         .set('isFetching', false)
         .set('isAdding', false)
         .set('isDeleting', false)
